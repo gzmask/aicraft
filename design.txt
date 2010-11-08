@@ -1,2 +1,15 @@
-1. One player, one A.I. Versus Mode.
+
+Tasks:
+
+============ waiting ==============
+
+test websocket performance
+	a server folder, a client folder
+	A golang websocket service that tells client 12 packets per second about every units position
+	A golang websocket service that recieve RPC calls for every A.I commands and player commands, and changes positions for every units 
+	pesudo command to test would be just six moving directions
+	movement speed is fixed and control by server
+
+
+============== done ===============
 
