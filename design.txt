@@ -3,16 +3,19 @@ Tasks:
 
 ============ waiting ==============
 
-	A golang websocket service that tells client 12 packets per second about every units position
-		result: 4 ms for 12 packets
+	A golang websocket service that tells client 12 times per second about every unit's positions
 	A golang websocket service that recieve RPC calls for every A.I commands and player commands, and changes positions for every units 
 	pesudo command to test would be just six moving directions
 	movement speed is fixed and control by server
 	install Go on lancewave
 	A.I following player, allow to move within some R for a rounded shade where player is the centre
+	
 
 
 ============== done ===============
 
+Nov 8th, 2010
 	a server folder, a client folder
 	Figure out a way to get channel info, and get more than one packet
+	A Go player class, A Go A.I class
+	A JS player class, A JS A.I class
