@@ -8,7 +8,7 @@ import (
 	"./ai"
 )
 
-// Echo the data received on the Web Socket.
+//websocket service telling all units' positions 
 func GetPos(ws *websocket.Conn) {
 	var msg = make([]byte, 10)
 
