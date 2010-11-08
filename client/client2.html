@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8" />
+
+<title>WebSocket Test</title>
+
+<script language="javascript" type="text/javascript">
+	var output;
+
+	function init()
+	{
+		output = document.getElementById("output");
+		socket = new WebSocket("ws://localhost:12345/getpos");
+		socket.onopen = function(evt) {
+		var timestamp1 = Number(new Date());
+		writeToScreen(timestamp1);
+			for (i=0;i<=24;i=i+1)
+			{
+				socket.send("blah"+i);
+			}
+			writeToScreen("Connected!");
+		};
+		socket.onmessage = function(evt) {
+			writeToScreen(evt.data);
+			var timestamp2 = Number(new Date());
+			writeToScreen(timestamp2);
+			//socket.close();
+		};
+		socket.onclose = function(evt) {
+			writeToScreen("Disconnected!");
+		};
+
+	}
+
+	function writeToScreen(message)
+	{
+		var pre = document.createElement("p");
+		pre.style.wordWrap = "break-word";
+		pre.innerHTML = message;
+		output.appendChild(pre);
+	}
+
+	window.addEventListener("load", init, false);
+
+</script>
+
+<h2>WebSocket Test</h2>
+
+<div id="output"></div>
+
+</html> 

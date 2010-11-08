@@ -6,14 +6,18 @@
 
 <script language="javascript" type="text/javascript">
 
-  var wsUri = "ws://localhost:12345/echo";
-  var output;
+	var wsUri = "ws://localhost:12345/echo";
+	var output;
 
-  function init()
-  {
-    output = document.getElementById("output");
-    testWebSocket();
-  }
+	function init()
+	{
+		output = document.getElementById("output");
+		for (i=0;i<=11;i=i+1)
+		{
+			testWebSocket();
+		}
+
+	}
 
   function testWebSocket()
   {
