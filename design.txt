@@ -14,8 +14,10 @@ Tasks:
 	Ranger A.I follows the player, only allow to move within some R from the player as the centre
 	Defender A.I is stationary, only allowed to move within some R from the deployed point.
 	Virus A.I is non-physical, capable to remotely control opposite's physical form A.I for a limited peroid of time.
-	Design Collision detection algorithm
 	Winner captures the source code(A.I). Captured A.I only lives for 1 hour or so.
+	Choose Collision detection algorithm - OctTree for 3D, QuadTree for 2D
+	Implement Map flooding tool using selected CD algorithm above, gives Octree/QuadTree in JSON
+	Implement CD function in JS, reads the JSON above as input
 
 ============== done ===============
 
@@ -26,3 +28,5 @@ Nov 8th, 2010
 	A JS player class, A JS A.I class
 	Seperate WebSocket from main package
 	A golang websocket service that tells client 12 times per second about every unit's positions using json array
+
+Nov 9th, 2010

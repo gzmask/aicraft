@@ -3,47 +3,12 @@
 <meta charset="utf-8" />
 
 <head>
-<title>WebSocket Test</title>
+<title>A.I Craft</title>
 <script type="text/javascript" src="player.js"></script>
 <script type="text/javascript" src="ai.js"></script>
+<script type="text/javascript" src="ws.js"></script>
 <script language="javascript" type="text/javascript">
 	var output;
-
-	function init()
-	{
-		output = document.getElementById("output");
-		socket = new WebSocket("ws://localhost:12345/getpos");
-
-		socket.onopen = function(evt) {
-			var timestamp1 = Number(new Date());
-			writeToScreen(timestamp1);
-			//setInterval("socket.send('p')", 83);
-			setInterval("socket.send('p')", 2000);
-			/*for (i=0;i<=12;i=i+1)
-			{
-				socket.send("p");
-			}*/
-			writeToScreen("Connected!");
-		};
-
-		socket.onmessage = function(evt) {
-			writeToScreen(evt.data);
-			var timestamp2 = Number(new Date());
-			writeToScreen(timestamp2);
-			//socket.close();
-		};
-
-		socket.onclose = function(evt) {
-			writeToScreen("Disconnected!");
-		};
-
-		//test player and ai class
-		var p1 = new Player("gzmask");
-		var a1 = new Ai("minime");
-		writeToScreen(p1.getInfo());
-		writeToScreen(a1.getInfo());
-
-	}
 
 	function writeToScreen(message)
 	{
@@ -53,12 +18,12 @@
 		output.appendChild(pre);
 	}
 
-
-
-	
+	function init()
+	{
+		ws_init();
+	}
 
 	window.addEventListener("load", init, false);
-
 </script>
 </head>
 
@@ -67,6 +32,9 @@
 <h2>WebSocket Test</h2>
 
 <div id="output"></div>
+<canvas id="canvas" width="1280" height="720">
+	This web page only supports Firefox3, Chrome, Safari, Internet Explorer 6, 7 & 8.
+</canvas> 
 
 </body>
 
