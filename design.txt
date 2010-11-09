@@ -3,7 +3,6 @@ Tasks:
 
 ============ waiting ==============
 
-	Add Canvas to html page
 	Design a very simple Player Avatar
 	Design a very simple A.I Avatar
 	Add Player to Canvas
@@ -30,3 +29,4 @@ Nov 8th, 2010
 	A golang websocket service that tells client 12 times per second about every unit's positions using json array
 
 Nov 9th, 2010
+	Add Canvas to html page
