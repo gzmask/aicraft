@@ -3,14 +3,13 @@ Tasks:
 
 ============ waiting ==============
 
-	Decide what Database to use
 	A golang websocket service that tells client 12 times per second about every unit's positions
 	A golang websocket service that recieve RPC calls for every A.I commands and player commands, and changes positions for every units 
 	pesudo command to test would be just six moving directions
 	movement speed is fixed and control by server
 	install Go on lancewave
 	A.I following player, allow to move within some R for a rounded shade where player is the centre
-	
+	Decide what Database to use
 
 
 ============== done ===============
