@@ -1,7 +1,7 @@
 package ai
 
 type Ai struct {
-	X, Y float
+	X, Y int
 }
 
 func (a *Ai) Foo() string {

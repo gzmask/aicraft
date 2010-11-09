@@ -15,12 +15,14 @@
 		socket = new WebSocket("ws://localhost:12345/getpos");
 
 		socket.onopen = function(evt) {
-		var timestamp1 = Number(new Date());
-		writeToScreen(timestamp1);
-			for (i=0;i<=24;i=i+1)
+			var timestamp1 = Number(new Date());
+			writeToScreen(timestamp1);
+			//setInterval("socket.send('p')", 83);
+			setInterval("socket.send('p')", 2000);
+			/*for (i=0;i<=12;i=i+1)
 			{
-				socket.send("blah"+i);
-			}
+				socket.send("p");
+			}*/
 			writeToScreen("Connected!");
 		};
 

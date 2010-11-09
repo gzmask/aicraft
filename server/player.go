@@ -1,7 +1,7 @@
 package player
 
 type Player struct {
-	X, Y float
+	X,Y int
 }
 
 func (p *Player) Foo() string {
