@@ -3,6 +3,7 @@ Tasks:
 
 ============ waiting ==============
 
+	Decide what Database to use
 	A golang websocket service that tells client 12 times per second about every unit's positions
 	A golang websocket service that recieve RPC calls for every A.I commands and player commands, and changes positions for every units 
 	pesudo command to test would be just six moving directions
@@ -19,3 +20,4 @@ Nov 8th, 2010
 	Figure out a way to get channel info, and get more than one packet
 	A Go player class, A Go A.I class
 	A JS player class, A JS A.I class
+	Seperate WebSocket from main package
