@@ -3,4 +3,5 @@
 6g socketserver.go
 6g main.go
 6l main.6
+rm *.6
 ./6.out
