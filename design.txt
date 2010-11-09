@@ -13,8 +13,9 @@ Tasks:
 	Add "is_enemy" boolean to player/ai JS classes
 	Ranger A.I follows the player, only allow to move within some R from the player as the centre
 	Defender A.I is stationary, only allowed to move within some R from the deployed point.
+	Virus A.I is non-physical, capable to remotely control opposite's physical form A.I for a limited peroid of time.
 	Design Collision detection algorithm
-	"Winner takes the source code!"
+	Winner captures the source code(A.I). Captured A.I only lives for 1 hour or so.
 
 ============== done ===============
 
