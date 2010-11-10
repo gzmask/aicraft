@@ -6,8 +6,8 @@ function ws_init()
 	socket.onopen = function(evt) {
 		var timestamp1 = Number(new Date());
 		writeToScreen(timestamp1);
-		//setInterval("socket.send('p')", 83);
-		setInterval("socket.send('p')", 2000);
+		setInterval("socket.send('p')", msPF);
+		//setInterval("socket.send('p')", 2000);
 		/*for (i=0;i<=12;i=i+1)
 		{
 			socket.send("p");
@@ -16,21 +16,15 @@ function ws_init()
 	};
 
 	socket.onmessage = function(evt) {
-		writeToScreen(evt.data);
-		var timestamp2 = Number(new Date());
-		writeToScreen(timestamp2);
+		//evt.data is the json array from socketserver.go
+		//writeToScreen(evt.data);
+		//var timestamp2 = Number(new Date());
+		//writeToScreen(timestamp2);
 		//socket.close();
 	};
 
 	socket.onclose = function(evt) {
 		writeToScreen("Disconnected!");
 	};
-
-	//test player and ai class
-	var p1 = new Player("gzmask");
-	var a1 = new Ai("minime");
-	writeToScreen(p1.getInfo());
-	writeToScreen(a1.getInfo());
-
 }
 

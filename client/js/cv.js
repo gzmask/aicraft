@@ -1,42 +1,23 @@
 
 /*===========================================================================*/
-var msPF = 15;
+var msPF = 66; //ms per frame, which is 1000/FPS
 var canvas;
 var ctx;
 
 /*===========================================================================*/
-function Square() {
-	this.tlx;
-	this.tly;
-	this.brx;
-	this.bry;
-}
-var s1 = new Square();
-s1.tlx = 10;
-s1.tly = 10;
-s1.brx = 55;
-s1.bry = 50;
-var s2 = new Square();
-s2.tlx = 30;
-s2.tly = 30;
-s2.brx = 55;
-s2.bry = 50;
-
+var p1 = new Player(10,10);
+var a1 = new Ai(30,30);
 
 /*===========================================================================*/
 function animateScene() {
-	s1.tlx = s1.tlx+2;
-	s2.tlx = s2.tlx+1;
+	p1.x = p1.x+3
+	a1.x = a1.x+1
 }
 
 function drawScene () {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	ctx.fillStyle = "rgb(200,0,0)";  
-        ctx.fillRect (s1.tlx, s1.tly, s1.brx, s1.bry);  
-  
-        ctx.fillStyle = "rgba(0, 0, 200, 0.5)";  
-        ctx.fillRect (s2.tlx, s2.tly, s2.brx, s2.bry);  
-
+	p1.draw(ctx);
+	a1.draw(ctx);
 }
 
 function update() {
@@ -49,6 +30,6 @@ function cv_init() {
 	if (canvas.getContext) {
 		ctx = canvas.getContext("2d");
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		setInterval(update, 66);
+		setInterval(update, msPF);
 	}
 }

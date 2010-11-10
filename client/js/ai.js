@@ -1,8 +1,11 @@
-function Ai(name) {
+function Ai(x,y) {
 
-	this.name = name;
+	this.x=x;
+	this.y=y;
 
-	this.getInfo = function() {
-		return this.name; 
-	};
+	this.draw = function(ctx) {
+		ctx.fillStyle = "rgb(200,200,0)";  
+		ctx.fillRect (this.x, this.y, 10, 10);  
+	}
+
 }
