@@ -3,8 +3,9 @@ Tasks:
 
 ============ waiting ==============
 
-	Sync position of Go player and JS player, through websocket
-	Add control to JS player movement control with six moving directions
+	Sync position of Go player and JS player, through websocket.
+	socket.send('p'): encode control commands into this one 8bit(256) data.
+	Add control to JS player movement control with six moving directions.
 	A golang websocket service that recieves RPC calls for every A.I commands and player commands, and changes positions accordingly 
 	Add "is_enemy" boolean to player/ai JS classes
 	Ranger A.I follows the player, only allow to move within some R from the player as the centre
