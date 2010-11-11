@@ -14,9 +14,9 @@ var a1 ai.Ai
 var a2 ai.Ai
 
 func init() {
-	p1.X, p1.Y = 0, 0
+	p1.X, p1.Y = 10, 10
 	p1.Name = "player1"
-	a1.X, a1.Y = 10, 10
+	a1.X, a1.Y = 20, 20
 	a1.Name = "ai1"
 	p2.X, p2.Y = 250, 250
 	p2.Name = "player2"
@@ -27,6 +27,10 @@ func init() {
 
 //websocket service telling all units' positions 
 func GetPos(ws *websocket.Conn) {
+	p1.X = p1.X + 1
+	p1.Y = p1.Y + 1
+	a1.X = a1.X + 1
+	a1.Y = a1.Y + 1
 	var msg_rev = make([]byte, 1)
 	var json_str string = 
 	"{\"positions\":["+

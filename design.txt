@@ -2,8 +2,7 @@
 Tasks:
 
 ============ waiting ==============
-
-	Sync position of Go player and JS player, through websocket.
+	
 	socket.send('p'): encode control commands into this one 8bit(256) data.
 	Add control to JS player movement control with six moving directions.
 	A golang websocket service that recieves RPC calls for every A.I commands and player commands, and changes positions accordingly 
@@ -32,3 +31,7 @@ Nov 9th, 2010
 	Design a very simple A.I Avatar
 	Add Player to Canvas
 	Add A.I to Canvas 
+
+Nov 10th, 2010
+	Sync position of Go player and JS player, through websocket.
+	Animate Go Player positions
