@@ -10,7 +10,12 @@ function ws_connect()
 		//setInterval("socket.send('p')", msPF);
 		if (socket.readyState == 1)
 		{
-			socket.send(' p');
+			try{  
+				socket.send(' p');
+			} catch(exception){  
+				writeToScreen(exception);
+			}  
+			
 		}
 		//setInterval("socket.send('p')", 2000);
 		/*for (i=0;i<=12;i=i+1)
