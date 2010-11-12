@@ -13,6 +13,7 @@
 
 	function writeToScreen(message)
 	{
+		output = document.getElementById("output");
 		var pre = document.createElement("p");
 		pre.style.wordWrap = "break-word";
 		pre.innerHTML = message;
@@ -30,11 +31,11 @@
 </head>
 
 <body>
-
-<div id="output"></div>
 <canvas id="canvas" width="1280" height="720">
 	This web page only supports Firefox3, Chrome, Safari, Internet Explorer 6, 7 & 8.
 </canvas> 
+
+<div id="output"></div>
 
 </body>
 

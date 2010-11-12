@@ -3,9 +3,6 @@ Tasks:
 
 ============ waiting ==============
 	
-	Add control to JS player movement control with six moving directions.
-	socket.send('p'): encode control commands into this one 8bit(256) data.
-	A golang websocket service that recieves RPC calls for every A.I commands and player commands, and changes positions accordingly 
 	Add "is_enemy" boolean to player/ai JS classes
 	Ranger A.I follows the player, only allow to move within some R from the player as the centre
 	Defender A.I is stationary, only allowed to move within some R from the deployed point.
@@ -35,3 +32,10 @@ Nov 9th, 2010
 Nov 10th, 2010
 	Sync position of Go player and JS player, through websocket.
 	Animate Go Player positions
+
+Nov 11st, 2010
+	Construct a single char name 'wasd', where the rightmost 4 bits is the movement, as the order of 'wasd', ie. 0010 means 's' is pressed. leftmost 12 bits are reserved.
+	Test what GetPos() of socketserver.go is getting from ws.js
+	Send 'wasd' char (8bits) to socketserver.go
+	Move player and ai according to the wasd char
+	Add control to JS player movement control with six moving directions.
