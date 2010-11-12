@@ -4,22 +4,12 @@
 
 <head>
 <title>A.I Craft</title>
+<script type="text/javascript" src="js/funlib.js"></script>
 <script type="text/javascript" src="js/player.js"></script>
 <script type="text/javascript" src="js/ai.js"></script>
 <script type="text/javascript" src="js/cv.js"></script>
 <script type="text/javascript" src="js/ws.js"></script>
 <script language="javascript" type="text/javascript">
-	var output;
-
-	function writeToScreen(message)
-	{
-		output = document.getElementById("output");
-		var pre = document.createElement("p");
-		pre.style.wordWrap = "break-word";
-		pre.innerHTML = message;
-		output.appendChild(pre);
-	}
-
 	function init()
 	{
 		cv_init();

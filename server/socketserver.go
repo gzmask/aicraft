@@ -12,7 +12,7 @@ var p1 player.Player
 var p2 player.Player
 var a1 ai.Ai
 var a2 ai.Ai
-var spd int = 6;
+var spd int = 16;
 
 func init() {
 	p1.X, p1.Y = 10, 10
