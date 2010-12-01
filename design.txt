@@ -3,6 +3,7 @@ Tasks:
 
 ============ waiting ==============
 	
+	Smooth out the movement, lower the network bandwidth
 	Load an image as the background onto canvas
 	Get an image, make it bigger than the canvas using ctx.scale(), draw part of it onto the canvas
 	Produce "Moving Effect" by moving the background in reverse directions, not the player.
