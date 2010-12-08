@@ -1,6 +1,5 @@
 
-function ws_connect()
-{
+function ws_connect() {
 	socket = new WebSocket("ws://localhost:12345/getpos");
 
 	socket.onopen = function(evt) {
