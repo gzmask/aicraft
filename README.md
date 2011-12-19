@@ -4,6 +4,8 @@ Tasks:
 
 	Use Express and Tree.JS to reconstruct basic game loop
 	Use Dnode to reconstruct and server/client communication
+	Use Prototype to define A.I entities
+	Remove Player class for now
     Remake server side part with NodeJS
 
 ============ backlog ==============
