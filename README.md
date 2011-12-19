@@ -1,8 +1,11 @@
 Tasks:
 
-============ waiting ==============
-	
+============ To-Do:  ==============
+	Use Express and Tree.JS to reconstruct basic game loop
     Remake server side part with NodeJS
+
+============ backlog ==============
+	
 	Smooth out the movement, lower the network bandwidth
 	Websocket done wrong. It should be "full duplex" connection without reconnecting for every packet.
 	Load an image as the background onto canvas
