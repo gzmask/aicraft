@@ -3,6 +3,7 @@ Tasks:
 ============ To-Do:  ==============
 
 	Use Express and Tree.JS to reconstruct basic game loop
+	Use Dnode to reconstruct and server/client communication
     Remake server side part with NodeJS
 
 ============ backlog ==============
