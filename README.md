@@ -1,6 +1,7 @@
 Tasks:
 
 ============ To-Do:  ==============
+
 	Use Express and Tree.JS to reconstruct basic game loop
     Remake server side part with NodeJS
 
