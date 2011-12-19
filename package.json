@@ -1,0 +1,19 @@
+{
+  "author": "gzmask <gzmask@gmail.com> (http://gzmask.wordpress.com)",
+  "name": "aicraft",
+  "version": "0.0.1",
+  "homepage": "https://github.com/gzmask/aicraft",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gzmask/aicraft.git"
+  },
+  "main": "app.js",
+  "engines": {
+    "node": "~0.6.6"
+  },
+  "dependencies": {
+    "express": "~2.5.2",
+    "socket.io": "~0.8.7"
+  },
+  "devDependencies": {}
+}
