@@ -1,4 +1,3 @@
-
 Tasks:
 
 ============ waiting ==============
@@ -20,7 +19,6 @@ Tasks:
 	Choose Collision detection algorithm - OctTree for 3D, QuadTree for 2D
 	Implement Map flooding tool using selected CD algorithm above, gives Octree/QuadTree in JSON
 	Implement CD function in JS, reads the JSON above as input
-
 
 ============== WebGL Version ===============
 
