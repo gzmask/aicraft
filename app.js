@@ -9,9 +9,15 @@
   app.set('view engine', 'ejs');
 
   app.use(express.static(__dirname + '/public'));
+
   app.get('/', function(request, response) {
     return response.render('index');
   });
+
+  app.get('/cube', function(request, response) {
+    return response.render('cube');
+  });
+
   app.listen(3000);
   io = io.listen(app);
   console.log("Express server started on port %s", app.address().port);
