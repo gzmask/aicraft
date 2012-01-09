@@ -51,16 +51,16 @@
 
 			materials.push( new THREE.MeshBasicMaterial( { color: Math.random() * 0xffffff } ) );
 
-		}
+		}//generate 6 random colors and push them into an array
 
-		cube = new THREE.Mesh( new THREE.CubeGeometry( 200, 200, 200, 1, 1, 1, materials ), new THREE.MeshFaceMaterial() );
+		cube = new THREE.Mesh( new THREE.CubeGeometry( 200, 200, 200, 2, 2, 2, materials ), new THREE.MeshFaceMaterial() );
 		cube.position.y = 150;
 		cube.overdraw = true;
 		scene.add( cube );
 
 		// Plane
 
-		plane = new THREE.Mesh( new THREE.PlaneGeometry( 200, 200 ), new THREE.MeshBasicMaterial( { color: 0xe0e0e0 } ) );
+		plane = new THREE.Mesh( new THREE.PlaneGeometry( 400, 400 ), new THREE.MeshBasicMaterial( { color: 0xe0e0e0 } ) );
 		plane.rotation.x = - 90 * ( Math.PI / 180 );
 		plane.overdraw = true;
 		scene.add( plane );
