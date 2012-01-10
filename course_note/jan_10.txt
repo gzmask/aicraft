@@ -1,0 +1,91 @@
+computer game architecture
+	init
+	loop //called the game loop
+		respond to input
+		update the state of the game
+		display state of the game
+		keyboard
+		idle 1/100 sec to slow down the frame rate
+
+render: produce a picture corresponding to the state of the virtual world
+
+glutMainLoop
+	provide a game loop is willing to call user functions
+	about 80 functions can be specified 
+		display function
+		idle function
+		keyboard function
+		special function
+		mouse functions //a lot of them!
+
+GLUT
+	is event driven
+	when keyboard, mouse, network event occur, it is willing to call one of your functions
+
+user specifies functions that should be called
+	also called callbacks by giving a pointer to a function, i.e the address where the executable code for the function begins.
+		in c/c++, a pointer to a function f is either &f or f
+
+glVertex2f - 2d
+glVertex3f - 3d
+glVertex2d - double precision parameter
+glVertex3d - double precision parameter
+
+Glut double
+	turns on double buffering
+	buffer = any temporary storage in a computer
+	swap two frames 
+
+glEnable(GL_DEPTH_TEST)
+	makes use of 3D information so that closer objects to the camera are draw in front of further objects automatically
+	adds another buffer call depth buffer
+	-------------------
+    |   85            |
+    |                 |
+    |                 |
+    |                 |
+    |                 |
+    |                 |
+    |                 |
+    |                 |
+	-------------------
+	a number representing the depth of the pixel
+
+reshape: anytime anyone changes the size of the window
+viewport: a windows showing the scene
+
+
+OpenGL
+	Modelview matrix
+	Projection matrix
+		controls the camera: 
+			pespective(fov: 60), 
+			aspect ratio(4/3), 
+			near/far viewable distance(0.1, 100)
+				range can not be to much, depth buffer will not be enough
+	Clear Color: background color
+	Color: d???ing color
+
+	glPushMatrix
+		translate
+		rotate //by degree
+		scale
+	glPopMatrix
+
+
+	gluLookAt
+		(x,y,z) = eye/camera
+		(x,y,z) = Look at point
+		(x,y,z) = up vector
+
+
+game engine
+	render engine/graphic engine
+		display
+	audio engine/component
+	physics engine
+		collision detection
+		motion
+	A.I
+		update chars according to some model
+	resource manager
