@@ -1,0 +1,17 @@
+a reshape function
+	we tell GLUT:
+		glutReshapeFunc(reshapeX);
+	GLUT passes in 2 parameters to reshapeX
+		it has them stored in 2 secret values
+		we initialized with glutInitWindowSize
+
+Funability
+A sleeper
+B hard worker
+C fun player
+
+My project:
+coding is so important in modern society
+coding to get work done, earn salary, get degree isn't enough
+playing with coding is more important according to funability theory.
+A game to use code to control players.
