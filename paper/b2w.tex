@@ -1,0 +1,145 @@
+\title{The A.I Craft Project}
+\author{
+	Gzmask\\
+}
+\date{\today}
+
+\documentclass[12pt]{article}
+\setlength{\parindent}{0in}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{parskip}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This is a paper of a P2P system that let users trade digital works online, kind of like freelancing. There is a basic peer-review processes that guarantee the works are being accepted fairly, and there is a work quality/honest rating system to keep bad workers out. 
+\end{abstract}
+
+\section{Introduction}
+Online trading using credit cards or paypal-like system is popular. A famous exampe is Ebay.com. All these systems are centralize, thus the trades are slow and controlled by some private parties in some degree. As bitcoins emerged, pure P2P system is getting recognized. Here I proposed a very basic and simple design for a P2P trading system. 
+
+\section{Important constants}
+N: Total user amount (updates weekly)\\
+K: Total voter amount (updates three days)\\
+
+\section{Models}
+
+\subsection{Node table}
+This model stores in all (N) nodes\\
+Properties
+\begin{itemize}
+	\item IP\_address
+	\item Email\_address
+	\item is\_voter
+\end{itemize}
+
+\subsection{Reputation block chain}
+This model stores in all (N) nodes\\
+Properties
+\begin{itemize}
+	\item Email\_address
+	\item work\_quality
+	\item honest\_rating
+\end{itemize}
+\begin{itemize}
+	\item Email\_address
+	\item dispute\_history
+	\item solution\_accepted\_history
+\end{itemize}
+
+This two values has similar structure as the bitcoins block chain
+
+work quality/honest rating:
+if ratings less than 10, shows actually numbers of ratings. i.e. 5:1:0 where 5 rates excellent, 1 rates good and 0 rates bad;
+if ratings more than 10, only shows percentages. i.e. 33\%:33\%:33\% This prevents profile bias towards worker nodes with less cases done.
+
+\subsection{Need}
+This model stores in Log(N) nodes\\
+Properties
+\begin{itemize}
+	\item time\_to\_live
+	\item offer
+	\item accepted\_proposal\_address
+	\item src\_node\_address
+\end{itemize}
+
+\subsection{Work}
+This model stores in posted node\\
+Properties
+\begin{itemize}
+	\item time\_to\_live
+	\item proposal
+	\item accepted
+	\item price
+	\item src\_node\_address
+	\item des\_node\_address
+	\item solution
+\end{itemize}
+
+\subsection{Dispute}
+This model stores in posted node\\
+Properties
+\begin{itemize}
+	\item needer\_ip\_address
+	\item worker\_ip\_address
+	\item vote
+	\item needer\_process\_fee
+	\item worker\_process\_fee
+	\item next\_voter\_address
+\end{itemize}
+
+\section{Actions}
+
+\subsection{Post a Need}
+\begin{enumerate}
+	\item a node $U_1$ boardcasts a need $N_1$ in the network to $Log(N)$ nodes in its node listing table. 
+	\item after some propagation, most nodes will receive the boardcast of $N_1$ and store it locally
+	\item after the TTL expired, each node removes $N_1$ permanently.
+\end{enumerate}
+
+\subsection{Propose a work}
+\begin{enumerate}
+	\item any node can propose a work for a need.
+	\item let $U_2$ be a node proposing a work $W_1$. $U_2$ send an Email to $U_1$, telling $U_1$ that $W_1$ is proposed at $U_2$.
+	\item $U_1$ gets notified that $W_1$ is proposed. There can be multiple works that are proposed by other nodes. 
+	\item $U_1$ can accept one of the proposed work, or wait. If $N_1$ expires, all proposed works expire at the same time and the case is over.
+\end{enumerate}
+
+\subsection{Accept a work proposal}
+\begin{enumerate}
+	\item if $U_1$ accepts $W_1$ from $U_2$, $U_1$ needs to send bitcoins to $U_2$'s bitcoin address, at the same time sends an network packet to $U_2$, notifieds that $W_1$ is accepted and $U_2$ can give a solution to $W_1$, or the solution can be a proof-of-work-done if it is not transferable online.
+	\item After $U_2$ submits a solution for $W_1$, $U_1$ receives a network packet notification that he can review the solution from $U_2$. Now $U_1$ can either choose to accept or reject the solution.
+	\item when $U_1$ logs off, it will not longer be able to accept work solutions. $U_1$ is supposed to be online until a solution is accepted.  
+\end{enumerate}
+
+\subsection{Accept a work solution}
+\begin{enumerate}
+	\item If the solution is accepted, $U_1$ will offered a rating chance to rate $U_2$'s work quality as excellent or good, and this rating is boardcasted.
+	\item If the solution is rejected, then $U_1$ now needs to submit a dispute $D_1$. The dispute will decide if $U_2$'s work quality is good or bad. If the dispute result is good, $U_1$'s honest rating will be deducted. 
+\end{enumerate}
+
+\subsection{Resolve a dispute}
+\begin{enumerate}
+	\item nodes can choose to peer-review dispute cases to earn honest rating. A dispute is resolved only after reviewed by log(K) randomly chosen nodes.
+	\item when $U_1$ files $D_1$, it searches for other voter Nodes and pick one randomly, say $U_3$. 
+	\item $U_1$ sets $D_1$'s next\_voter\_address to $U_3$, and $U_3$ dupes $D_1$ locally. 
+	\item $U_3$ reviews the case, vote, and picks another voter node randomly, until reaches $U_{log(K)}$.
+	\item $U_{log(K)}$ boardcasts the result.
+\end{enumerate}
+
+\section{Super nodes: needer nodes or voter nodes}
+Since needers have to be staying online to wait for solutions, thus they are most likely potential voter nodes. These nodes can be seen as super nodes that can be used to handle extra services.
+
+\section{Security}
+It's easy to see that the system is prone to fraud client attacks. A fraud node can boardcast fake honest rating results. 
+
+\begin{thebibliography}{9}
+\end{thebibliography}
+
+	
+
+\end{document}
+
