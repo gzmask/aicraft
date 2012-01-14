@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  13 JAN 2012 21:05
+This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  14 JAN 2012 17:25
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -234,31 +234,51 @@ Underfull \hbox (badness 10000) in paragraph at lines 27--32
 [1
 
 {/usr/local/texlive/2010/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (5.07509pt too wide) in paragraph at lines 33--37
+Overfull \hbox (5.07509pt too wide) in paragraph at lines 33--39
 []\OT1/cmr/m/n/12 According to Venkatesh's ar-ti-cle "The Rise of Developeronom
 ics"[[]] on Forbes,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 33--37
+Underfull \hbox (badness 10000) in paragraph at lines 33--39
 
  []
 
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 57--61
+Underfull \hbox (badness 10000) in paragraph at lines 48--55
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 48--55
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 57--64
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 57--64
+
+ []
+
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 84--88
 \OT1/cmr/m/n/12 http://www.forbes.com/sites/venkateshrao/2011/12/05/the-rise-of
 -
  []
 
-[3] (./aicraft.aux) ) 
+[4] (./aicraft.aux) ) 
 Here is how much of TeX's memory you used:
- 2408 strings out of 493747
- 33616 string characters out of 3143546
- 92503 words of memory out of 3000000
- 5686 multiletter control sequences out of 15000+200000
- 7162 words of font info for 26 fonts, out of 3000000 for 9000
+ 2409 strings out of 493747
+ 33633 string characters out of 3143546
+ 93503 words of memory out of 3000000
+ 5687 multiletter control sequences out of 15000+200000
+ 7469 words of font info for 27 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 38i,6n,23p,604b,201s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,6n,23p,628b,195s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2010/texmf-dist/fonts/type1/public/ams
 fonts/cm/cmbx10.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmbx12.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfo
@@ -266,10 +286,10 @@ nts/cm/cmr10.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfont
 s/cm/cmr12.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmr17.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmti12.pfb>
-Output written on aicraft.pdf (3 pages, 82702 bytes).
+Output written on aicraft.pdf (4 pages, 85823 bytes).
 PDF statistics:
- 38 PDF objects out of 1000 (max. 8388607)
- 26 compressed objects within 1 object stream
+ 41 PDF objects out of 1000 (max. 8388607)
+ 28 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
