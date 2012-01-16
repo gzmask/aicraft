@@ -30,8 +30,7 @@ function init() {
 					   FAR );
 	var cameraHelper = new THREE.CameraHelper( camera );
 	camera.add( cameraHelper );
-	camera.rotation.z = 15 * (Math.PI/180);
-	camera.rotation.x = 15 * (Math.PI/180);
+	camera.rotation.x = 30 * (Math.PI/180);
 	camera.position.z = 500;
 
 	var scene = new THREE.Scene();
@@ -69,6 +68,7 @@ function init() {
 	// Plane
 	plane = new THREE.Mesh( new THREE.PlaneGeometry( 400, 400 ), new THREE.MeshBasicMaterial( { color: 0x4ccccc } ) );
 	//plane.rotation.x = - 90 * ( Math.PI / 180 );
+	plane.position.y = 200;
 	plane.overdraw = true;
 	scene.add( plane );
 
