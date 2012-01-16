@@ -14,6 +14,10 @@
     return response.render('index');
   });
 
+  app.get('/first', function(request, response) {
+    return response.render('first');
+  });
+
   app.get('/cube', function(request, response) {
     return response.render('cube');
   });
