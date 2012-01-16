@@ -28,12 +28,13 @@ function init() {
 					   ASPECT,
 					   NEAR,
 					   FAR );
+	var cameraHelper = new THREE.CameraHelper( camera );
+	camera.add( cameraHelper );
 
 	var scene = new THREE.Scene();
 
 	// the camera starts at 0,0,0 so pull it back
 	camera.position.z = 300;
-	camera.rotation.z = 0 * (Math.PI / 180);
 
 	scene.add(camera);
 	
