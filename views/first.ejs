@@ -31,11 +31,11 @@ function init() {
 	var cameraHelper = new THREE.CameraHelper( camera );
 	camera.add( cameraHelper );
 	camera.rotation.z = Math.PI;
+	camera.position.z = 500;
 
 	var scene = new THREE.Scene();
 
 	// the camera starts at 0,0,0 so pull it back
-	camera.position.z = 300;
 
 	scene.add(camera);
 	
