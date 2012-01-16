@@ -11,10 +11,10 @@ function init() {
 		HEIGHT = 300;
 
 	// set some camera attributes
-	var VIEW_ANGLE = 45,
+	var VIEW_ANGLE = 60,
 		ASPECT = WIDTH / HEIGHT,
-		NEAR = 0.1,
-		FAR = 10000;
+		NEAR = 1,
+		FAR = 1000;
 
 	// get the DOM element to attach to
 	// - assume we've got jQuery to hand
@@ -62,6 +62,14 @@ function init() {
 
 	// add the sphere to the scene
 	scene.add(sphere);
+
+	// Plane
+	plane = new THREE.Mesh( new THREE.PlaneGeometry( 400, 400 ), new THREE.MeshBasicMaterial( { color: 0xe0e0e0 } ) );
+	plane.rotation.x = - 90 * ( Math.PI / 180 );
+	plane.overdraw = true;
+	scene.add( plane );
+
+
 
 	// create a point light
 	var pointLight = new THREE.PointLight( 0xFFFFFF );
