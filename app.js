@@ -18,7 +18,7 @@
     return response.render('cube');
   });
 
-  app.listen(3000);
+  app.listen(3003);
   io = io.listen(app);
   console.log("Express server started on port %s", app.address().port);
   

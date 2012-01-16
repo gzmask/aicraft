@@ -1,4 +1,4 @@
-\title{The A.I Craft Project}
+\title{The A.I Crater Project}
 \author{
 	Ray Shulang Lei\\
 	200253624\\
@@ -21,7 +21,7 @@ This is the proposed paper of a multiplayer cloud base livecoding A.I combating 
 \end{abstract}
 
 \section{Introduction}
-A.I craft is an online A.I combating game. Players use their livecoding skills to provide code in real time to control their A.I crafts, in order to beat the opposite players. The idea is inspired by the JAVA Robocode\cite{robocode01} project.
+A.I Crafter is an online A.I combating game. Players use their livecoding skills to provide code in real time to control their A.I crafts, in order to beat the opposite players. The idea is inspired by the JAVA Robocode\cite{robocode01} project.
 
 \section{Reasonale}
 In Noah Falstein's article "Natural Funativity"\cite{noah2004}, he described three types of hunters in a hunter-gatherer society. After three hunters have got enough haunch of antelope, enough to feed his family for a few days:\\
@@ -35,7 +35,7 @@ Aagh - goes right back out to code for more income, whether it is a contract job
 Bohg - will be chilling out, get more sleep, let the brain rest;\\
 Cragh - plays games at home to sharpen his development skills.\\ 
 \\
-Now, let us wait a second and rethink about what kind of games Cragh can use to improve his development skills. First person shooters? It only makes a better hunter. Strategy games and others? Maybe, but they are still not exactly related to coding. Thus we need a new genre of games: coding games. If Noah and Venkatesh are right, developers who plays coding games are more likely to spread their genes. And right here I have found the goal of making A.I Craft: to imporve the chance of spreading my genes. Therefore it makes perfect sense to put my best effort fulfilling it.
+Now, let us wait a second and rethink about what kind of games Cragh can use to improve his development skills. First person shooters? It only makes a better hunter. Strategy games and others? Maybe, but they are still not exactly related to coding. Thus we need a new genre of games: coding games. If Noah and Venkatesh are right, developers who plays coding games are more likely to spread their genes. And right here I have found the goal of making A.I Crafter: to imporve the chance of spreading my genes. Therefore it makes perfect sense to put my best effort fulfilling it.
 
 \section{Core Design}
 The basic idea is very similar to Robocode. Players provide A.I controlling code to tell their crafts what to do. The game engine provides 4 sets of controlling APIs such as move, search, aim and fire.
@@ -54,7 +54,7 @@ The server side will be back by NodeJS. Since users will be submitting javascrip
 5. Executing and storing game logic in real time\\
 
 \subsection{WebGL/Javascript in Browser}
-The client side part of A.I Craft will be back by Html5/WebGL in your browser.
+The client side part of A.I Crafter will be back by Html5/WebGL in your browser.
 The animation and physical calculation of the game will be in this part. Features included:\\
 \\
 1. Rendering the game scene, player crafts and other game objects\\
@@ -65,6 +65,8 @@ The animation and physical calculation of the game will be in this part. Feature
 \subsection{Database engine}
 The databases will be seperated as client and server sides. SQL is my first choice due to pass experience. NoSQL might be considered with further research. Basic idea is that game objects information stores at client side databases, and they sync with server side database once a while in a timely basis according to network performance.
 
+\section{Public Launch}
+I am curretnly aiming to launch this game online at www.aicrafter.com. However, one semester might not be enough time and this goal is optional within this semester time.
 
 \begin{thebibliography}{9}
 
