@@ -33,7 +33,6 @@ function init() {
 
 	// the camera starts at 0,0,0 so pull it back
 	camera.position.z = 300;
-	camera.up = new THREE.Vector3(1,1,0);
 
 	scene.add(camera);
 	
@@ -68,8 +67,6 @@ function init() {
 	//plane.rotation.x = - 90 * ( Math.PI / 180 );
 	plane.overdraw = true;
 	scene.add( plane );
-
-
 
 	// create a point light
 	var pointLight = new THREE.PointLight( 0xFFFFFF );
