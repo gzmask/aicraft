@@ -30,8 +30,8 @@ function init() {
 					   FAR );
 	var cameraHelper = new THREE.CameraHelper( camera );
 	camera.add( cameraHelper );
-	camera.rotation.x = 45 * (Math.PI/180);
-	camera.position.z = 200;
+	camera.rotation.x = -30 * (Math.PI/180);
+	camera.position.y = 50;
 
 	var scene = new THREE.Scene();
 
@@ -61,16 +61,14 @@ function init() {
 		segments,
 		rings),
 	sphereMaterial);
-	sphere.position.y = 300;
-	sphere.position.z = 50;
+	sphere.position.y = 50;
 
 	// add the sphere to the scene
 	scene.add(sphere);
 
 	// Plane
-	plane = new THREE.Mesh( new THREE.PlaneGeometry( 400, 400 ), new THREE.MeshBasicMaterial( { color: 0x4ccccc } ) );
-	//plane.rotation.x = - 90 * ( Math.PI / 180 );
-	plane.position.y = 300;
+	plane = new THREE.Mesh( new THREE.PlaneGeometry( 500, 500 ), new THREE.MeshBasicMaterial( { color: 0x4ccccc } ) );
+	plane.rotation.x = - 90 * ( Math.PI / 180 );
 	plane.overdraw = true;
 	scene.add( plane );
 
