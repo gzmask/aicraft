@@ -29,7 +29,8 @@ function init() {
 					   NEAR,
 					   FAR );
 	var cameraHelper = new THREE.CameraHelper( camera );
-	//camera.add( cameraHelper );
+	camera.add( cameraHelper );
+	camera.rotation.z = Math.PI;
 
 	var scene = new THREE.Scene();
 
