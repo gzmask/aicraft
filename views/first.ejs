@@ -30,9 +30,8 @@ function init() {
 					   FAR );
 	var cameraHelper = new THREE.CameraHelper( camera );
 	camera.add( cameraHelper );
-	//camera.rotation.z = -90 * (Math.PI/180);
+	camera.rotation.z = -90 * (Math.PI/180);
 	camera.position.z = 500;
-	camera.position.y = -100;
 
 	var scene = new THREE.Scene();
 
