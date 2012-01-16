@@ -33,6 +33,8 @@ function init() {
 
 	// the camera starts at 0,0,0 so pull it back
 	camera.position.z = 300;
+
+	scene.add(camera);
 	
 	// start the renderer
 	renderer.setSize(WIDTH, HEIGHT);
@@ -73,7 +75,7 @@ function init() {
 	scene.add(pointLight);
 
 	// draw!
-	renderer.render(scene, camera);
+	renderer.render(scene);
 	
 }
 
