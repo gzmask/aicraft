@@ -33,6 +33,12 @@ function init() {
 
 	// the camera starts at 0,0,0 so pull it back
 	camera.position.z = 300;
+	
+	// start the renderer
+	renderer.setSize(WIDTH, HEIGHT);
+
+	// attach the render-supplied DOM element
+	$container.append(renderer.domElement);
 
 	// set up the sphere vars
 	var radius = 50, segments = 16, rings = 16;
@@ -65,12 +71,6 @@ function init() {
 
 	// add to the scene
 	scene.add(pointLight);
-	
-	// start the renderer
-	renderer.setSize(WIDTH, HEIGHT);
-
-	// attach the render-supplied DOM element
-	$container.append(renderer.domElement);
 
 	// draw!
 	renderer.render(scene, camera);
