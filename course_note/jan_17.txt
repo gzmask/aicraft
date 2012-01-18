@@ -1,0 +1,3 @@
+Normal Vector = unit vector
+	a vector with length of one
+
