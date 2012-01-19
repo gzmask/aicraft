@@ -4,8 +4,8 @@
 
 <script>
 //global objects
-var ScreenWidth = window.innerWidth;
-var ScreenHeight = window.innerHeight;
+var ScreenWidth = window.innerWidth/2;
+var ScreenHeight = window.innerHeight/2;
 var VIEW_ANGLE = 70,
 	ASPECT = ScreenWidth / ScreenHeight,
 	NEAR = 1,
@@ -23,7 +23,7 @@ function init() {
 	// - assume we've got jQuery to hand
 	$container = $('#container');
 
-	var scene = new THREE.Scene();
+	scene = new THREE.Scene();
 
 	renderer = new THREE.WebGLRenderer({ antialias: true, clearColor: 0x000000, clearAlpha: 1 });
 	camera = new THREE.PerspectiveCamera(
@@ -83,13 +83,14 @@ function init() {
 
 	// add to the scene
 	scene.add(pointLight);
-	render();
 }
 
 function animate() {
 
 	requestAnimationFrame( animate );
 
+	plane.rotation.z += 0.01;
+	render();
 }
 
 function render() {
