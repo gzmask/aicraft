@@ -12,13 +12,23 @@ var VIEW_ANGLE = 70,
 	FAR = 1000;
 var camera, scene, renderer, $container, sphere, plane, pointLight;
 
-//ammo.js physics
-
-//three.js graphics
-init();
+init_three();
+init_ammo();
 animate();
 
-function init() {
+//ammo.js physics
+function init_ammo() {
+	var collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
+	var dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration);
+	var overlappingPairCache = new Ammo.btDbvtBroadphase();
+	var solver = new Ammo.btSequentialImpulseConstraintSolver();
+	var dynamicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
+	dynamicsWorld.setGravity(new Ammo.btVector3(0, -10, 0));
+}
+
+//three.js graphics
+
+function init_three() {
 	// get the DOM element to attach to
 	// - assume we've got jQuery to hand
 	$container = $('#container');
