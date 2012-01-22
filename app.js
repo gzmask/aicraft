@@ -18,8 +18,8 @@
     return response.render('first');
   });
 
-  app.get('/cube', function(request, response) {
-    return response.render('cube');
+  app.get('/game', function(request, response) {
+    return response.render('game/index');
   });
 
   app.listen(3003);
