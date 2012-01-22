@@ -3,11 +3,10 @@ Tasks:
 ============ To-Do:  ==============
 
 	Use Express and Tree.JS to reconstruct basic game loop
-	Use Ammo.JS or JigLibJS2 for physics
+	Use microphysics.JS for physics
+	Use gpl.internetconnection.net/vi/ for code ignitor 
 	Use Dnode to reconstruct and server/client communication
-	Use Prototype to define A.I entities
 	Use Stock.IO to handle network
-	Remove Player class for now
 
 ============ backlog ==============
 	
