@@ -2,9 +2,11 @@
 		var stats, scene, renderer;
 		var camera, cameraControl;
 
-
 		if( !init() ) {
-			animate();}
+			animate();
+		}
+
+		console.log(scene);
 
 		// init the scene
 		function init(){
@@ -20,6 +22,7 @@
 				return true;
 			}
 			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.shadowMapEnabled = true;
 			document.getElementById('container').appendChild(renderer.domElement);
 
 			stats = new Stats();
@@ -32,7 +35,7 @@
 
 			// put a camera in the scene
 			camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000 );
-			camera.position.set(0, 0, 5);
+			camera.position.set(0, 0, 100);
 			scene.add(camera);
 
 			// create a camera contol
@@ -44,16 +47,67 @@
 			THREEx.Screenshot.bindKey(renderer);
 			// allow 'f' to go fullscreen where this feature is supported
 			if( THREEx.FullScreen.available() ){
-				THREEx.FullScreen.bindKey();		
+				THREEx.FullScreen.bindKey();
 				document.getElementById('inlineDoc').innerHTML	+= "- <i>f</i> for fullscreen";
 			}
 
 			// here you add your objects
 			// - you will most likely replace this part by your own
-			var geometry	= new THREE.TorusGeometry( 1, 0.42 );
-			var material	= new THREE.MeshNormalMaterial();
-			var mesh	= new THREE.Mesh( geometry, material );
-			scene.add( mesh );
+
+			//construct a light
+			var light = new THREE.SpotLight();
+			light.position.set(170,330,-160);
+			light.castShadow = true;
+			scene.add(light);
+
+			//construct a ground
+			var groundGeo = new THREE.PlaneGeometry(400, 400, 10, 10);
+			var groundMat = new THREE.MeshLambertMaterial({color: 0xffffff});
+			var ground = new THREE.Mesh(groundGeo, groundMat);
+			ground.rotation.x = -Math.PI/2;
+			ground.position.y = -5;
+			ground.receiveShadow = true;
+			scene.add(ground);
+
+			//construct player1
+			var player1Geo = new THREE.CubeGeometry(5,5,5);
+			var player1Mat = new THREE.MeshLambertMaterial({color: 0xffffff});
+			var player1 = new THREE.Mesh(player1Geo, player1Mat);
+			player1.castShadow = true;
+			player1.receiveShadow = true;
+			player1.position.x = 100;
+			scene.add(player1);
+			//construct ai1
+			var ai1Geo = new THREE.CubeGeometry(5,5,5);
+			var ai1Mat = new THREE.MeshLambertMaterial({color: 0xffffff});
+			var ai1 = new THREE.Mesh(ai1Geo, ai1Mat);
+			ai1.castShadow = true;
+			ai1.receiveShadow = true;
+			ai1.position.x = 100;
+			ai1.position.z = -10;
+			scene.add(ai1);
+
+			//construct player2
+			var player2Geo = new THREE.CubeGeometry(5,5,5);
+			var player2Mat = new THREE.MeshLambertMaterial({color: 0xffffff});
+			var player2 = new THREE.Mesh(player2Geo, player2Mat);
+			player2.castShadow = true;
+			player2.receiveShadow = true;
+			player2.position.x = -100;
+			scene.add(player2);
+			//construct ai2
+			var ai2Geo = new THREE.CubeGeometry(5,5,5);
+			var ai2Mat = new THREE.MeshLambertMaterial({color: 0xffffff});
+			var ai2 = new THREE.Mesh(ai2Geo, ai2Mat);
+			ai2.castShadow = true;
+			ai2.receiveShadow = true;
+			ai2.position.x = -100;
+			ai2.position.z = -10;
+			scene.add(ai2);
+
+			//construct a coordinate helper
+			coordHelper(scene);
+
 		}
 
 		// animation loop
@@ -79,5 +133,49 @@
 
 			// actually render the scene
 			renderer.render( scene, camera );
+		}
+
+		//helper function to show coordinate
+		function coordHelper(scene) {
+			//draw coords
+			var coordGeo = new THREE.Geometry();
+			coordGeo.vertices.push (
+				v(-200,0,0), v(200,0,0),/*x coord*/
+				v(0,-200,0), v(0,200,0),/*y coord*/
+				v(0,0,-200), v(0,0,200),/*z coord*/
+				v(200,1,0), v(200,-1,0),/*x units*/
+				v(150,1,0), v(150,-1,0),
+				v(100,1,0), v(100,-1,0),
+				v(50,1,0), v(50,-1,0),
+				v(-50,1,0), v(-50,-1,0),
+				v(-100,1,0), v(-100,-1,0),
+				v(-150,1,0), v(-150,-1,0),
+				v(-200,1,0), v(-200,-1,0),
+				v(1,200,0), v(-1,200,0),/*y units*/
+				v(1,150,0), v(-1,150,0),
+				v(1,100,0), v(-1,100,0),
+				v(1,50,0), v(-1,50,0),
+				v(1,-50,0), v(-1,-50,0),
+				v(1,-100,0), v(-1,-100,0),
+				v(1,-150,0), v(-1,-150,0),
+				v(1,-200,0), v(-1,-200,0),
+				v(0,1,200), v(0,-1,200),/*z units*/
+				v(0,1,150), v(0,-1,150),
+				v(0,1,100), v(0,-1,100),
+				v(0,1,50), v(0,-1,50),
+				v(0,1,-50), v(0,-1,-50),
+				v(0,1,-100), v(0,-1,-100),
+				v(0,1,-150), v(0,-1,-150),
+				v(0,1,-200), v(0,-1,-200)
+			);
+			var coordMat = new THREE.LineBasicMaterial({color: 0x000000, lineWidth:1});
+			var coord = new THREE.Line(coordGeo, coordMat);
+			coord.type = THREE.Lines;
+			scene.add(coord);
+		}
+
+		//vertex maker
+		function v(x,y,z) {
+			return new THREE.Vertex(new THREE.Vector3(x,y,z));
 		}
 	</script>
