@@ -14,10 +14,6 @@
     return response.render('index');
   });
 
-  app.get('/first', function(request, response) {
-    return response.render('first');
-  });
-
   app.get('/game', function(request, response) {
     return response.render('game/index');
   });

@@ -1,4 +1,4 @@
-//this is object binding
+//this is a demo to object property lazy binding
 var a= function bar () {
 	this.mother = 1;
 }

@@ -35,7 +35,7 @@
 
 			// put a camera in the scene
 			camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000 );
-			camera.position.set(0, 0, 100);
+			camera.position.set(0, 0, 200);
 			scene.add(camera);
 
 			// create a camera contol
@@ -76,6 +76,8 @@
 			player1.castShadow = true;
 			player1.receiveShadow = true;
 			player1.position.x = 100;
+			player1.position.y = -2.5;
+			player1.position.z = 5;
 			scene.add(player1);
 			//construct ai1
 			var ai1Geo = new THREE.CubeGeometry(5,5,5);
@@ -84,7 +86,8 @@
 			ai1.castShadow = true;
 			ai1.receiveShadow = true;
 			ai1.position.x = 100;
-			ai1.position.z = -10;
+			ai1.position.y = -2.5;
+			ai1.position.z = -5;
 			scene.add(ai1);
 
 			//construct player2
@@ -94,6 +97,8 @@
 			player2.castShadow = true;
 			player2.receiveShadow = true;
 			player2.position.x = -100;
+			player2.position.y = -2.5;
+			player2.position.z = 5;
 			scene.add(player2);
 			//construct ai2
 			var ai2Geo = new THREE.CubeGeometry(5,5,5);
@@ -102,7 +107,8 @@
 			ai2.castShadow = true;
 			ai2.receiveShadow = true;
 			ai2.position.x = -100;
-			ai2.position.z = -10;
+			ai2.position.y = -2.5;
+			ai2.position.z = -5;
 			scene.add(ai2);
 
 			//construct a coordinate helper
