@@ -1,6 +1,7 @@
 	<script type="text/javascript">
 		var stats, scene, renderer;
 		var camera, cameraControl;
+		var microphysics;
 
 		if( !init() ) {
 			animate();
@@ -32,6 +33,12 @@
 
 			// create a scene
 			scene = new THREE.Scene();
+
+			//start microphysics
+			microphysics = new THREEx.Microphysics({
+				timeStep : 1/180
+			});
+			microphysics.start();
 
 			// put a camera in the scene
 			camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000 );
