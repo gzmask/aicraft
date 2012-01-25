@@ -67,13 +67,14 @@
 
 			//construct a ground
 			var groundGeo = new THREE.PlaneGeometry(400, 400, 10, 10);
+			//var groundGeo = new THREE.CubeGeometry(400, 400, 0.1);
 			var groundMat = new THREE.MeshLambertMaterial({color: 0xffffff});
 			var ground = new THREE.Mesh(groundGeo, groundMat);
 			ground.rotation.x = -Math.PI/2;
 			ground.position.y = -5;
 			ground.receiveShadow = true;
 			microphysics.bindMesh(ground, {
-				geometry : new THREE.CubeGeometry(400, 400, 1),
+				geometry : new THREE.CubeGeometry(400, 400, 0.1),
 				physics : { 
 					restitution : 1.3 
 				}
