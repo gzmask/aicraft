@@ -79,18 +79,19 @@
 					restitution : 1.3 
 				}
 			});
-			microphysics.body(ground).static = true;
+			microphysics.body(ground).dynamic = false;
 			scene.add(ground);
 
 			//gravity
 			var gravity = new vphy.LinearAccelerator({
 				x : 0,
-				y : -9.8*250,
+				y : -9.8,
 				z : 0
 			});
 			microphysics.world().add(gravity);
 
 			//construct player1
+			//var player1Geo = new THREE.SphereGeometry(5,5,5);
 			var player1Geo = new THREE.CubeGeometry(5,5,5);
 			var player1Mat = new THREE.MeshLambertMaterial({color: 0xffffff});
 			var player1 = new THREE.Mesh(player1Geo, player1Mat);
@@ -108,6 +109,7 @@
 			scene.add(player1);
 			//construct ai1
 			var ai1Geo = new THREE.CubeGeometry(5,5,5);
+			//var ai1Geo = new THREE.SphereGeometry(20,5,5);
 			var ai1Mat = new THREE.MeshLambertMaterial({color: 0xffffff});
 			var ai1 = new THREE.Mesh(ai1Geo, ai1Mat);
 			ai1.castShadow = true;
