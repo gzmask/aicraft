@@ -1,0 +1,18 @@
+Mesh and Textures
+	Mesh - geometric mesh
+		 - collection of polygons(almost always triangles)
+			- look at how the surface of a simulated object can be represented as a set of triangles.
+			- triangle strips
+			- cube: 6 faces => 12 triangles
+				- unfold the cube to two continue triangle strips
+	Tetrahedron Example
+		4 triangles
+	Winding Orders for triangle strips
+		clockwise order
+			cw, ccw, cw, ...
+		counter clockwise order(OpenGL) 
+			ccw, cw, ccw, ...
+	If we put texture on both sides, the winding order doesn't matter
+	Surface normal vector
+	Vectices indexing saves GPU transmition load
+	UV coordinate

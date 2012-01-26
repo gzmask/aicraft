@@ -2,7 +2,7 @@ Tasks:
 
 =========== To-Do:  ==============
 
-	Add microphysics. Figure out how to set object as static and dynamic by playing with demos.
+	use vphy instead of microphysics.
 	Construct two more boxes to represent players, add control to these boxes
 	Use microphysics.JS for physics
 	Use gpl.internetconnection.net/vi/ for code emittor 
@@ -11,6 +11,7 @@ Tasks:
 
 ============ backlog ==============
 	
+	Add microphysics. Figure out how to set object as static and dynamic by playing with demos.
 
 ============== done ===============
 
