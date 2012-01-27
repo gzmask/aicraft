@@ -1,8 +1,7 @@
 	<script type="text/javascript">
 		var stats, scene, renderer;
 		var camera, cameraControl;
-		var world;
-		//var microphysics;
+		var player1, player2, ai1, ai2, ground;
 
 		if( !init() ) {
 			animate();
@@ -33,7 +32,7 @@
 			// create a scene
 			scene = new THREE.Scene();
 
-			//start microphysics
+			//start physics
 			/*microphysics = new THREEx.Microphysics({
 				timeStep : 1/60
 			});
@@ -67,18 +66,13 @@
 			scene.add(light);
 
 			//gravity
-			var gravity = new vphy.LinearAccelerator({
-				x : 0,
-				y : -9.8,
-				z : 0
-			});
 			//microphysics.world().add(gravity);
 
 			//construct a ground
 			var groundGeo = new THREE.PlaneGeometry(400, 400, 10, 10);
 			//var groundGeo = new THREE.CubeGeometry(400, 400, 400);
 			var groundMat = new THREE.MeshLambertMaterial({color: 0xffffff});
-			var ground = new THREE.Mesh(groundGeo, groundMat);
+			ground = new THREE.Mesh(groundGeo, groundMat);
 			ground.rotation.x = -Math.PI/2;
 			ground.position.y = -5;
 			ground.receiveShadow = true;
@@ -98,7 +92,7 @@
 			//var player1Geo = new THREE.SphereGeometry(5,5,5);
 			var player1Geo = new THREE.CubeGeometry(5,5,5);
 			var player1Mat = new THREE.MeshLambertMaterial({color: 0xffffff});
-			var player1 = new THREE.Mesh(player1Geo, player1Mat);
+			player1 = new THREE.Mesh(player1Geo, player1Mat);
 			player1.castShadow = true;
 			player1.receiveShadow = true;
 			player1.position.x = 100;
@@ -115,7 +109,7 @@
 			var ai1Geo = new THREE.CubeGeometry(5,5,5);
 			//var ai1Geo = new THREE.SphereGeometry(20,5,5);
 			var ai1Mat = new THREE.MeshLambertMaterial({color: 0xffffff});
-			var ai1 = new THREE.Mesh(ai1Geo, ai1Mat);
+			ai1 = new THREE.Mesh(ai1Geo, ai1Mat);
 			ai1.castShadow = true;
 			ai1.receiveShadow = true;
 			ai1.position.x = 100;
@@ -132,7 +126,7 @@
 			//construct player2
 			var player2Geo = new THREE.CubeGeometry(5,5,5);
 			var player2Mat = new THREE.MeshLambertMaterial({color: 0xffffff});
-			var player2 = new THREE.Mesh(player2Geo, player2Mat);
+			player2 = new THREE.Mesh(player2Geo, player2Mat);
 			player2.castShadow = true;
 			player2.receiveShadow = true;
 			player2.position.x = -100;
@@ -148,7 +142,7 @@
 			//construct ai2
 			var ai2Geo = new THREE.CubeGeometry(5,5,5);
 			var ai2Mat = new THREE.MeshLambertMaterial({color: 0xffffff});
-			var ai2 = new THREE.Mesh(ai2Geo, ai2Mat);
+			ai2 = new THREE.Mesh(ai2Geo, ai2Mat);
 			ai2.castShadow = true;
 			ai2.receiveShadow = true;
 			ai2.position.x = -100;
