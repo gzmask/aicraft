@@ -2,6 +2,7 @@
 		var stats, scene, renderer;
 		var camera, cameraControl;
 		var player1, player2, ai1, ai2, ground;
+		var dynamicsWorld;
 
 		if( !init() ) {
 			animate();
@@ -33,10 +34,13 @@
 			scene = new THREE.Scene();
 
 			//start physics
-			/*microphysics = new THREEx.Microphysics({
-				timeStep : 1/60
-			});
-			microphysics.start();*/
+			var collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
+			var dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration);
+			var overlappingPairCache = new Ammo.btDbvtBroadphase();
+			var solver = new Ammo.btSequentialImpulseConstraintSolver();
+			dynamicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
+			dynamicsWorld.setGravity(new Ammo.btVector3(0,-10,0));
+			dynamicsWorld.bodies = [];
 
 			// put a camera in the scene
 			camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000 );
@@ -65,9 +69,6 @@
 			light.castShadow = true;
 			scene.add(light);
 
-			//gravity
-			//microphysics.world().add(gravity);
-
 			//construct a ground
 			var groundGeo = new THREE.PlaneGeometry(400, 400, 10, 10);
 			//var groundGeo = new THREE.CubeGeometry(400, 400, 400);
@@ -76,16 +77,26 @@
 			ground.rotation.x = -Math.PI/2;
 			ground.position.y = -5;
 			ground.receiveShadow = true;
-			/*microphysics.bindMesh(ground, {
-				geometry : new THREE.CubeGeometry(400, 400, 400),
-				physics : { 
-					restitution : 1.3 
-				}
-			});*/
-			//microphysics.body(ground).dynamic = false;
-			//microphysics.body(ground).static = true;
-			//microphysics.body(ground).static;
 			scene.add(ground);
+			//ammo part
+			ground.ammo = new Object();
+			ground.ammo.btBoxShape = new Ammo.btBoxShape(new Ammo.btVector3(400, 0.1, 400));
+			ground.ammo.btTransform = new Ammo.btTransform();
+			ground.ammo.btTransform.setIdentity();
+			ground.ammo.btTransform.setOrigin(new Ammo.btVector3(0,-5,0));
+			(function() {
+				var mass = 0;
+				var isDynamic = mass !== 0;
+				var localInertia = new Ammo.btVector3(0, 0, 0);
+
+				if (isDynamic) {
+					ground.ammo.btBoxShape.calculateLocalInertia(mass, localInertia);}
+				var myMotionState = new Ammo.btDefaultMotionState(ground.ammo.btTransform);
+				var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, ground.ammo.btBoxShape, localInertia);
+				ground.ammo.body = new Ammo.btRigidBody(rbInfo);
+				dynamicsWorld.addRigidBody(ground.ammo.body);
+				dynamicsWorld.bodies.push(ground.ammo.body);
+			})();
 
 
 			//construct player1
