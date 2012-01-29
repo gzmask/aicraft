@@ -41,6 +41,7 @@
 			dynamicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 			dynamicsWorld.setGravity(new Ammo.btVector3(0,-10,0));
 			dynamicsWorld.bodies = [];
+			dynamicsWorld.trans = new Ammo.btTransform();
 
 			// put a camera in the scene
 			camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000 );
@@ -70,37 +71,35 @@
 			scene.add(light);
 
 			//construct a ground
-			var groundGeo = new THREE.PlaneGeometry(400, 400, 10, 10);
-			//var groundGeo = new THREE.CubeGeometry(400, 400, 400);
+			//var groundGeo = new THREE.PlaneGeometry(400, 400, 10, 10);
+			var groundGeo = new THREE.CubeGeometry(400, 0.1, 400);
 			var groundMat = new THREE.MeshLambertMaterial({color: 0xffffff});
 			ground = new THREE.Mesh(groundGeo, groundMat);
-			ground.rotation.x = -Math.PI/2;
+			//ground.rotation.x = -Math.PI/2;
 			ground.position.y = -5;
 			ground.receiveShadow = true;
 			scene.add(ground);
 			//ammo part
-			ground.ammo = new Object();
-			ground.ammo.btBoxShape = new Ammo.btBoxShape(new Ammo.btVector3(400, 0.1, 400));
-			ground.ammo.btTransform = new Ammo.btTransform();
-			ground.ammo.btTransform.setIdentity();
-			ground.ammo.btTransform.setOrigin(new Ammo.btVector3(0,-5,0));
 			(function() {
+				var groundShape = new Ammo.btBoxShape(new Ammo.btVector3(400, 0.1, 400));
+				var groundTransform = new Ammo.btTransform();
+				groundTransform.setIdentity();
+				groundTransform.setOrigin(new Ammo.btVector3(0,-7.5,0));
 				var mass = 0;
-				var isDynamic = mass !== 0;
+				var isDynamic = (mass != 0);
 				var localInertia = new Ammo.btVector3(0, 0, 0);
 
 				if (isDynamic) {
-					ground.ammo.btBoxShape.calculateLocalInertia(mass, localInertia);}
-				var myMotionState = new Ammo.btDefaultMotionState(ground.ammo.btTransform);
-				var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, ground.ammo.btBoxShape, localInertia);
-				ground.ammo.body = new Ammo.btRigidBody(rbInfo);
-				dynamicsWorld.addRigidBody(ground.ammo.body);
-				dynamicsWorld.bodies.push(ground.ammo.body);
+					groundShape.calculateLocalInertia(mass, localInertia);}
+				var myMotionState = new Ammo.btDefaultMotionState(groundTransform);
+				var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, groundShape, localInertia);
+				ground.phybody = new Ammo.btRigidBody(rbInfo);
+				dynamicsWorld.addRigidBody(ground.phybody);
+				dynamicsWorld.bodies.push(ground.phybody);
 			})();
 
 
 			//construct player1
-			//var player1Geo = new THREE.SphereGeometry(5,5,5);
 			var player1Geo = new THREE.CubeGeometry(5,5,5);
 			var player1Mat = new THREE.MeshLambertMaterial({color: 0xffffff});
 			player1 = new THREE.Mesh(player1Geo, player1Mat);
@@ -110,6 +109,23 @@
 			player1.position.y = 5;
 			player1.position.z = 5;
 			scene.add(player1);
+			//ammo part
+			(function() {
+				var player1Shape = new Ammo.btBoxShape(new Ammo.btVector3(player1.position.x,player1.position.y,player1.position.z));
+				var player1Transform = new Ammo.btTransform();	
+				player1Transform.setIdentity();
+				player1Transform.setOrigin(new Ammo.btVector3(player1.position.x,player1.position.y,player1.position.z));
+				var mass = 1;
+				var isDynamic = (mass != 0);
+				var localInertia = new Ammo.btVector3(0,0,0);
+				if (isDynamic) {
+					player1Shape.calculateLocalInertia(mass,localInertia);}
+				var myMotionState = new Ammo.btDefaultMotionState(player1Transform);
+				var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, player1Shape, localInertia);
+				player1.phybody = new Ammo.btRigidBody(rbInfo);
+				dynamicsWorld.addRigidBody(player1.phybody);
+				dynamicsWorld.bodies.push(player1.phybody);
+			})();
 			//construct ai1
 			var ai1Geo = new THREE.CubeGeometry(5,5,5);
 			var ai1Mat = new THREE.MeshLambertMaterial({color: 0xffffff});
@@ -173,6 +189,16 @@
 			// - see details at http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
 			requestAnimationFrame( animate );
 
+			// update physics
+			dynamicsWorld.stepSimulation(1/40, 10);
+			dynamicsWorld.bodies.forEach(function(body) {
+				if (body.getMotionState()) {
+					body.getMotionState().getWorldTransform(dynamicsWorld.trans);
+					player1.position.x = dynamicsWorld.trans.getOrigin().x().toFixed(2);
+					player1.position.y = dynamicsWorld.trans.getOrigin().y().toFixed(2);
+					player1.position.z = dynamicsWorld.trans.getOrigin().z().toFixed(2);
+				}
+			});
 			// do the render
 			render();
 
@@ -185,9 +211,6 @@
 
 			// update camera controls
 			cameraControls.update();
-
-			// update physics
-			//microphysics.update();
 
 			// actually render the scene
 			renderer.render( scene, camera );
