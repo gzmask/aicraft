@@ -39,9 +39,9 @@
 			var overlappingPairCache = new Ammo.btDbvtBroadphase();
 			var solver = new Ammo.btSequentialImpulseConstraintSolver();
 			dynamicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
-			dynamicsWorld.setGravity(new Ammo.btVector3(0,-10,0));
-			dynamicsWorld.bodies = [];
+			dynamicsWorld.setGravity(new Ammo.btVector3(0,-9.82,0));
 			dynamicsWorld.trans = new Ammo.btTransform();
+			dynamicsWorld.trans.setIdentity();
 
 			// put a camera in the scene
 			camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000 );
@@ -95,7 +95,6 @@
 				var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, groundShape, localInertia);
 				ground.phybody = new Ammo.btRigidBody(rbInfo);
 				dynamicsWorld.addRigidBody(ground.phybody);
-				dynamicsWorld.bodies.push(ground.phybody);
 			})();
 
 
@@ -106,15 +105,17 @@
 			player1.castShadow = true;
 			player1.receiveShadow = true;
 			player1.position.x = 100;
-			player1.position.y = 5;
+			player1.position.y = 125;
 			player1.position.z = 5;
 			scene.add(player1);
 			//ammo part
 			(function() {
-				var player1Shape = new Ammo.btBoxShape(new Ammo.btVector3(player1.position.x,player1.position.y,player1.position.z));
+				var player1Shape = new Ammo.btBoxShape(new Ammo.btVector3(5,5,5));
 				var player1Transform = new Ammo.btTransform();	
 				player1Transform.setIdentity();
-				player1Transform.setOrigin(new Ammo.btVector3(player1.position.x,player1.position.y,player1.position.z));
+				player1Transform.setOrigin(new Ammo.btVector3(player1.position.x,
+					player1.position.y,
+					player1.position.z));
 				var mass = 1;
 				var isDynamic = (mass != 0);
 				var localInertia = new Ammo.btVector3(0,0,0);
@@ -124,7 +125,6 @@
 				var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, player1Shape, localInertia);
 				player1.phybody = new Ammo.btRigidBody(rbInfo);
 				dynamicsWorld.addRigidBody(player1.phybody);
-				dynamicsWorld.bodies.push(player1.phybody);
 			})();
 			//construct ai1
 			var ai1Geo = new THREE.CubeGeometry(5,5,5);
@@ -142,6 +142,24 @@
 			});*/
 			//microphysics.body(ai1).dynamic = true;
 			scene.add(ai1);
+			//ammo part
+			(function() {
+				var ai1Shape = new Ammo.btBoxShape(new Ammo.btVector3(5,5,5));
+				var ai1Transform = new Ammo.btTransform();	
+				ai1Transform.setIdentity();
+				ai1Transform.setOrigin(new Ammo.btVector3(ai1.position.x,
+					ai1.position.y,
+					ai1.position.z));
+				var mass = 1;
+				var isDynamic = (mass != 0);
+				var localInertia = new Ammo.btVector3(0,0,0);
+				if (isDynamic) {
+					ai1Shape.calculateLocalInertia(mass,localInertia);}
+				var myMotionState = new Ammo.btDefaultMotionState(ai1Transform);
+				var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, ai1Shape, localInertia);
+				ai1.phybody = new Ammo.btRigidBody(rbInfo);
+				dynamicsWorld.addRigidBody(ai1.phybody);
+			})();
 
 			//construct player2
 			var player2Geo = new THREE.CubeGeometry(5,5,5);
@@ -190,15 +208,19 @@
 			requestAnimationFrame( animate );
 
 			// update physics
-			dynamicsWorld.stepSimulation(1/40, 10);
-			dynamicsWorld.bodies.forEach(function(body) {
-				if (body.getMotionState()) {
-					body.getMotionState().getWorldTransform(dynamicsWorld.trans);
-					player1.position.x = dynamicsWorld.trans.getOrigin().x().toFixed(2);
-					player1.position.y = dynamicsWorld.trans.getOrigin().y().toFixed(2);
-					player1.position.z = dynamicsWorld.trans.getOrigin().z().toFixed(2);
-				}
-			});
+			dynamicsWorld.stepSimulation(1/60, 10);
+			if (player1.phybody.getMotionState()) {
+				player1.phybody.getMotionState().getWorldTransform(dynamicsWorld.trans);
+				player1.position.x = dynamicsWorld.trans.getOrigin().x().toFixed(2);
+				player1.position.y = dynamicsWorld.trans.getOrigin().y().toFixed(2);
+				player1.position.z = dynamicsWorld.trans.getOrigin().z().toFixed(2);
+			}
+			if (ai1.phybody.getMotionState()) {
+				ai1.phybody.getMotionState().getWorldTransform(dynamicsWorld.trans);
+				ai1.position.x = dynamicsWorld.trans.getOrigin().x().toFixed(2);
+				ai1.position.y = dynamicsWorld.trans.getOrigin().y().toFixed(2);
+				ai1.position.z = dynamicsWorld.trans.getOrigin().z().toFixed(2);
+			}
 			// do the render
 			render();
 
