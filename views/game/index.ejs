@@ -109,16 +109,9 @@
 			player1.position.x = 100;
 			player1.position.y = 5;
 			player1.position.z = 5;
-			/*microphysics.bindMesh(player1, {
-				physics : { 
-					restitution : 0.6 
-				}
-			});*/
-			//microphysics.body(player1).dynamic = true;
 			scene.add(player1);
 			//construct ai1
 			var ai1Geo = new THREE.CubeGeometry(5,5,5);
-			//var ai1Geo = new THREE.SphereGeometry(20,5,5);
 			var ai1Mat = new THREE.MeshLambertMaterial({color: 0xffffff});
 			ai1 = new THREE.Mesh(ai1Geo, ai1Mat);
 			ai1.castShadow = true;
