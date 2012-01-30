@@ -107,6 +107,9 @@
 			player1.position.x = 100;
 			player1.position.y = 125;
 			player1.position.z = 5;
+			player1.useQuaternion = true;
+			player1.quaternion.setFromEuler(new THREE.Vector3(-30, 20, 0));
+			console.log(player1.quaternion);
 			scene.add(player1);
 			//ammo part
 			(function() {
@@ -116,6 +119,12 @@
 				player1Transform.setOrigin(new Ammo.btVector3(player1.position.x,
 					player1.position.y,
 					player1.position.z));
+				player1Transform.setRotation(new Ammo.btQuaternion(
+					player1.quaternion.x,
+					player1.quaternion.y,
+					player1.quaternion.z,
+					player1.quaternion.w
+				));
 				var mass = 1;
 				var isDynamic = (mass != 0);
 				var localInertia = new Ammo.btVector3(0,0,0);
@@ -208,12 +217,16 @@
 			requestAnimationFrame( animate );
 
 			// update physics
-			dynamicsWorld.stepSimulation(1/60, 10);
+			dynamicsWorld.stepSimulation(1/30, 10);
 			if (player1.phybody.getMotionState()) {
 				player1.phybody.getMotionState().getWorldTransform(dynamicsWorld.trans);
 				player1.position.x = dynamicsWorld.trans.getOrigin().x().toFixed(2);
 				player1.position.y = dynamicsWorld.trans.getOrigin().y().toFixed(2);
 				player1.position.z = dynamicsWorld.trans.getOrigin().z().toFixed(2);
+				player1.quaternion.x = dynamicsWorld.trans.getRotation().x();
+				player1.quaternion.y = dynamicsWorld.trans.getRotation().y();
+				player1.quaternion.z = dynamicsWorld.trans.getRotation().z();
+				player1.quaternion.w = dynamicsWorld.trans.getRotation().w();
 			}
 			if (ai1.phybody.getMotionState()) {
 				ai1.phybody.getMotionState().getWorldTransform(dynamicsWorld.trans);
