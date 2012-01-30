@@ -1,8 +1,13 @@
 	<script type="text/javascript">
 		var stats, scene, renderer;
 		var camera, cameraControl;
-		var player1, player2, ai1, ai2, ground;
+		var ground;
 		var dynamicsWorld;
+
+		var player1 = new AICRAFT.GameObject();
+		var ai1 = new AICRAFT.GameObject();
+		var player2 = new AICRAFT.GameObject();
+		var ai2 = new AICRAFT.GameObject();
 
 		if( !init() ) {
 			animate();
@@ -99,109 +104,44 @@
 
 
 			//construct player1
-			var player1Geo = new THREE.CubeGeometry(5,5,5);
-			var player1Mat = new THREE.MeshLambertMaterial({color: 0xffffff});
-			player1 = new THREE.Mesh(player1Geo, player1Mat);
-			player1.castShadow = true;
-			player1.receiveShadow = true;
+			player1.buildMesh();
 			player1.position.x = 100;
 			player1.position.y = 125;
 			player1.position.z = 5;
-			player1.useQuaternion = true;
 			player1.quaternion.setFromEuler(new THREE.Vector3(-30, 20, 0));
-			console.log(player1.quaternion);
-			scene.add(player1);
-			//ammo part
-			(function() {
-				var player1Shape = new Ammo.btBoxShape(new Ammo.btVector3(5,5,5));
-				var player1Transform = new Ammo.btTransform();	
-				player1Transform.setIdentity();
-				player1Transform.setOrigin(new Ammo.btVector3(player1.position.x,
-					player1.position.y,
-					player1.position.z));
-				player1Transform.setRotation(new Ammo.btQuaternion(
-					player1.quaternion.x,
-					player1.quaternion.y,
-					player1.quaternion.z,
-					player1.quaternion.w
-				));
-				var mass = 1;
-				var isDynamic = (mass != 0);
-				var localInertia = new Ammo.btVector3(0,0,0);
-				if (isDynamic) {
-					player1Shape.calculateLocalInertia(mass,localInertia);}
-				var myMotionState = new Ammo.btDefaultMotionState(player1Transform);
-				var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, player1Shape, localInertia);
-				player1.phybody = new Ammo.btRigidBody(rbInfo);
-				dynamicsWorld.addRigidBody(player1.phybody);
-			})();
+			scene.add(player1.mesh);
+			player1.buildPhysic();
+			dynamicsWorld.addRigidBody(player1.phybody);
+			
 			//construct ai1
-			var ai1Geo = new THREE.CubeGeometry(5,5,5);
-			var ai1Mat = new THREE.MeshLambertMaterial({color: 0xffffff});
-			ai1 = new THREE.Mesh(ai1Geo, ai1Mat);
-			ai1.castShadow = true;
-			ai1.receiveShadow = true;
+			ai1.buildMesh();
 			ai1.position.x = 100;
 			ai1.position.y = 5;
 			ai1.position.z = -5;
-			/*microphysics.bindMesh(ai1, {
-				physics : { 
-					restitution : 0.6 
-				}
-			});*/
-			//microphysics.body(ai1).dynamic = true;
-			scene.add(ai1);
-			//ammo part
-			(function() {
-				var ai1Shape = new Ammo.btBoxShape(new Ammo.btVector3(5,5,5));
-				var ai1Transform = new Ammo.btTransform();	
-				ai1Transform.setIdentity();
-				ai1Transform.setOrigin(new Ammo.btVector3(ai1.position.x,
-					ai1.position.y,
-					ai1.position.z));
-				var mass = 1;
-				var isDynamic = (mass != 0);
-				var localInertia = new Ammo.btVector3(0,0,0);
-				if (isDynamic) {
-					ai1Shape.calculateLocalInertia(mass,localInertia);}
-				var myMotionState = new Ammo.btDefaultMotionState(ai1Transform);
-				var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, ai1Shape, localInertia);
-				ai1.phybody = new Ammo.btRigidBody(rbInfo);
-				dynamicsWorld.addRigidBody(ai1.phybody);
-			})();
+			ai1.quaternion.setFromEuler(new THREE.Vector3(-30, 20, 0));
+			scene.add(ai1.mesh);
+			ai1.buildPhysic();
+			dynamicsWorld.addRigidBody(ai1.phybody);
 
 			//construct player2
-			var player2Geo = new THREE.CubeGeometry(5,5,5);
-			var player2Mat = new THREE.MeshLambertMaterial({color: 0xffffff});
-			player2 = new THREE.Mesh(player2Geo, player2Mat);
-			player2.castShadow = true;
-			player2.receiveShadow = true;
+			player2.buildMesh();
 			player2.position.x = -100;
 			player2.position.y = 5;
 			player2.position.z = 5;
-			/*microphysics.bindMesh(player2, {
-				physics : { 
-					restitution : 0.6 
-				}
-			});*/
-			//microphysics.body(player2).dynamic = true;
-			scene.add(player2);
+			player2.quaternion.setFromEuler(new THREE.Vector3(-30, 20, 0));
+			scene.add(player2.mesh);
+			player2.buildPhysic();
+			dynamicsWorld.addRigidBody(player2.phybody);
+
 			//construct ai2
-			var ai2Geo = new THREE.CubeGeometry(5,5,5);
-			var ai2Mat = new THREE.MeshLambertMaterial({color: 0xffffff});
-			ai2 = new THREE.Mesh(ai2Geo, ai2Mat);
-			ai2.castShadow = true;
-			ai2.receiveShadow = true;
+			ai2.buildMesh();
 			ai2.position.x = -100;
-			ai2.position.y = 5;
+			ai2.position.y = 25;
 			ai2.position.z = -5;
-			/*microphysics.bindMesh(ai2, {
-				physics : { 
-					restitution : 0.6 
-				}
-			});*/
-			//microphysics.body(ai2).dynamic = true;
-			scene.add(ai2);
+			ai2.quaternion.setFromEuler(new THREE.Vector3(-30, 20, 0));
+			scene.add(ai2.mesh);
+			ai2.buildPhysic();
+			dynamicsWorld.addRigidBody(ai2.phybody);
 
 			//construct a coordinate helper
 			coordHelper(scene);
@@ -218,22 +158,11 @@
 
 			// update physics
 			dynamicsWorld.stepSimulation(1/30, 10);
-			if (player1.phybody.getMotionState()) {
-				player1.phybody.getMotionState().getWorldTransform(dynamicsWorld.trans);
-				player1.position.x = dynamicsWorld.trans.getOrigin().x().toFixed(2);
-				player1.position.y = dynamicsWorld.trans.getOrigin().y().toFixed(2);
-				player1.position.z = dynamicsWorld.trans.getOrigin().z().toFixed(2);
-				player1.quaternion.x = dynamicsWorld.trans.getRotation().x();
-				player1.quaternion.y = dynamicsWorld.trans.getRotation().y();
-				player1.quaternion.z = dynamicsWorld.trans.getRotation().z();
-				player1.quaternion.w = dynamicsWorld.trans.getRotation().w();
-			}
-			if (ai1.phybody.getMotionState()) {
-				ai1.phybody.getMotionState().getWorldTransform(dynamicsWorld.trans);
-				ai1.position.x = dynamicsWorld.trans.getOrigin().x().toFixed(2);
-				ai1.position.y = dynamicsWorld.trans.getOrigin().y().toFixed(2);
-				ai1.position.z = dynamicsWorld.trans.getOrigin().z().toFixed(2);
-			}
+			player1.physicUpdate(dynamicsWorld);
+			ai1.physicUpdate(dynamicsWorld);
+			player2.physicUpdate(dynamicsWorld);
+			ai2.physicUpdate(dynamicsWorld);
+
 			// do the render
 			render();
 
