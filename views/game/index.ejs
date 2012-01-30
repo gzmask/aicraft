@@ -76,11 +76,11 @@
 			scene.add(light);
 
 			//construct a ground
-			//var groundGeo = new THREE.PlaneGeometry(400, 400, 10, 10);
-			var groundGeo = new THREE.CubeGeometry(400, 0.1, 400);
+			var groundGeo = new THREE.PlaneGeometry(400, 400, 10, 10);
+			//var groundGeo = new THREE.CubeGeometry(400, 0.1, 400);
 			var groundMat = new THREE.MeshLambertMaterial({color: 0xffffff});
 			ground = new THREE.Mesh(groundGeo, groundMat);
-			//ground.rotation.x = -Math.PI/2;
+			ground.rotation.x = -Math.PI/2;
 			ground.position.y = -5;
 			ground.receiveShadow = true;
 			scene.add(ground);
@@ -118,7 +118,7 @@
 			ai1.position.x = 100;
 			ai1.position.y = 5;
 			ai1.position.z = -5;
-			ai1.quaternion.setFromEuler(new THREE.Vector3(-30, 20, 0));
+			ai1.quaternion.setFromEuler(new THREE.Vector3(30, 20, 0));
 			scene.add(ai1.mesh);
 			ai1.buildPhysic();
 			dynamicsWorld.addRigidBody(ai1.phybody);
@@ -126,9 +126,9 @@
 			//construct player2
 			player2.buildMesh();
 			player2.position.x = -100;
-			player2.position.y = 5;
+			player2.position.y = 25;
 			player2.position.z = 5;
-			player2.quaternion.setFromEuler(new THREE.Vector3(-30, 20, 0));
+			player2.quaternion.setFromEuler(new THREE.Vector3(-30, -20, 0));
 			scene.add(player2.mesh);
 			player2.buildPhysic();
 			dynamicsWorld.addRigidBody(player2.phybody);
@@ -136,9 +136,9 @@
 			//construct ai2
 			ai2.buildMesh();
 			ai2.position.x = -100;
-			ai2.position.y = 25;
+			ai2.position.y = 135;
 			ai2.position.z = -5;
-			ai2.quaternion.setFromEuler(new THREE.Vector3(-30, 20, 0));
+			ai2.quaternion.setFromEuler(new THREE.Vector3(30, -20, 0));
 			scene.add(ai2.mesh);
 			ai2.buildPhysic();
 			dynamicsWorld.addRigidBody(ai2.phybody);
