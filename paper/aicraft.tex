@@ -1,4 +1,4 @@
-\title{The A.I Crater Project}
+\title{The A.I Crafter Project}
 \author{
 	Ray Shulang Lei\\
 	200253624\\
@@ -17,30 +17,36 @@
 \maketitle
 
 \begin{abstract}
-This is the proposed paper of a multiplayer cloud base livecoding A.I combating game, similar to robocode.
+Gamify Learning has recently gained popularity and believed to be effective for education purpose. Today’s economic has evolved to be “developer-centric”\cite{venkatesh2011}. While we have many games to practice various skills in a fun way, there has not been too much efforts made for development skills. 
+There is a recently made popular practice called “livecoding”, where programmers perform art using their programming skills in real-time to interactively improvise their works on the fly. 
+A.I Crafter is a web based multi-player artificial intelligence combating game driven by livecoding competition between players. Players provide their code in real-time to control their crafts, in order to beat the opposite crafts. 
 \end{abstract}
 
 \section{Introduction}
-A.I Crafter is an online A.I combating game. Players use their livecoding skills to provide code in real time to control their A.I crafts, in order to beat the opposite players. The idea is inspired by the JAVA Robocode\cite{robocode01} project.
+Project A.I Crafter is the development of a livecoding A.I combating game. According to wikipedia, livecoding can also be referred to as improvised interactive programming. Players use their programming skills to improvise their code in real time to control their A.I crafts, in order to beat the opposite players. The idea is inspired by the JAVA Robocode\cite{robocode01} project. The main purpose is to "gamify" the never-ending learning process for programming. To understand what "gamify" means, here is the definition from wikipedia: "Gamification is the use of game design techniques and mechanics to solve problems and engage audiences."
+
+Not until recently, the dynamic programming languages have envolved to be fast and effecient enough for livecoding practice. With some new technologies I am going to introduce later ( HTML5, NodeJS ), javascript, is treading to be the unified programming language for the web. Powering by the Google's V8 engine, javascript has been use for livecoding in audio and visual arts at last year's Google IO conference openning show. A.I crafter is aimming to take the livecoding practice further into the video game world, seeing that the current technologies is mature enough.
 
 \section{Reasonale}
+
+\subsection{Motivation}
 In Noah Falstein's article "Natural Funativity"\cite{noah2004}, he described three types of hunters in a hunter-gatherer society. After three hunters have got enough haunch of antelope, enough to feed his family for a few days:\\
 Aagh - goes right back out to track down a deer he saw earlier;\\
 Bohg - passes his time by kicking back and catching nothing more challenging than some rays;\\
 Cragh - plays hunting games at home. "Like Aagh, he is building survival skills - but does so it in the safe confines of home. Like Bohg, he stays safe - but also stays fit and slightly improves his chances for success in the next hunt. "\\
 Noah Falstein concluded that "Over hundreds of thousands of generations, those genes that Cragh carries are more likely to spread, and the activities - including games - can also be passed on through word of mouth in the tribe from generation to generation."\\
 
-According to Venkatesh's article "The Rise of Developeronomics"\cite{venkatesh2011} on Forbes, our society now is a developer-centric economy. Thus there are only two kinds of people matters: developers, and people who controls developers. Assuming our society is developer driven, I can conclude that the developers are as important as hunters in a hunter-gatherer society. What Aagh, Bohg and Cragh would be like in today's society? After developers finishes their work before the deadline, there would be three types of behaviors:\\
+According to Venkatesh's article "The Rise of Developeronomics"\cite{venkatesh2011} on Forbes, our society now is a developer-centric economy. He further argues that there are only two kinds of people matters: developers, and people who controls developers. Assuming our society is developer driven, I can conclude that the developers are as important as hunters in a hunter-gatherer society. What Aagh, Bohg and Cragh would be like in today's society? After developers finishes their work before the deadline, there would be three types of behaviors:\\
 Aagh - goes right back out to code for more income, whether it is a contract job or freelancing;\\
 Bohg - will be chilling out, get more sleep, let the brain rest;\\
 Cragh - plays games at home to sharpen his development skills.\\ 
 \\
 Now, let us wait a second and rethink about what kind of games Cragh can use to improve his development skills. First person shooters? It only makes a better hunter. Strategy games and others? Maybe, but they are still not exactly related to coding. Thus we need a new genre of games: coding games. If Noah and Venkatesh are right, developers who plays coding games are more likely to spread their genes. And right here I have found the goal of making A.I Crafter: to imporve the chance of spreading my genes. Therefore it makes perfect sense to put my best effort fulfilling it.
 
-\section{Core Design}
+\subsection{Core Design}
 The basic idea is very similar to Robocode. Players provide A.I controlling code to tell their crafts what to do. The game engine provides 4 sets of controlling APIs such as move, search, aim and fire.
 To satisfy my goal of improving Cragh's ability to code while making the process fun and fair, I have to make the controlling A.I fair to some extent.
-That's why players have to use livecoding skills. According to wikipedia, livecoding can also be referred to as improvised interactive programming. My players will have to start from scratch, and improvised their A.I from there. And I will have to provide some mechanism to prevent copy and paste.
+That's why players have to use livecoding skills.  My players will have to start from scratch, and improvised their A.I from there. And I will have to provide some mechanism to prevent copy and paste.
 
 \section{Technical Details(Draft)}
 
