@@ -1,0 +1,69 @@
+Game Loop
+	fixed frame duration 
+		update based on the current frame number
+		sometimes add extra to current frame needs to drop frames
+	variable frame duration
+		draw a frame based on the time
+			1. current time + previous time
+			2. delta time (dt)
+
+Algorithm 1
+	get currentTime in milliseconds
+	loop forever
+		display
+		handle input
+		update the game based on currentTime 
+		get currentTime in milliseconds
+	end loop
+
+
+Algorithm 2
+	set delta time to initial guess = 33ms
+	get currentTime
+	loop
+		display
+		handle input
+		update the game based on currentTime + deltaTime
+		previousTime = currentTime
+		get currentTime
+		deltaTime = currentTime = previousTime
+
+	Assumption:
+		time to handle the next frame is assumed to be the same as it took to handle the current frame
+	
+	example:
+		frames take 18 ms, 22ms, 55ms, 103ms to calcualte
+	
+	Algorithm 1
+		calls update(18)
+		calls update(40)
+		calls update(95)
+		calls update(198)
+
+	Algorithm 2
+		calls update(18,33)
+		calls update(40,22)
+		calls update(95,55)
+		calls update(198,103)
+
+variable frame duration is used in all current high-end games because it automatically adapts to the speed of the system, especially the graphics card
+
+forces the game designer to write all updates based on time not frame#
+
+Writing update functions for variable frame duration approach
+
+1. based only on deltaTime
+	example: ball moving in constant velocity in only the x direction (y=0,z=0)
+	init: v = (x_final - x_initial) / (t_final - t_initial)
+	update: x_current = v * dt + x_previous
+
+2. based on current time: t 
+	initial time: t_init
+	initial position: x_init	
+	final time: t_final
+	final position: x_final
+	velocity - can be calculated from the above
+	update:	x_t = x_init + (t-t_init)/(t_final-t_init)*(x_final-x_init)
+
+Approach #1 is perferred because it captured the instantaneous state + previous state + forgets the initial conditions
+Approach #2 has to store more variables but update fewer of them
