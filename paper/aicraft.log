@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  31 JAN 2012 15:38
+This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  2 FEB 2012 10:52
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -262,27 +262,27 @@ Underfull \hbox (badness 10000) in paragraph at lines 39--45
  []
 
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 54--61
+Underfull \hbox (badness 10000) in paragraph at lines 56--63
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 54--61
+Underfull \hbox (badness 10000) in paragraph at lines 56--63
 
  []
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 63--70
+Underfull \hbox (badness 10000) in paragraph at lines 65--72
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 63--70
+Underfull \hbox (badness 10000) in paragraph at lines 65--72
 
  []
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 92--96
+Underfull \hbox (badness 10000) in paragraph at lines 94--98
 \OT1/cmr/m/n/12 http://www.forbes.com/sites/venkateshrao/2011/12/05/the-rise-of
 -
  []
@@ -291,11 +291,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 92--96
 Here is how much of TeX's memory you used:
  2409 strings out of 493747
  33624 string characters out of 3143546
- 94505 words of memory out of 3000000
+ 94516 words of memory out of 3000000
  5687 multiletter control sequences out of 15000+200000
  7469 words of font info for 27 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 38i,6n,23p,706b,201s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,6n,23p,706b,195s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2010/texmf-dist/fonts/type1/public/ams
 fonts/cm/cmbx10.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmbx12.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfo
@@ -303,7 +303,7 @@ nts/cm/cmr10.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfont
 s/cm/cmr12.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmr17.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmti12.pfb>
-Output written on aicraft.pdf (5 pages, 91534 bytes).
+Output written on aicraft.pdf (5 pages, 91520 bytes).
 PDF statistics:
  44 PDF objects out of 1000 (max. 8388607)
  30 compressed objects within 1 object stream
