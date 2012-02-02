@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  2 FEB 2012 15:47
+This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  2 FEB 2012 16:37
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/Users/ray/projects/aicraft/paper/aicraft.tex
-(/Users/ray/projects/aicraft/paper/aicraft.tex
+**/Users/gzmask/projects/aicraft/paper/aicraft.tex
+(/Users/gzmask/projects/aicraft/paper/aicraft.tex
 LaTeX2e <2009/09/24>
 Babel <v3.8l> and hyphenation patterns for english, dumylang, nohyphenation, ge
 rman-x-2009-06-19, ngerman-x-2009-06-19, ancientgreek, ibycus, arabic, armenian
@@ -304,12 +304,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 82--83
 
  []
 
-[4]
+
 Underfull \hbox (badness 10000) in paragraph at lines 84--85
 
  []
 
-
+[4]
 Underfull \hbox (badness 10000) in paragraph at lines 86--87
 
  []
@@ -358,12 +358,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 141--143
 [7] (./aicraft.aux) ) 
 Here is how much of TeX's memory you used:
  2412 strings out of 493747
- 33656 string characters out of 3143546
+ 33665 string characters out of 3143546
  93513 words of memory out of 3000000
  5689 multiletter control sequences out of 15000+200000
  7638 words of font info for 28 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 38i,6n,23p,708b,195s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,6n,23p,711b,238s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2010/texmf-dist/fonts/type1/public/ams
 fonts/cm/cmbx10.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmbx12.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfo
@@ -372,7 +372,7 @@ s/cm/cmr12.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmr17.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmti12.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/
 cmtt12.pfb>
-Output written on aicraft.pdf (7 pages, 102987 bytes).
+Output written on aicraft.pdf (7 pages, 102877 bytes).
 PDF statistics:
  56 PDF objects out of 1000 (max. 8388607)
  39 compressed objects within 1 object stream

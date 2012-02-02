@@ -1,0 +1,56 @@
+Display Lists
+Sprite Fonts
+Variable Frame Duration/Fixed delta GameLoop
+Collision Detection
+
+Display List
+	is an OpenGL feature that allows commands + data to be store in the video memory, i.e., the memory on the graphics card
+	instead of having commands for drawing in the display part of our OpenGL program, we put them in the init part.
+
+Sprite Fonts
+	these are for overlaying in front of the game
+	you can use any size for the viewport that hold text
+	it is mapped to the OpenGL window size
+	the viewport is a simple x,y coordinate system
+
+Variable Frame Duration Approach to Game Loop
+	2(a) Variable Delta Time
+
+	get the current time in milliseconds
+	previousTime = currentTime
+	loop forever
+		display
+		handle input
+		(update game based on current time) => get current time in milliseconds
+		deltaTime = currentTime - previousTime
+		previousTime = currentTime
+		(get current time in millisecond) => update game based on current time
+	end loop
+
+	2(b) Fixed Delta Time(framerate Indepandent Approach)
+		producing frames as fast as we can
+		always uses the same deltaT for the update
+		runs a variable number of updates per frame
+
+	deltaTime = fixed frame time
+	get the currentTime in milliseconds
+	previousTime = currentTime
+	update.lag = 0
+	loop forever
+		display
+		handle input
+		get the currentTime
+		update.lag += (currentTime - previousTime)
+		while(update.lag > deltaTime)
+			update game based on fixed deltaTime
+			update.lag -= deltaTime
+		previousTime = currentTime
+	end loop
+		
+
+Collision Detecion and Resolution
+	1. object overlapping test
+	2. intersection of pathways test
+
+	Spheres
+	Axis-aligned bounding boxes - AABBs

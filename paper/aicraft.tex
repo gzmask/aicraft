@@ -44,7 +44,7 @@ Aagh - goes right back out to code for more income, whether it is a contract job
 Bohg - will be chilling out, get more sleep, let the brain rest;\\
 Cragh - plays games at home to sharpen his development skills.\\ 
 
-Now, let us wait a second and think about what kind of games Cragh can use to improve his development skills. First person shooters? It only makes a better hunter. Strategy games and others? Maybe, but they are still not exactly related to coding. Thus we need a new genre of games: coding games. If Noah and Venkatesh are right, developers who plays coding games are more likely to spread their genes. And right here I have found the goal of making A.I. Crafter: to imporve the chance of spreading my genes. Therefore it makes perfect sense to put my best effort fulfilling it.\\
+Now, let us think about what kinds of games Cragh can use to improve his development skills. First person shooters? It only makes a better hunter. Strategy games and others? Maybe, but they are still not exactly related to coding. Thus we need a new genre of games: coding games.\\
 
 \subsection{Robocode}
 Project A.I. crafter is inspired by the Robocode, and is originated from it. Let us look into the designs of Robocode to better understand the A.I. Crafter project. Here is a paragraph quote from Robowiki:\cite{robowiki1} \\
@@ -78,16 +78,16 @@ These instructions represents the robot point of view on how to act and react to
 
 Furthermore, the physic engine determines the results of the corresponding Robots actions. Physical engine uses the newton laws to determine the movement/rotation limits. And it also decides how the collisions between robot and bullet, robot and robot, robot and wall will generate damages.\\
 
-\section{The core of A.I. crafter}
+\section{The core design of A.I. crafter}
 The basic idea is very similar to Robocode. The term ``Robot" in Robocode is now referred to as ``A.I.".\\ 
 
 Players provide A.I. controlling code to tell their A.I.s what to do. The game engine provides 3 sets of controlling APIs such as move, search, aim/fire. The difference between A.I. Crafter and Robocode, however, besides being multiplayer and online, is mainly about players' ability to program.\\
 
 To satisfy the goal of gamify learning, letting the players compete with each others on their ability to program is important. That is where the need for livecoding comes in. In the starting of a match, two players with their A.I. in ``null" state will be spawned into the game scene.\\ 
 
-Players will submit their controlling code from there, thus they will have to take what kind of code the oppsite is submitting into consider. For example, an experienced player will probably be submiting attacking code in the first place so that if the novice player is doing the same, they would probably got shot. Therefore the novice player should consider to submit dodging code first.\\ 
+Players will submit their controlling code from there, thus they will have to take the code that is submitting by the opposite into consideration. For example, an experienced player will probably be submiting attacking code in the first place so that if the novice player is doing the same, they would got the lower hand. Therefore the novice player should consider to submit dodging code first.\\ 
 
-The reason of physically putting the players into the arena is to provide a new API call - follow(). So that the A.I. can follow the player's movement to avoid opposite attacks in the beginning. This "following mode" provides great survivability for novice players even if they are facing an veteran. The follow() API call is a perfect example of ``dodging code".\\
+One of the purpose of physically putting the players into the arena is to provide a new API call - follow(). So that the A.I. can follow the player's movement to avoid opposite attacks in the beginning. This ``following mode" provides great survivability for novice players even if they are facing an veteran. The follow() API call is a perfect example of ``dodging code".\\
 
 
 
