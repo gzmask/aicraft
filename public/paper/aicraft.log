@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  2 FEB 2012 16:37
+This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  5 FEB 2012 16:34
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/Users/gzmask/projects/aicraft/paper/aicraft.tex
-(/Users/gzmask/projects/aicraft/paper/aicraft.tex
+**/Users/gzmask/projects/aicraft/public/paper/aicraft.tex
+(/Users/gzmask/projects/aicraft/public/paper/aicraft.tex
 LaTeX2e <2009/09/24>
 Babel <v3.8l> and hyphenation patterns for english, dumylang, nohyphenation, ge
 rman-x-2009-06-19, ngerman-x-2009-06-19, ancientgreek, ibycus, arabic, armenian
@@ -279,17 +279,26 @@ Underfull \hbox (badness 10000) in paragraph at lines 47--48
  []
 
 
-Overfull \hbox (3.62971pt too wide) in paragraph at lines 50--57
-\OT1/cmr/m/n/12 moved. The radar can turn left or right. The radar gen-er-ates 
-on-ScannedRobot
+Underfull \hbox (badness 10000) in paragraph at lines 50--51
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 52--59
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 52--59
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 52--59
+
  []
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 75--76
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 77--78
 
  []
@@ -300,70 +309,77 @@ Underfull \hbox (badness 10000) in paragraph at lines 79--80
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 82--83
+Underfull \hbox (badness 10000) in paragraph at lines 81--82
+
+ []
+
+[4] <design_draft_1.jpg, id=21, 602.25pt x 895.345pt>
+File: design_draft_1.jpg Graphic file (type jpg)
+ <use design_draft_1.jpg>
+Underfull \hbox (badness 10000) in paragraph at lines 84--86
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 84--85
-
- []
-
-[4]
-Underfull \hbox (badness 10000) in paragraph at lines 86--87
+Underfull \hbox (badness 10000) in paragraph at lines 87--88
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 88--89
+Underfull \hbox (badness 10000) in paragraph at lines 89--90
+
+ []
+
+[5 <./design_draft_1.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 91--92
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 90--91
+Underfull \hbox (badness 10000) in paragraph at lines 100--101
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 97--104
+Underfull \hbox (badness 10000) in paragraph at lines 102--109
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 97--104
-
- []
-
-[5]
-Underfull \hbox (badness 10000) in paragraph at lines 106--113
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 106--113
+Underfull \hbox (badness 10000) in paragraph at lines 102--109
 
  []
 
 [6]
-Underfull \hbox (badness 10000) in paragraph at lines 135--139
+Underfull \hbox (badness 10000) in paragraph at lines 111--118
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 111--118
+
+ []
+
+[7]
+Underfull \hbox (badness 10000) in paragraph at lines 140--144
 \OT1/cmr/m/n/12 http://www.forbes.com/sites/venkateshrao/2011/12/05/the-rise-of
 -
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 141--143
+Underfull \hbox (badness 10000) in paragraph at lines 146--148
 
  []
 
-[7] (./aicraft.aux) ) 
+[8] (./aicraft.aux) ) 
 Here is how much of TeX's memory you used:
- 2412 strings out of 493747
- 33665 string characters out of 3143546
- 93513 words of memory out of 3000000
- 5689 multiletter control sequences out of 15000+200000
- 7638 words of font info for 28 fonts, out of 3000000 for 9000
+ 2420 strings out of 493747
+ 33822 string characters out of 3143546
+ 93516 words of memory out of 3000000
+ 5695 multiletter control sequences out of 15000+200000
+ 7945 words of font info for 29 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 38i,6n,23p,711b,238s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,6n,23p,718b,201s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2010/texmf-dist/fonts/type1/public/ams
 fonts/cm/cmbx10.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmbx12.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfo
@@ -372,10 +388,10 @@ s/cm/cmr12.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmr17.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmti12.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/
 cmtt12.pfb>
-Output written on aicraft.pdf (7 pages, 102877 bytes).
+Output written on aicraft.pdf (8 pages, 276906 bytes).
 PDF statistics:
- 56 PDF objects out of 1000 (max. 8388607)
- 39 compressed objects within 1 object stream
+ 60 PDF objects out of 1000 (max. 8388607)
+ 41 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

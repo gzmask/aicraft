@@ -47,11 +47,13 @@ Cragh - plays games at home to sharpen his development skills.\\
 Now, let us think about what kinds of games Cragh can use to improve his development skills. First person shooters? It only makes a better hunter. Strategy games and others? Maybe, but they are still not exactly related to coding. Thus we need a new genre of games: coding games.\\
 
 \subsection{Robocode}
-Project A.I. crafter is inspired by the Robocode, and is originated from it. Let us look into the designs of Robocode to better understand the A.I. Crafter project. Here is a paragraph quote from Robowiki:\cite{robowiki1} \\
-``The Anatomy of a Robot is divided to three parts:\\
-The body - Carries the gun with the radar on top. The body is used for moving the robot ahead and back, as well as turning left or right.\\
-The gun - Mounted on the body and is used for firing energy bullets. The gun can turn left or right.\\
-The radar - Mounted on the gun and is used to scan for other robots when moved. The radar can turn left or right. The radar generates onScannedRobot events when robots are detected."\\
+Robocode is a educational coding game. Players write programs that controls a miniature tank that fights other identically-built (but differently programmed) tanks in an arena. Tanks can move, shoot at each other, scan for each other, and hit the walls (or other robots) if they aren't careful. When I first start looking for coding games, Rococode is the closest to what I am looking for.\\
+
+Project A.I. crafter is inspired by the Robocode, and thus originated from it. Let us look into the designs of Robocode to better understand the A.I. Crafter project. Here is a paragraph quote from Robowiki:\cite{robowiki1} \\\\
+``The Anatomy of a Robot is divided to three parts:\\\\
+{\bf The body} - Carries the gun with the radar on top. The body is used for moving the robot ahead and back, as well as turning left or right.\\
+{\bf The gun} - Mounted on the body and is used for firing energy bullets. The gun can turn left or right.\\
+{\bf The radar} - Mounted on the gun and is used to scan for other robots when moved. The radar can turn left or right. The radar generates onScannedRobot events when robots are detected."\\\\
 Now let us look at the APIs:\newline
 Movement Control:
 \begin{verbatim}
@@ -79,7 +81,8 @@ These instructions represents the robot point of view on how to act and react to
 Furthermore, the physic engine determines the results of the corresponding Robots actions. Physical engine uses the newton laws to determine the movement/rotation limits. And it also decides how the collisions between robot and bullet, robot and robot, robot and wall will generate damages.\\
 
 \section{The core design of A.I. crafter}
-The basic idea is very similar to Robocode. The term ``Robot" in Robocode is now referred to as ``A.I.".\\ 
+\includegraphics[scale=0.3]{design_draft_1.jpg}\\
+The basic idea is very similar to Robocode. The term ``Robot" in Robocode is now referred to as ``A.I.", and similarly, an A.I. has a radar scanner, a mounted weapon and the moving unit.\\ 
 
 Players provide A.I. controlling code to tell their A.I.s what to do. The game engine provides 3 sets of controlling APIs such as move, search, aim/fire. The difference between A.I. Crafter and Robocode, however, besides being multiplayer and online, is mainly about players' ability to program.\\
 
@@ -87,14 +90,16 @@ To satisfy the goal of gamify learning, letting the players compete with each ot
 
 Players will submit their controlling code from there, thus they will have to take the code that is submitting by the opposite into consideration. For example, an experienced player will probably be submiting attacking code in the first place so that if the novice player is doing the same, they would got the lower hand. Therefore the novice player should consider to submit dodging code first.\\ 
 
-One of the purpose of physically putting the players into the arena is to provide a new API call - follow(). So that the A.I. can follow the player's movement to avoid opposite attacks in the beginning. This ``following mode" provides great survivability for novice players even if they are facing an veteran. The follow() API call is a perfect example of ``dodging code".\\
+Another major different from Robocode is to physically put the players into the arena. One of the purpose is to allow players to submit code to the A.I.s within a limited distance. This will give the players an immersive feeling when playing the game. Another purpose is to provide some new API calls such as follow(), so that the A.I. can follow the player's movement to avoid opposite attacks in the beginning. This ``following mode" provides great survivability for novice players even if they are facing an veteran. 
 
 
 
 \section{Technical Details(Draft)}
 
 \subsection{NodeJS}
-The server side will be back by NodeJS. Since users will be submitting javascript code in real time to control their A.I.s, choosing NodeJS seems obvious. NodeJS will be used to fulfill these features:\\
+``Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices."\cite{nodejs}\\
+
+In other words, NodeJS is a browser javascript engine running on the serverside for serving network contents, similar to Perl/PHP/Ruby etc.. Since my players will be submitting javascript code, and the javascript code will be run on serverside in real time to control their A.I.s, choosing NodeJS seems obvious. NodeJS will be used to fulfill these features:\\
 \\
 1. Serving front end HTML/WebGL files\\
 2. Connecting to database\\
@@ -140,6 +145,11 @@ I am curretnly aiming to launch the preview version of this game online at www.a
 \bibitem{robowiki1}
 	\emph{Robot Anatomy}. \\
 	http://robowiki.net/wiki/Robocode/Robot\_Anatomy\\
+
+\bibitem{nodejs}
+	Ryan Dahl,\\
+	\emph{NodeJS offical site}.\\
+	htp://www.nodejs.org
 
 \end{thebibliography}
 
