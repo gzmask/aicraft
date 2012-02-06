@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  6 FEB 2012 06:39
+This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  6 FEB 2012 06:42
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -621,7 +621,7 @@ usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
 r/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/
 local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/l
 ocal/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on aicraft.pdf (11 pages, 326490 bytes).
+Output written on aicraft.pdf (11 pages, 326487 bytes).
 PDF statistics:
  159 PDF objects out of 1000 (max. 8388607)
  135 compressed objects within 2 object streams
