@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  5 FEB 2012 22:21
+This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  6 FEB 2012 06:39
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -604,16 +604,16 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 217.
  (./aicraft.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 217.
 Package rerunfilecheck Info: File `aicraft.out' has not changed.
-(rerunfilecheck)             Checksum: 574AE98EEDD1AB17E31E240A7CF14990;584.
+(rerunfilecheck)             Checksum: D508BA4A70964058347D6D48C1A7CF53;582.
  ) 
 Here is how much of TeX's memory you used:
  5821 strings out of 493747
  86479 string characters out of 3143546
- 166045 words of memory out of 3000000
+ 166041 words of memory out of 3000000
  8986 multiletter control sequences out of 15000+200000
  11057 words of font info for 40 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 33i,6n,28p,724b,424s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 33i,6n,28p,722b,424s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></
@@ -621,7 +621,7 @@ usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
 r/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/
 local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/l
 ocal/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on aicraft.pdf (11 pages, 326541 bytes).
+Output written on aicraft.pdf (11 pages, 326490 bytes).
 PDF statistics:
  159 PDF objects out of 1000 (max. 8388607)
  135 compressed objects within 2 object streams

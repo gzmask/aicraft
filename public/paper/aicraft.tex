@@ -1,7 +1,7 @@
-\title{The A.I. Crafter Project}
+\title{The A.I. Craft Project}
 \author{
 	Ray Shulang Lei\\
-	aicrafter.com\\
+	aicraft.com\\
 	ray.lei@uregina.ca
 }
 \date{\today}
@@ -22,13 +22,13 @@ Gamify Learning has recently gained popularity and believed to be effective for 
 
 There is a recently made popular practice called ``livecoding", where programmers perform art using their programming skills in real-time to interactively improvise their works on the fly.\\ 
 
-A.I. Crafter is a web based multi-player artificial intelligence combating game driven by livecoding competition between players. Players provide their code in real-time to control their A.I.s, in order to beat the opposite A.I.s. 
+A.I. Craft is a web based multi-player artificial intelligence combating game driven by livecoding competition between players. Players provide their code in real-time to control their A.I.s, in order to beat the opposite A.I.s. 
 \end{abstract}
 
 \section{Introduction}
-Project A.I. Crafter is the development of a livecoding A.I. combating game. According to wikipedia, livecoding can also be referred to as improvised interactive programming. Players use their programming skills to improvise their code in real time to control their A.I.s, in order to beat the opposite players. The idea is inspired by the JAVA Robocode\cite{robocode01} project. The main purpose is to ``gamify" the never-ending learning process for programming. To understand what ``gamify" means, here is the definition from wikipedia: ``Gamification is the use of game design techniques and mechanics to solve problems and engage audiences."\\
+Project A.I. Craft is the development of a livecoding A.I. combating game. According to wikipedia, livecoding can also be referred to as improvised interactive programming. Players use their programming skills to improvise their code in real time to control their A.I.s, in order to beat the opposite players. The idea is inspired by the JAVA Robocode\cite{robocode01} project. The main purpose is to ``gamify" the never-ending learning process for programming. To understand what ``gamify" means, here is the definition from wikipedia: ``Gamification is the use of game design techniques and mechanics to solve problems and engage audiences."\\
 
-Not until recently, the dynamic programming languages have envolved to be fast and effecient enough for livecoding practice. With some new technologies I am going to introduce later ( HTML5, NodeJS ), javascript, is treading to be the unified programming language for the web. Powering by the Google's V8 engine, javascript has been use for livecoding in audio and visual arts at last year's Google IO conference openning show. A.I. crafter is aimming to take the livecoding practice further into the video game world, seeing that the current technologies is mature enough.\\
+Not until recently, the dynamic programming languages have envolved to be fast and effecient enough for livecoding practice. With some new technologies I am going to introduce later ( HTML5, NodeJS ), javascript, is treading to be the unified programming language for the web. Powering by the Google's V8 engine, javascript has been use for livecoding in audio and visual arts at last year's Google IO conference openning show. A.I. craft is aimming to take the livecoding practice further into the video game world, seeing that the current technologies is mature enough.\\
 
 \section{Rationale}
 
@@ -50,7 +50,7 @@ Now, let us think about what kinds of games Cragh can use to improve his develop
 \subsection{Robocode}
 Robocode is a educational coding game. Players write programs that controls a miniature tank that fights other identically-built (but differently programmed) tanks in an arena. Tanks can move, shoot at each other, scan for each other, and hit the walls (or other robots) if they aren't careful. When I first start looking for coding games, Rococode is the closest to what I am looking for.\\
 
-Project A.I. crafter is inspired by the Robocode, and thus originated from it. Let us look into the designs of Robocode to better understand the A.I. Crafter project. Here is a paragraph quote from Robowiki:\cite{robowiki1} \\\\
+Project A.I. craft is inspired by the Robocode, and thus originated from it. Let us look into the designs of Robocode to better understand the A.I. Craft project. Here is a paragraph quote from Robowiki:\cite{robowiki1} \\\\
 ``The Anatomy of a Robot is divided to three parts:\\\\
 {\bf The body} - Carries the gun with the radar on top. The body is used for moving the robot ahead and back, as well as turning left or right.\\
 {\bf The gun} - Mounted on the body and is used for firing energy bullets. The gun can turn left or right.\\
@@ -81,12 +81,12 @@ These instructions represents the robot point of view on how to act and react to
 
 Furthermore, the physic engine determines the results of the corresponding Robots actions. Physical engine uses the newton laws to determine the movement/rotation limits. And it also decides how the collisions between robot and bullet, robot and robot, robot and wall will generate damages.\\
 
-\section{The core design of A.I. crafter}
+\section{The core design of A.I. craft}
 The basic idea is very similar to Robocode. The term ``Robot" in Robocode is now referred to as ``A.I.", and similarly, an A.I. has a radar scanner, a mounted weapon and the moving unit.\\ 
 
 \includegraphics[scale=0.3]{design_draft_1.jpg}\\
 
-Players provide A.I. controlling code to tell their A.I.s what to do. The game engine provides 3 sets of controlling APIs such as move, search, aim/fire. The difference between A.I. Crafter and Robocode, however, besides being multiplayer and online, is mainly about players' ability to program.\\
+Players provide A.I. controlling code to tell their A.I.s what to do. The game engine provides 3 sets of controlling APIs such as move, search, aim/fire. The difference between A.I. Craft and Robocode, however, besides being multiplayer and online, is mainly about players' ability to program.\\
 
 To satisfy the goal of gamify learning, letting the players compete with each others on their ability to program is important. That is where the need for livecoding comes in. In the starting of a match, two players with their A.I. in ``null" state will be spawned into the game scene.\\ 
 
@@ -116,11 +116,11 @@ HTML is a language for structuring and presenting content for the World Wide Web
 
 Online game clients nowadays have three forms of distribution: Binary executable downloads, running in a browser plugin and running in a browser natively with no plugin required.\\ 
 
-Performance wise, binary executable game clients are superior, since they often are making use of DirectX/OpenGL libraries and pre-compiled at run-time. However, its downside is platform dependent and users need to trust your binary code before they are willing to run it. Not being platform independent will greatly extend the development cycle, thus A.I. Crafter will not be using this form of distribution.\\ 
+Performance wise, binary executable game clients are superior, since they often are making use of DirectX/OpenGL libraries and pre-compiled at run-time. However, its downside is platform dependent and users need to trust your binary code before they are willing to run it. Not being platform independent will greatly extend the development cycle, thus A.I. Craft will not be using this form of distribution.\\ 
 
-Browser plugin games, on the other hand, such as flash games which require a plugin to run in browser, is now considered out-of-dated and unfashion after WebGL/HTML5 have been introduced. Because the trend of more devices will be supporting HTML5/WebGL and less devices will support flash and other web browser plugins, A.I. Crafter will be using the third form if distribution: running in browsers natively.\\ 
+Browser plugin games, on the other hand, such as flash games which require a plugin to run in browser, is now considered out-of-dated and unfashion after WebGL/HTML5 have been introduced. Because the trend of more devices will be supporting HTML5/WebGL and less devices will support flash and other web browser plugins, A.I. Craft will be using the third form if distribution: running in browsers natively.\\ 
 
-Unfortunately, Microsoft internet exporleror has not provided their support on WebGL and Socket communications, therefore IE users will not be supported by A.I. Crafters. Firefox and Chrome users will be the targeted audience.\\
+Unfortunately, Microsoft internet exporleror has not provided support for WebGL and Socket communications, therefore IE users will not be supported by A.I. Craft. Firefox and Chrome users will be the targeted audience.\\
 
 
 The animation and physical calculation of the game will be running in browser. Features included:\\
@@ -133,7 +133,7 @@ The animation and physical calculation of the game will be running in browser. F
 \subsection{Database engine}
 ``A short definition of an RDBMS is: a DBMS(database management system) in which data is stored in tables and the relationships among the data are also stored in tables. The data can be accessed or reassembled in many different ways without having to change the table forms." -- Wikipedia\\
 
-For A.I. Crafter, the database will be served as a cloud storage for player information such as levels, currencies etc. RDBMS are not very useful for games because they cannot efficiently store heavily structured hierarchical data\cite{ari}.\\ 
+For A.I. Craft, the database will be served as a cloud storage for player information such as levels, currencies etc. RDBMS are not very useful for games because they cannot efficiently store heavily structured hierarchical data\cite{ari}.\\ 
 
 A document-oriented database is a computer program designed for storing, retrieving, and managing document-oriented, or semi structured data, information. This kind of databases are much better for games, as they are more flexible in how they model data, while being more performant than relational databases\cite{michael10}. Therefore Document-oriented databases are my options. The current candidates are MangoDB, CouchDB and Redis.\\
 
@@ -141,7 +141,7 @@ A document-oriented database is a computer program designed for storing, retriev
 
 ``Prototype-based programming is a style of object-oriented programming in which classes are not present, and behavior reuse (known as inheritance in class-based languages) is performed via a process of cloning existing objects that serve as prototypes." -- Wikipedia\\
 
-The whole game of A.I. Crafter is based on Javascript, which is a prototype-based programming language. Here is a very basic layer of the game engine in Class Digram:\\
+The whole game of A.I. Craft is based on Javascript, which is a prototype-based programming language. Here is a very basic layer of the game engine in Class Digram:\\
 
 \includegraphics[scale=0.4]{uml.jpg}\\
 
@@ -167,7 +167,7 @@ Where AICRAFT.Ai is the ``Class", which really is the constructor function since
 
 Each code submitting would only allow one prototype in one function, thus forcing the player to ``livecode" their A.I., but not copying a big chunk of existed code which is equal to cheating.\\
 
-By prototyping on the A.I. object, players therefore intractively improvise their A.I.s on the fly. And this is the core concept of the A.I. Crafter project.\\
+By prototyping on the A.I. object, players therefore intractively improvise their A.I.s on the fly. And this is the core concept of the A.I. Craft project.\\
 
 \begin{thebibliography}{9}
 
