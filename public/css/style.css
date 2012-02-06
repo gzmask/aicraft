@@ -6,6 +6,26 @@ body, html {
   overflow: auto;
 }
 
+.news {
+  color: #fff;
+  width: 40%;
+  background-color: #707070;
+  margin-top: 20px;
+  margin-right: 20px;
+  padding-left: 20px; 
+  padding-right: 20px; 
+  padding-top: 10px; 
+  padding-bottom: 10px; 
+  border-radius: 4px;
+  text-shadow: 1px 1px 1px #000;
+}
+
+div.core {  
+    display: block;  
+	width: 700px;
+}  
+
+
 a:link {
 	color: #4c8ccc; 
 	text-decoration:none;
