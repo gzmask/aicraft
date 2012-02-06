@@ -12,6 +12,7 @@
 \usepackage{mathtools}
 \usepackage{amsthm}
 \usepackage{parskip}
+\usepackage{hyperref}
 
 \begin{document}
 \maketitle
@@ -81,8 +82,9 @@ These instructions represents the robot point of view on how to act and react to
 Furthermore, the physic engine determines the results of the corresponding Robots actions. Physical engine uses the newton laws to determine the movement/rotation limits. And it also decides how the collisions between robot and bullet, robot and robot, robot and wall will generate damages.\\
 
 \section{The core design of A.I. crafter}
-\includegraphics[scale=0.3]{design_draft_1.jpg}\\
 The basic idea is very similar to Robocode. The term ``Robot" in Robocode is now referred to as ``A.I.", and similarly, an A.I. has a radar scanner, a mounted weapon and the moving unit.\\ 
+
+\includegraphics[scale=0.3]{design_draft_1.jpg}\\
 
 Players provide A.I. controlling code to tell their A.I.s what to do. The game engine provides 3 sets of controlling APIs such as move, search, aim/fire. The difference between A.I. Crafter and Robocode, however, besides being multiplayer and online, is mainly about players' ability to program.\\
 
@@ -107,9 +109,21 @@ In other words, NodeJS is a browser javascript engine running on the serverside 
 4. Executing user submitted code in real time\\
 5. Executing and storing game logic in real time\\
 
-\subsection{WebGL/Javascript in Browser}
-The client side part of A.I. Crafter will be back by Html5/WebGL in your browser.
-The animation and physical calculation of the game will be in this part. Features included:\\
+\subsection{WebGL/HTML5}
+WebGL is a software graphical library that extends the capability of the JavaScript programming language to allow it to generate interactive 3D graphics within any compatible web browser. \\
+
+HTML is a language for structuring and presenting content for the World Wide Web. At version 5, HTML now provides a rich set of APIs such as socket communication, multi-threading and local storage, to enable rich interactive applications in browser.\\
+
+Online game clients nowadays have three forms of distribution: Binary executable downloads, running in a browser plugin and running in a browser natively with no plugin required.\\ 
+
+Performance wise, binary executable game clients are superior, since they often are making use of DirectX/OpenGL libraries and pre-compiled at run-time. However, its downside is platform dependent and users need to trust your binary code before they are willing to run it. Not being platform independent will greatly extend the development cycle, thus A.I. Crafter will not be using this form of distribution.\\ 
+
+Browser plugin games, on the other hand, such as flash games which require a plugin to run in browser, is now considered out-of-dated and unfashion after WebGL/HTML5 have been introduced. Because the trend of more devices will be supporting HTML5/WebGL and less devices will support flash and other web browser plugins, A.I. Crafter will be using the third form if distribution: running in browsers natively.\\ 
+
+Unfortunately, Microsoft internet exporleror has not provided their support on WebGL and Socket communications, therefore IE users will not be supported by A.I. Crafters. Firefox and Chrome users will be the targeted audience.\\
+
+
+The animation and physical calculation of the game will be running in browser. Features included:\\
 \\
 1. Rendering the game scene, player A.I.s and other game objects\\
 2. Calculating collision detections\\
@@ -117,39 +131,80 @@ The animation and physical calculation of the game will be in this part. Feature
 4. Preventing players from submitting pre-coded segments\\
 
 \subsection{Database engine}
-The databases will be seperated as client and server sides. SQL is my first choice due to pass experience. NoSQL might be considered with further research. Basic idea is that game objects information stores at client side databases, and they sync with server side database once a while in a timely basis according to network performance.
+``A short definition of an RDBMS is: a DBMS(database management system) in which data is stored in tables and the relationships among the data are also stored in tables. The data can be accessed or reassembled in many different ways without having to change the table forms." -- Wikipedia\\
 
-\section{Public Launch}
-I am curretnly aiming to launch the preview version of this game online at www.aicrafter.com. The set release date is April 15th. 
+For A.I. Crafter, the database will be served as a cloud storage for player information such as levels, currencies etc. RDBMS are not very useful for games because they cannot efficiently store heavily structured hierarchical data\cite{ari}.\\ 
+
+A document-oriented database is a computer program designed for storing, retrieving, and managing document-oriented, or semi structured data, information. This kind of databases are much better for games, as they are more flexible in how they model data, while being more performant than relational databases\cite{michael10}. Therefore Document-oriented databases are my options. The current candidates are MangoDB, CouchDB and Redis.\\
+
+\subsection{Software architecture}
+
+``Prototype-based programming is a style of object-oriented programming in which classes are not present, and behavior reuse (known as inheritance in class-based languages) is performed via a process of cloning existing objects that serve as prototypes." -- Wikipedia\\
+
+The whole game of A.I. Crafter is based on Javascript, which is a prototype-based programming language. Here is a very basic layer of the game engine in Class Digram:\\
+
+\includegraphics[scale=0.4]{uml.jpg}\\
+
+The Scene class provides the game loop, thus there are varity of components for physics engine and graphic engine. The GameObject class is very interesting. All classes under GameObject tie to the game loop: they tell the game loop how much they weight, what models they will be using, what is the bounding box/octree they are binding to for collision dections, and the AI code that controls how they will react to various situtions etc.\\
+
+The Ai Class, therefore, is the most interesting one. It is exposed to players to ``prototype" on its AI part. Here is a draft idea of what kind of code the players will be submitting:
+
+\begin{verbatim}
+AICRAFT.Ai.prototype.onScannedRobot(e) {
+  this.fireAt(e.enemy.position);
+ }
+\end{verbatim}
+
+Or:
+
+\begin{verbatim}
+myAi.__proto__.onScannedRobot(e) {
+  this.fireAt(e.enemy.position);
+ }
+\end{verbatim}
+
+Where AICRAFT.Ai is the ``Class" and myAi is an instance.\\
 
 \begin{thebibliography}{9}
 
 \bibitem{robocode01}
 	Mathew Nelson, Flemming Larsen, IBM etc.\\
 	\emph{Robocode}.\\
-	http://robocode.sourceforge.net\\
+	\url{http://robocode.sourceforge.net}\\
 	2001
 
 \bibitem{noah2004}
 	Noah Falstein,\\
 	\emph{Natural Funativity}.\\
-	http://www.gamasutra.com/view/feature/2160/natural\_funativity.php\\
+	\url{http://www.gamasutra.com/view/feature/2160/natural\_funativity.php}\\
 	2004.
 
 \bibitem{venkatesh2011}
 	Venkatesh Rao,\\
 	\emph{The Rise of Developeronomics}.\\
-	http://www.forbes.com/sites/venkateshrao/2011/12/05/the-rise-of-developeronomics/\\
+	\url{http://www.forbes.com/sites/venkateshrao/2011/12/05/the-rise-of-developeronomics/}\\
 	2011.
 
 \bibitem{robowiki1}
 	\emph{Robot Anatomy}. \\
-	http://robowiki.net/wiki/Robocode/Robot\_Anatomy\\
+	\url{http://robowiki.net/wiki/Robocode/Robot\_Anatomy}\\
+	2008.
 
 \bibitem{nodejs}
 	Ryan Dahl,\\
-	\emph{NodeJS offical site}.\\
-	htp://www.nodejs.org
+	\emph{NodeJS official site}.\\
+	\url{http://www.nodejs.org}
+
+\bibitem{ari}
+	Ari Patrick,\\
+	\emph{Why NoSQL databases are better for games}.\\
+	\url{http://gamedev.stackexchange.com/questions/5316/nosql-is-it-a-valid-option-for-web-based-game}
+
+\bibitem{michael10}
+	Michael Kennedy,\\
+	\emph{MongoDB vs. SQL Server 2008 Performance Showdown}.\\
+	\url{http://www.michaelckennedy.net/blog/2010/04/29/MongoDBVsSQLServer2008PerformanceShowdown.aspx}\\
+	2010
 
 \end{thebibliography}
 

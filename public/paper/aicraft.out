@@ -1,0 +1,10 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Rationale}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Motivation}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Robocode}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{The core design of A.I. crafter}{}% 5
+\BOOKMARK [1][-]{section.4}{Technical Details\(Draft\)}{}% 6
+\BOOKMARK [2][-]{subsection.4.1}{NodeJS}{section.4}% 7
+\BOOKMARK [2][-]{subsection.4.2}{WebGL/HTML5}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.3}{Database engine}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.4}{Software architecture}{section.4}% 10
