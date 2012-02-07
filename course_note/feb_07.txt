@@ -1,0 +1,20 @@
+Collision Detection
+
+Overlapping Objects Test - let collision happen, then detect it + resolve it before displaying next frame
+	a. how to detect a collision between two spheres
+	b. how to detect collisions between Axis-aligned bounding boxes - AABBs
+		x_2_min >= x_1_max or y_1_min >= y_2_max or x_1_min >= x_2_max or y_2_min >= y_1_max
+		If the algorithm says there is no collision, then it is correct therefore no further checking is required. 
+		However, if it reports a possible collision, further checking maybe testified. 
+	
+	Hierarchical Collision Checking Models
+		highest level model is very simple, e.g. AABBs/Spheres
+		if a collision is detected as possible
+			check the next highest level model
+		every level model should encloses all of the true model
+
+	Collision checking models are much simpler than full triangle meshes.
+
+	Speed of checking with the overlapping objects test is proportional to O(N^2), where N is the number of pieces in a model.
+
+Intersecting Pathways Test - look ahead to see if a collision will happen before the next frame: if so avoid it.
