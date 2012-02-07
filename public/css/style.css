@@ -6,10 +6,15 @@ body, html {
   overflow: auto;
 }
 
+#container {
+  margin-left: 150px;
+  margin-top: 50px;
+}
+
 .news {
-  color: #fff;
-  width: 40%;
-  background-color: #707070;
+  color: #000;
+  width: 60%;
+  background-color: #fff;
   margin-top: 20px;
   margin-right: 20px;
   padding-left: 20px; 
@@ -17,12 +22,12 @@ body, html {
   padding-top: 10px; 
   padding-bottom: 10px; 
   border-radius: 4px;
-  text-shadow: 1px 1px 1px #000;
 }
 
 div.core {  
     display: block;  
-	width: 700px;
+	max-width: 700px;
+	margin-bottom: 30px;
 }  
 
 
@@ -43,7 +48,4 @@ a:active {
 	text-decoration:underline;
 }
 
-#container {
-	margin: 150px;
-}
 

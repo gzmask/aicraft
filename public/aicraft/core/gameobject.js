@@ -1,5 +1,5 @@
 AICRAFT.GameObject = function () {
-	this.position = new THREE.Vector3(); //opject position is the bottom centre point
+	this.position = new THREE.Vector3(); 
 	this.quaternion = new THREE.Quaternion(0,0,0,1);
 	this.mesh = undefined;
 	this.phybody = undefined;
