@@ -1,13 +1,10 @@
 	<script type="text/javascript">
 		var stats, scene, renderer;
 		var camera, cameraControl;
+		var keyboard;
 		var ground;
 		var dynamicsWorld;
-
-		var player1 = new AICRAFT.Player();
-		var ai1 = new AICRAFT.Ai();
-		var player2 = new AICRAFT.Player();
-		var ai2 = new AICRAFT.Ai();
+		var player1, player2, ai1, ai2;
 
 		if( !init() ) {
 			animate();
@@ -55,6 +52,9 @@
 
 			// create a camera contol
 			cameraControls	= new THREEx.DragPanControls(camera)
+
+			//start tracking keyboards
+			keyboard = new THREEx.KeyboardState();
 
 			// transparently support window resize
 			THREEx.WindowResize.bind(renderer, camera);
@@ -104,6 +104,7 @@
 
 
 			//construct player1
+			player1 = new AICRAFT.Player();
 			player1.buildMesh();
 			player1.position.x = 100;
 			player1.position.y = 125;
@@ -114,6 +115,7 @@
 			dynamicsWorld.addRigidBody(player1.phybody);
 			
 			//construct ai1
+			ai1 = new AICRAFT.Ai();
 			ai1.buildMesh();
 			ai1.position.x = 100;
 			ai1.position.y = 5;
@@ -124,6 +126,7 @@
 			dynamicsWorld.addRigidBody(ai1.phybody);
 
 			//construct player2
+			player2 = new AICRAFT.Player();
 			player2.buildMesh();
 			player2.position.x = -100;
 			player2.position.y = 25;
@@ -134,6 +137,7 @@
 			dynamicsWorld.addRigidBody(player2.phybody);
 
 			//construct ai2
+			ai2 = new AICRAFT.Ai();
 			ai2.buildMesh();
 			ai2.position.x = -100;
 			ai2.position.y = 135;
@@ -163,6 +167,9 @@
 			player2.physicUpdate(dynamicsWorld);
 			ai2.physicUpdate(dynamicsWorld);
 
+			// update camera controls
+			cameraControls.update();
+
 			// do the render
 			render();
 
@@ -173,8 +180,6 @@
 		// render the scene
 		function render() {
 
-			// update camera controls
-			cameraControls.update();
 
 			// actually render the scene
 			renderer.render( scene, camera );

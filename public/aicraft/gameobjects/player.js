@@ -4,3 +4,7 @@ AICRAFT.Player = function () {
 
 AICRAFT.Player.prototype = new AICRAFT.GameObject();
 AICRAFT.Player.prototype.constructor = AICRAFT.Player;
+
+AICRAFT.Player.prototype.applyForce() {
+
+};
