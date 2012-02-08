@@ -86,10 +86,10 @@
 			scene.add(ground);
 			//ammo part
 			(function() {
-				var groundShape = new Ammo.btBoxShape(new Ammo.btVector3(400, 0.1, 400));
+				var groundShape = new Ammo.btBoxShape(new Ammo.btVector3(400, 0.5, 400));
 				var groundTransform = new Ammo.btTransform();
 				groundTransform.setIdentity();
-				groundTransform.setOrigin(new Ammo.btVector3(0,-7.5,0));
+				groundTransform.setOrigin(new Ammo.btVector3(0,-5.5,0));
 				var mass = 0;
 				var isDynamic = (mass != 0);
 				var localInertia = new Ammo.btVector3(0, 0, 0);
@@ -112,6 +112,8 @@
 			player1.quaternion.setFromEuler(new THREE.Vector3(-30, 20, 0));
 			scene.add(player1.mesh);
 			player1.buildPhysic();
+			player1.phybody.setFriction(8);
+			//player1.phybody.setDamping(0.1,0);
 			dynamicsWorld.addRigidBody(player1.phybody);
 			
 			//construct ai1
@@ -159,6 +161,38 @@
 			// - it has to be at the begining of the function
 			// - see details at http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
 			requestAnimationFrame( animate );
+
+			// update inputs
+			(function(){
+			 	var impulse;
+				var velocity = player1.phybody.getLinearVelocity();
+				var absVelocity = Math.sqrt(velocity.getX()*velocity.getX() + velocity.getY()*velocity.getY() + velocity.getZ()*velocity.getZ()); 
+				if (keyboard.pressed("w") && absVelocity < player1.maxSpeed && player1.position.y < 1) {
+					player1.phybody.activate()
+					impulse = new Ammo.btVector3(0,0,0-player1.acceleration); 
+					player1.phybody.applyCentralImpulse(impulse);
+				}
+				if (keyboard.pressed("a") && absVelocity < player1.maxSpeed && player1.position.y < 1) {
+					player1.phybody.activate()
+					impulse = new Ammo.btVector3(0-player1.acceleration,0,0); 
+					player1.phybody.applyCentralImpulse(impulse);
+				}
+				if (keyboard.pressed("s") &&  absVelocity < player1.maxSpeed && player1.position.y < 1) {
+					player1.phybody.activate()
+					impulse = new Ammo.btVector3(0,0,player1.acceleration); 
+					player1.phybody.applyCentralImpulse(impulse);
+				}
+				if (keyboard.pressed("d") &&  absVelocity < player1.maxSpeed && player1.position.y < 1) {
+					player1.phybody.activate()
+					impulse = new Ammo.btVector3(player1.acceleration,0,0); 
+					player1.phybody.applyCentralImpulse(impulse);
+				}
+				if (keyboard.pressed("e") && player1.position.y < 0.1) {
+					player1.phybody.activate()
+					impulse = new Ammo.btVector3(0,1,0); 
+					player1.phybody.applyCentralImpulse(impulse);
+				}
+			})();
 
 			// update physics
 			dynamicsWorld.stepSimulation(1/30, 10);

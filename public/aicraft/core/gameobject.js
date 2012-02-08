@@ -1,11 +1,11 @@
 AICRAFT.GameObject = function () {
-	this.position = new THREE.Vector3(); 
-	this.quaternion = new THREE.Quaternion(0,0,0,1);
+	this.position = undefined; 
+	this.quaternion = undefined;
 	this.mesh = undefined;
 	this.phybody = undefined;
-	this.width = 5;
-	this.height = 5;
-	this.depth = 5;
+	this.width = 8;
+	this.height = 1;
+	this.depth = 8;
 	this.mass = 1;
 };
 
@@ -26,7 +26,8 @@ AICRAFT.GameObject.prototype = {
 	},	
 
 	buildPhysic: function() {
-		var objShape = new Ammo.btBoxShape(new Ammo.btVector3(this.width,this.height,this.depth));
+		var objShape = new Ammo.btBoxShape(new Ammo.btVector3(this.width/2,this.height/2,this.depth/2));
+		//var objShape = new Ammo.btSphereShape(this.width/2);
 		var objTransform = new Ammo.btTransform();	
 		objTransform.setIdentity();
 		objTransform.setOrigin(new Ammo.btVector3(this.position.x,
@@ -58,5 +59,6 @@ AICRAFT.GameObject.prototype = {
 			this.quaternion.z = dynamicsWorld.trans.getRotation().z();
 			this.quaternion.w = dynamicsWorld.trans.getRotation().w();
 		}
-	}
+	},
+
 };
