@@ -4,6 +4,7 @@
   express = require('express');
   io = require('socket.io');
 
+  //web server
   app = express.createServer();
   app.set('views',__dirname+'/views');
   app.set('view engine', 'ejs');
@@ -23,9 +24,10 @@
   });
 
   app.listen(3003);
-  io = io.listen(app);
   console.log("Express server started on port %s", app.address().port);
   
+  //game server
+  io = io.listen(app);
   io.sockets.on('connection', function (socket) {
 	  socket.emit('news', { hello: 'world' });
 	  socket.on('my other event', function (data) {
