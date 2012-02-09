@@ -1,0 +1,16 @@
+Collision Detection
+	
+Overlapping Objects
+	question: when during the time interval between frames did the collision occur?
+	some formulas for determining position based on time can be inverted to give time
+	otherwise we can use an iterative approximation algorithmn to estimate the time
+		bisection algorithmn
+
+Intersecting pathways algorithm
+	simplification: deal with only two kinds of intersecting pathways:
+		two spheres
+			p1 -> p2
+
+		two convex polygons
+			extenting edges won't cut the thing
+			connecting all vertex, no one is inside the resulting shape
