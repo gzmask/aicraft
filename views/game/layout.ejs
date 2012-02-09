@@ -24,6 +24,9 @@
 		<script src="vendor/threex/THREEx.KeyboardState.js"></script>
 		<script src="vendor/threex.dragpancontrols.js"></script>
 
+		<!--server-client communication-->
+		<script type="text/javascript" src="http://corwin.cat.uregina.ca:3003/nowjs/now.js"></script>
+
 	</head>
 <body>
 	<!-- three.js container -->
@@ -35,13 +38,5 @@
 		</div> 
 	</div> 
 		<%- body %>
-<script type="text/javascript" src="http://localhost:3003/nowjs/now.js"></script>
-<script type="text/javascript">
-  now.ready(function(){
-    // "Hello World!" will print on server
-    now.logStuff("Hello World!");
-  });
-</script>
-
 </body>
 </html>
