@@ -36,6 +36,7 @@
 			scene = new THREE.Scene();
 
 			//start physics
+			(function(){
 			var collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
 			var dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration);
 			var overlappingPairCache = new Ammo.btDbvtBroadphase();
@@ -43,7 +44,7 @@
 			dynamicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 			dynamicsWorld.setGravity(new Ammo.btVector3(0,-9.82,0));
 			dynamicsWorld.trans = new Ammo.btTransform();
-			dynamicsWorld.trans.setIdentity();
+			dynamicsWorld.trans.setIdentity();})();
 
 			// put a camera in the scene
 			camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000 );
@@ -112,8 +113,6 @@
 			player1.quaternion.setFromEuler(new THREE.Vector3(-30, 20, 0));
 			scene.add(player1.mesh);
 			player1.buildPhysic();
-			player1.phybody.setFriction(8);
-			//player1.phybody.setDamping(0.1,0);
 			dynamicsWorld.addRigidBody(player1.phybody);
 			
 			//construct ai1

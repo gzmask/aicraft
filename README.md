@@ -2,7 +2,6 @@ Tasks:
 
 =========== To-Do:  ==============
 
-	change players and ai phybody to disks
 	get the game engine running on Node.JS at server side
 	sync the players part of the game engine
 	implement the ai part of the game engine at server side

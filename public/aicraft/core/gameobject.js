@@ -6,6 +6,7 @@ AICRAFT.GameObject = function () {
 	this.width = 8;
 	this.height = 1;
 	this.depth = 8;
+	this.radius = 5;
 	this.mass = 1;
 };
 
@@ -18,6 +19,14 @@ AICRAFT.GameObject.prototype = {
 			new THREE.CubeGeometry(this.width,this.height,this.depth),
 			new THREE.MeshLambertMaterial({color: 0xffffff})	
 		);
+		/*this.mesh = new THREE.Mesh(
+			new THREE.CylinderGeometry(this.radius,this.radius,this.height),
+			new THREE.MeshLambertMaterial({color: 0xffffff})	
+		);*/
+		/*this.mesh = new THREE.Mesh(
+			new THREE.SphereGeometry(this.radius),
+			new THREE.MeshLambertMaterial({color: 0xffffff})	
+		);*/
 		this.mesh.castShadow = true;
 		this.mesh.receiveShadow = true;
 		this.position = this.mesh.position;
@@ -27,7 +36,8 @@ AICRAFT.GameObject.prototype = {
 
 	buildPhysic: function() {
 		var objShape = new Ammo.btBoxShape(new Ammo.btVector3(this.width/2,this.height/2,this.depth/2));
-		//var objShape = new Ammo.btSphereShape(this.width/2);
+		//var objShape = new Ammo.btSphereShape(this.radius);
+		//var objShape = new Ammo.btCylinderShape(new Ammo.btVector3(this.radius,this.height/2,this.radius));
 		var objTransform = new Ammo.btTransform();	
 		objTransform.setIdentity();
 		objTransform.setOrigin(new Ammo.btVector3(this.position.x,
@@ -46,6 +56,7 @@ AICRAFT.GameObject.prototype = {
 		var myMotionState = new Ammo.btDefaultMotionState(objTransform);
 		var rbInfo = new Ammo.btRigidBodyConstructionInfo(this.mass, myMotionState, objShape, localInertia);
 		this.phybody = new Ammo.btRigidBody(rbInfo);
+		this.phybody.setFriction(3);
 	},
 
 	physicUpdate: function(dynamicsWorld) {
