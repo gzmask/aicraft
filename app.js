@@ -1,8 +1,8 @@
 //entry point
 (function() {
-  var app, express, io;
+  var app, express;
   express = require('express');
-  io = require('socket.io');
+  //var io = require('socket.io');
 
   //web server
   app = express.createServer();
@@ -27,12 +27,18 @@
   console.log("Express server started on port %s", app.address().port);
   
   //game server
-  io = io.listen(app);
-  io.sockets.on('connection', function (socket) {
-	  socket.emit('news', { hello: 'world' });
-	  socket.on('my other event', function (data) {
-	    console.log(data);
-	  });
-	});
+	var nowjs = require("now");
+	var everyone = nowjs.initialize(app);
+
+	everyone.now.logStuff = function(msg){
+		console.log(msg);
+	}
+  //io = io.listen(app);
+  //io.sockets.on('connection', function (socket) {
+//	  socket.emit('news', { hello: 'world' });
+//	  socket.on('my other event', function (data) {
+//	    console.log(data);
+//	  });
+//	});
   
 }).call(this);

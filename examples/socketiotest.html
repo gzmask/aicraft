@@ -1,6 +1,6 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  var socket = socketio.connect('http://corwin.cat.uregina.ca');
+  var socket = io.connect('http://corwin.cat.uregina.ca');
   socket.on('news', function (data) {
     console.log(data);
     socket.emit('my other event', { my: 'data' });
