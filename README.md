@@ -3,6 +3,7 @@ Tasks:
 =========== To-Do:  ==============
 
 	get the game engine running on Node.JS at server side
+	players sync per frame, Ais sync per second(something like that)
 	sync the players part of the game engine
 	implement the ai part of the game engine at server side
 	sync the ai part of the game engine

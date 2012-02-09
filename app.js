@@ -24,11 +24,11 @@
 	  
 	//game server
 	var everyone = nowjs.initialize(app);
-
-	//THREE = require('./public/js/three.js');
-	Ammo = require('./public/js/ammo.js');
+	//var THREE = require('./public/js/three.js');
+	var Ammo = require('./public/js/ammo.js');
+	var v3 = new Ammo.Ammo.btVector3(1,2,3);
 	everyone.now.logStuff = function(msg){
-		console.log(msg);
+		console.log(this.now.v3 + msg);
 	};
   
 }).call(this);
