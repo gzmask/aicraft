@@ -262,7 +262,7 @@
 			return new THREE.Vertex(new THREE.Vector3(x,y,z));
 		}
 
-		var socket = io.connect('/');
+		var socket = io.connect('http://aicraft.org/game');
 		socket.on('news', function (data) {
 			console.log(data);
 			socket.emit('my other event', { my: 'data' });
