@@ -19,7 +19,7 @@
 					preserveDrawingBuffer	: true	// to allow screenshot
 				});
 				renderer.setClearColorHex( 0xBBBBBB, 1 );
-			}else{
+			} else {
 				Detector.addGetWebGLMessage();
 				return true;
 			}
@@ -262,12 +262,10 @@
 			return new THREE.Vertex(new THREE.Vector3(x,y,z));
 		}
 
-
-		//test server IO
-		now.ready(function(){
-			now.v3 = "cow";
-			now.logStuff("Hello World!");
+		var socket = io.connect('/');
+		socket.on('news', function (data) {
+			console.log(data);
+			socket.emit('my other event', { my: 'data' });
 		});
-		
 
 	</script>

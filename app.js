@@ -1,8 +1,7 @@
 //entry point
 (function() {
-	var app, express, nowjs;
+	var app, express, io;
 	express = require('express');
-	nowjs = require("now");
 
 	//web server
 	app = express.createServer();
@@ -23,12 +22,15 @@
 	console.log("Express server started on port %s", app.address().port);
 	  
 	//game server
-	var everyone = nowjs.initialize(app);
+	io = require('socket.io').listen(app)
 	//var THREE = require('./public/js/three.js');
 	var Ammo = require('./public/js/ammo.js');
 	var v3 = new Ammo.Ammo.btVector3(1,2,3);
-	everyone.now.logStuff = function(msg){
-		console.log(this.now.v3 + msg);
-	};
+	io.sockets.on('connection', function (socket) {
+		socket.emit('news', { hello: 'world' });
+		socket.on('my other event', function (data) {
+			console.log(data);
+		});
+	});
   
 }).call(this);
