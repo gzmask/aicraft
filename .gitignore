@@ -1,2 +1,3 @@
 .swp
+./node_module/**/*
 ./node_module/*

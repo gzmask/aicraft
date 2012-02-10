@@ -262,10 +262,21 @@
 			return new THREE.Vertex(new THREE.Vector3(x,y,z));
 		}
 
-		var socket = io.connect('/');
+		//test socket.io
+		/*var socket = io.connect('/');
 		socket.on('news', function (data) {
 			console.log(data);
 			socket.emit('my other event', { my: 'data' });
-		});
+		});*/
+
+		//test now.js
+		now.a = "cow";
+		//now.ready is a callback setter
+		now.ready(function(){now.logStuff("aabb");});
+		//now.logStuff does not exist in the beginning.
+		setTimeout(
+				function(){
+					now.logStuff("bbaa");
+				} , 5500);
 
 	</script>
