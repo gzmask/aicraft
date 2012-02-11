@@ -14,7 +14,7 @@
   "dependencies": {
     "express": "~2.5.2",
     "ejs": "~0.6.1",
-	"now": "~0.8.1"
+    "now": "~0.8.1"
   },
   "devDependencies": {}
 }
