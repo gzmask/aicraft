@@ -1,4 +1,5 @@
-//entry point
+#!/usr/bin/env node
+
 (function() {
 	var app, express, io, now;
 	express = require('express');
