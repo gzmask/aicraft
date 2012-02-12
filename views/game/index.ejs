@@ -105,45 +105,34 @@
 
 
 			//construct player1
-			player1 = new AICRAFT.Player();
+			var quat = new THREE.Quaternion();
+			quat.setFromEuler(new THREE.Vector3(-30, 20, 0));
+			player1 = new AICRAFT.Player(100, 125, 5, quat.x, quat.y, quat.z, quat.w);
 			player1.buildMesh();
-			player1.position.x = 100;
-			player1.position.y = 125;
-			player1.position.z = 5;
-			player1.quaternion.setFromEuler(new THREE.Vector3(-30, 20, 0));
 			scene.add(player1.mesh);
 			player1.buildPhysic();
 			dynamicsWorld.addRigidBody(player1.phybody);
 			
 			//construct ai1
-			ai1 = new AICRAFT.Ai();
+			quat.setFromEuler(new THREE.Vector3(30, 20, 0));
+			ai1 = new AICRAFT.Ai(100,5,-5,quat.x,quat.y,quat.z,quat.w);
 			ai1.buildMesh();
-			ai1.position.x = 100;
-			ai1.position.y = 5;
-			ai1.position.z = -5;
-			ai1.quaternion.setFromEuler(new THREE.Vector3(30, 20, 0));
 			scene.add(ai1.mesh);
 			ai1.buildPhysic();
 			dynamicsWorld.addRigidBody(ai1.phybody);
 
 			//construct player2
-			player2 = new AICRAFT.Player();
+			quat.setFromEuler(new THREE.Vector3(-30, -20, 0));
+			player2 = new AICRAFT.Player(-100,25,5,quat.x,quat.y,quat.z,quat.w);
 			player2.buildMesh();
-			player2.position.x = -100;
-			player2.position.y = 25;
-			player2.position.z = 5;
-			player2.quaternion.setFromEuler(new THREE.Vector3(-30, -20, 0));
 			scene.add(player2.mesh);
 			player2.buildPhysic();
 			dynamicsWorld.addRigidBody(player2.phybody);
 
 			//construct ai2
-			ai2 = new AICRAFT.Ai();
+			quat.setFromEuler(new THREE.Vector3(30, -20, 0));
+			ai2 = new AICRAFT.Ai(-100,135,-5,quat.x,quat.y,quat.z,quat.w);
 			ai2.buildMesh();
-			ai2.position.x = -100;
-			ai2.position.y = 135;
-			ai2.position.z = -5;
-			ai2.quaternion.setFromEuler(new THREE.Vector3(30, -20, 0));
 			scene.add(ai2.mesh);
 			ai2.buildPhysic();
 			dynamicsWorld.addRigidBody(ai2.phybody);

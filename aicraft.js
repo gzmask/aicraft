@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 (function() {
-	var app, express, io, now;
+	var app, express, now;
 	express = require('express');
 
 	//web server
@@ -35,6 +35,12 @@
 	});*/
 
 	//game server using now
+	var Ammo = require('./public/js/ammo.js').Ammo;
+	var AICRAFT = require('./public/aicraft/aicraft.js').AICRAFT;
+	require('./public/aicraft/core/gameobject.js');
+	require('./public/aicraft/core/gameobjects/ai.js');
+	require('./public/aicraft/core/gameobjects/player.js');
+	var v3 = new Ammo.btVector3(1,2,3);
 	var nowjs = require("now");
 	var everyone = nowjs.initialize(app);
 	everyone.now.logStuff = function(msg){

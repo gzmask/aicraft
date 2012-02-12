@@ -1,6 +1,14 @@
-AICRAFT.GameObject = function () {
-	this.position = undefined; 
-	this.quaternion = undefined;
+//x,y,z are positions and qx, qy, qz, qw are quaternion for rotations
+AICRAFT.GameObject = function (x,y,z, qx, qy, qz, qw) {
+	this.position = new Object();
+	this.position.x = x; 
+	this.position.y = y; 
+	this.position.z = z; 
+	this.quaternion = new Object();
+	this.quaternion.x = qx || 0;
+	this.quaternion.y = qy || 0;
+	this.quaternion.z = qz || 0;
+	this.quaternion.w !== undefined ? qw : 1 ;
 	this.mesh = undefined;
 	this.phybody = undefined;
 	this.width = 8;
@@ -29,9 +37,12 @@ AICRAFT.GameObject.prototype = {
 		);*/
 		this.mesh.castShadow = true;
 		this.mesh.receiveShadow = true;
-		this.position = this.mesh.position;
+		this.mesh.position.x = this.position.x;
+		console.log("buildMesh:"+this.mesh.position.x);
+		this.mesh.position.y = this.position.y;
+		this.mesh.position.z = this.position.z;
 		this.mesh.useQuaternion = true;
-		this.quaternion = this.mesh.quaternion;
+		this.mesh.quaternion.set(this.quaternion.x, this.quaternion.y, this.quaternion.z, this.quaternion.w);
 	},	
 
 	buildPhysic: function() {
@@ -43,12 +54,7 @@ AICRAFT.GameObject.prototype = {
 		objTransform.setOrigin(new Ammo.btVector3(this.position.x,
 			this.position.y,
 			this.position.z));
-		objTransform.setRotation(new Ammo.btQuaternion(
-			this.quaternion.x,
-			this.quaternion.y,
-			this.quaternion.z,
-			this.quaternion.w
-		));
+		objTransform.setRotation(new Ammo.btQuaternion(this.quaternion.x, this.quaternion.y, this.quaternion.z, this.quaternion.w));
 		var isDynamic = (this.mass != 0);
 		var localInertia = new Ammo.btVector3(0,0,0);
 		if (isDynamic) {
@@ -62,13 +68,13 @@ AICRAFT.GameObject.prototype = {
 	physicUpdate: function(dynamicsWorld) {
 		if (this.phybody.getMotionState()) {
 			this.phybody.getMotionState().getWorldTransform(dynamicsWorld.trans);
-			this.position.x = dynamicsWorld.trans.getOrigin().x().toFixed(2);
-			this.position.y = dynamicsWorld.trans.getOrigin().y().toFixed(2);
-			this.position.z = dynamicsWorld.trans.getOrigin().z().toFixed(2);
-			this.quaternion.x = dynamicsWorld.trans.getRotation().x();
-			this.quaternion.y = dynamicsWorld.trans.getRotation().y();
-			this.quaternion.z = dynamicsWorld.trans.getRotation().z();
-			this.quaternion.w = dynamicsWorld.trans.getRotation().w();
+			this.position.x = this.mesh.position.x = dynamicsWorld.trans.getOrigin().x().toFixed(2);
+			this.position.y = this.mesh.position.y = dynamicsWorld.trans.getOrigin().y().toFixed(2);
+			this.position.z = this.mesh.position.z = dynamicsWorld.trans.getOrigin().z().toFixed(2);
+			this.quaternion.x = this.mesh.quaternion.x = dynamicsWorld.trans.getRotation().x();
+			this.quaternion.y = this.mesh.quaternion.y = dynamicsWorld.trans.getRotation().y();
+			this.quaternion.z = this.mesh.quaternion.z = dynamicsWorld.trans.getRotation().z();
+			this.quaternion.w = this.mesh.quaternion.w = dynamicsWorld.trans.getRotation().w();
 		}
 	},
 
