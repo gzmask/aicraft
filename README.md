@@ -2,7 +2,6 @@ Tasks:
 
 =========== To-Do:  ==============
 
-	make THREE.js works in node.js
 	players sync per frame, Ais sync per second(something like that)
 	sync the players part of the game engine
 	implement the ai part of the game engine at server side
@@ -10,9 +9,6 @@ Tasks:
 	Use gpl.internetconnection.net/vi/ for code emittor 
 	Use Dnode to reconstruct and server/client communication
 	Use Stock.IO to handle network
-
-============ backlog ==============
-	
 
 ============== done ===============
 
@@ -23,3 +19,7 @@ Tasks:
 	Construct a ground, a helper function to display axis
 	Construct a light, shadow and two boxes to represent A.I 
 
+============ backlog ==============
+
+	make THREE.js works in node.js
+	
