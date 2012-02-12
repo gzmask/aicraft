@@ -38,7 +38,6 @@ AICRAFT.GameObject.prototype = {
 		this.mesh.castShadow = true;
 		this.mesh.receiveShadow = true;
 		this.mesh.position.x = this.position.x;
-		console.log("buildMesh:"+this.mesh.position.x);
 		this.mesh.position.y = this.position.y;
 		this.mesh.position.z = this.position.z;
 		this.mesh.useQuaternion = true;
