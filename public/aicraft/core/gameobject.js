@@ -76,6 +76,5 @@ AICRAFT.GameObject.prototype = {
 			this.quaternion.z = this.mesh.quaternion.z = dynamicsWorld.trans.getRotation().z();
 			this.quaternion.w = this.mesh.quaternion.w = dynamicsWorld.trans.getRotation().w();
 		}
-	},
-
+	}
 };
