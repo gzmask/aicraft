@@ -1,1 +1,1 @@
-nohup ./aicraft.js > /dev/null &
+nohup ./aicraft_server.js > /dev/null &
