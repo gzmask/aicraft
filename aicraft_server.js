@@ -36,8 +36,9 @@
 
 	//game server using now
 	var Ammo = require('./public/js/ammo.js').Ammo;
-	var AICRAFT = require('./engine_aicraft/build/aicraft.js');
+	var AICRAFT = require('./engine_aicraft/build/aicraft.js').AICRAFT;
 	var v3 = new Ammo.btVector3(1,2,3);
+	var player1 = new AICRAFT.GameObject(1,2,3);
 	var nowjs = require("now");
 	var everyone = nowjs.initialize(app);
 	everyone.now.logStuff = function(msg){
