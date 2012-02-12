@@ -2,7 +2,7 @@ Tasks:
 
 =========== To-Do:  ==============
 
-	get the game engine running on Node.JS at server side
+	make THREE.js works in node.js
 	players sync per frame, Ais sync per second(something like that)
 	sync the players part of the game engine
 	implement the ai part of the game engine at server side
@@ -16,6 +16,7 @@ Tasks:
 
 ============== done ===============
 
+	get the game engine running on Node.JS at server side
 	Construct two boxes to represent players, add control to these boxes
 	Use ammo.js for physics
 	Use Express and Tree.JS to reconstruct basic game loop
