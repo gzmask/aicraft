@@ -8,11 +8,12 @@ Tasks:
 	sync the ai part of the game engine
 	Use gpl.internetconnection.net/vi/ for code emittor 
 	Use Dnode to reconstruct and server/client communication
-	Use Stock.IO to handle network
+	Submit first level by Feb 28th at http://www.indiecade.com/submissions 
 
 ============== done ===============
 
 	get the game engine running on Node.JS at server side
+	Now.js running
 	Construct two boxes to represent players, add control to these boxes
 	Use ammo.js for physics
 	Use Express and Tree.JS to reconstruct basic game loop
