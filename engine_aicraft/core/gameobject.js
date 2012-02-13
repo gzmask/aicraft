@@ -22,7 +22,8 @@ AICRAFT.GameObject.prototype = {
 
 	constructor: AICRAFT.GameObject,
 
-	buildMesh: function() {
+	//called by client
+	buildMesh: function(THREE) {
 		this.mesh = new THREE.Mesh(
 			new THREE.CubeGeometry(this.width,this.height,this.depth),
 			new THREE.MeshLambertMaterial({color: 0xffffff})	
@@ -44,7 +45,8 @@ AICRAFT.GameObject.prototype = {
 		this.mesh.quaternion.set(this.quaternion.x, this.quaternion.y, this.quaternion.z, this.quaternion.w);
 	},	
 
-	buildPhysic: function() {
+	//called by client and server
+	buildPhysic: function(Ammo) {
 		var objShape = new Ammo.btBoxShape(new Ammo.btVector3(this.width/2,this.height/2,this.depth/2));
 		//var objShape = new Ammo.btSphereShape(this.radius);
 		//var objShape = new Ammo.btCylinderShape(new Ammo.btVector3(this.radius,this.height/2,this.radius));
@@ -64,7 +66,8 @@ AICRAFT.GameObject.prototype = {
 		this.phybody.setFriction(3);
 	},
 
-	physicUpdate: function(dynamicsWorld) {
+	//called by client
+	physicAndGraphicUpdate: function(dynamicsWorld) {
 		if (this.phybody.getMotionState()) {
 			this.phybody.getMotionState().getWorldTransform(dynamicsWorld.trans);
 			this.position.x = this.mesh.position.x = dynamicsWorld.trans.getOrigin().x().toFixed(2);
@@ -74,6 +77,20 @@ AICRAFT.GameObject.prototype = {
 			this.quaternion.y = this.mesh.quaternion.y = dynamicsWorld.trans.getRotation().y();
 			this.quaternion.z = this.mesh.quaternion.z = dynamicsWorld.trans.getRotation().z();
 			this.quaternion.w = this.mesh.quaternion.w = dynamicsWorld.trans.getRotation().w();
+		}
+	},
+
+	//called by server
+	physicUpdate: function(dynamicsWorld) {
+		if (this.phybody.getMotionState()) {
+			this.phybody.getMotionState().getWorldTransform(dynamicsWorld.trans);
+			this.position.x = dynamicsWorld.trans.getOrigin().x().toFixed(2);
+			this.position.y = dynamicsWorld.trans.getOrigin().y().toFixed(2);
+			this.position.z = dynamicsWorld.trans.getOrigin().z().toFixed(2);
+			this.quaternion.x = dynamicsWorld.trans.getRotation().x();
+			this.quaternion.y = dynamicsWorld.trans.getRotation().y();
+			this.quaternion.z = dynamicsWorld.trans.getRotation().z();
+			this.quaternion.w = dynamicsWorld.trans.getRotation().w();
 		}
 	}
 };
