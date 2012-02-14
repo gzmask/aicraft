@@ -4,7 +4,7 @@
 		var keyboard;
 		var ground;
 		var dynamicsWorld;
-		var player1, player2, ai1, ai2;
+		var my_player, opposite_player, ai1, ai2;
 
 		if( !init() ) {
 			animate();
@@ -104,14 +104,14 @@
 			})();
 
 
-			//construct player1
+			//construct my_player
 			var quat = new THREE.Quaternion();
 			quat.setFromEuler(new THREE.Vector3(-30, 20, 0));
-			player1 = new AICRAFT.Player(100, 125, 5, quat.x, quat.y, quat.z, quat.w);
-			player1.buildMesh(THREE);
-			scene.add(player1.mesh);
-			player1.buildPhysic(Ammo);
-			dynamicsWorld.addRigidBody(player1.phybody);
+			my_player = new AICRAFT.Player(100, 125, 5, quat.x, quat.y, quat.z, quat.w);
+			my_player.buildMesh(THREE);
+			scene.add(my_player.mesh);
+			my_player.buildPhysic(Ammo);
+			dynamicsWorld.addRigidBody(my_player.phybody);
 			
 			//construct ai1
 			quat.setFromEuler(new THREE.Vector3(30, 20, 0));
@@ -121,13 +121,13 @@
 			ai1.buildPhysic(Ammo);
 			dynamicsWorld.addRigidBody(ai1.phybody);
 
-			//construct player2
+			//construct opposite_player
 			quat.setFromEuler(new THREE.Vector3(-30, -20, 0));
-			player2 = new AICRAFT.Player(-100,25,5,quat.x,quat.y,quat.z,quat.w);
-			player2.buildMesh(THREE);
-			scene.add(player2.mesh);
-			player2.buildPhysic(Ammo);
-			dynamicsWorld.addRigidBody(player2.phybody);
+			opposite_player = new AICRAFT.Player(-100,25,5,quat.x,quat.y,quat.z,quat.w);
+			opposite_player.buildMesh(THREE);
+			scene.add(opposite_player.mesh);
+			opposite_player.buildPhysic(Ammo);
+			dynamicsWorld.addRigidBody(opposite_player.phybody);
 
 			//construct ai2
 			quat.setFromEuler(new THREE.Vector3(30, -20, 0));
@@ -153,40 +153,40 @@
 			// update inputs
 			(function(){
 			 	var impulse;
-				var velocity = player1.phybody.getLinearVelocity();
+				var velocity = my_player.phybody.getLinearVelocity();
 				var absVelocity = Math.sqrt(velocity.getX()*velocity.getX() + velocity.getY()*velocity.getY() + velocity.getZ()*velocity.getZ()); 
-				if (keyboard.pressed("w") && absVelocity < player1.maxSpeed && player1.position.y < 1) {
-					player1.phybody.activate()
-					impulse = new Ammo.btVector3(0,0,0-player1.acceleration); 
-					player1.phybody.applyCentralImpulse(impulse);
+				if (keyboard.pressed("w") && absVelocity < my_player.maxSpeed && my_player.position.y < 1) {
+					my_player.phybody.activate()
+					impulse = new Ammo.btVector3(0,0,0-my_player.acceleration); 
+					my_player.phybody.applyCentralImpulse(impulse);
 				}
-				if (keyboard.pressed("a") && absVelocity < player1.maxSpeed && player1.position.y < 1) {
-					player1.phybody.activate()
-					impulse = new Ammo.btVector3(0-player1.acceleration,0,0); 
-					player1.phybody.applyCentralImpulse(impulse);
+				if (keyboard.pressed("a") && absVelocity < my_player.maxSpeed && my_player.position.y < 1) {
+					my_player.phybody.activate()
+					impulse = new Ammo.btVector3(0-my_player.acceleration,0,0); 
+					my_player.phybody.applyCentralImpulse(impulse);
 				}
-				if (keyboard.pressed("s") &&  absVelocity < player1.maxSpeed && player1.position.y < 1) {
-					player1.phybody.activate()
-					impulse = new Ammo.btVector3(0,0,player1.acceleration); 
-					player1.phybody.applyCentralImpulse(impulse);
+				if (keyboard.pressed("s") &&  absVelocity < my_player.maxSpeed && my_player.position.y < 1) {
+					my_player.phybody.activate()
+					impulse = new Ammo.btVector3(0,0,my_player.acceleration); 
+					my_player.phybody.applyCentralImpulse(impulse);
 				}
-				if (keyboard.pressed("d") &&  absVelocity < player1.maxSpeed && player1.position.y < 1) {
-					player1.phybody.activate()
-					impulse = new Ammo.btVector3(player1.acceleration,0,0); 
-					player1.phybody.applyCentralImpulse(impulse);
+				if (keyboard.pressed("d") &&  absVelocity < my_player.maxSpeed && my_player.position.y < 1) {
+					my_player.phybody.activate()
+					impulse = new Ammo.btVector3(my_player.acceleration,0,0); 
+					my_player.phybody.applyCentralImpulse(impulse);
 				}
-				if (keyboard.pressed("e") && player1.position.y < 0.1) {
-					player1.phybody.activate()
+				if (keyboard.pressed("e") && my_player.position.y < 0.1) {
+					my_player.phybody.activate()
 					impulse = new Ammo.btVector3(0,1,0); 
-					player1.phybody.applyCentralImpulse(impulse);
+					my_player.phybody.applyCentralImpulse(impulse);
 				}
 			})();
 
 			// update physics
 			dynamicsWorld.stepSimulation(1/30, 10);
-			player1.physicAndGraphicUpdate(dynamicsWorld);
+			my_player.physicAndGraphicUpdate(dynamicsWorld);
 			ai1.physicAndGraphicUpdate(dynamicsWorld);
-			player2.physicAndGraphicUpdate(dynamicsWorld);
+			opposite_player.physicAndGraphicUpdate(dynamicsWorld);
 			ai2.physicAndGraphicUpdate(dynamicsWorld);
 
 			// update camera controls

@@ -2,6 +2,7 @@ Tasks:
 
 =========== To-Do:  ==============
 
+	Player1 needs to wait for player2, when player2 enters the game, call init on server
 	players sync per frame, Ais sync per second(something like that)
 	sync the players part of the game engine
 	implement the ai part of the game engine at server side
