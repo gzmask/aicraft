@@ -1,0 +1,15 @@
+Collision detection for 2 spheres
+	assume no acceleration => constant velocity
+
+Dot product
+v_1 = [x_1,y_1,z_1]
+v_2 = [x_2,y_2,z_2]
+v_1 [dot] v_2 = x_1*x_2 + y_1*y_2 + z_1*z_2
+
+We want the earliest time in collision 
+
+when collision happens, the distance is equal to the sume of the radius
+
+Thus 
+
+sqrt( v_1 [dot] v_2 ) == r1 + r2
