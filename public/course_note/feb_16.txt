@@ -1,0 +1,32 @@
+Minkowski Sums (+) Differences
+	mathematical underpinning for a method of detecting collisions between convex shapes(2D) (+) Solids(3D)
+	convex
+
+If we have local models that do not touch/include the origin, the minkowski sum of them, may be relatively far from the origin
+	
+Geometric Intuition behind the minkowski sum:
+A (+) B means:
+	place B at every vertices of A if B > A
+	or place A at every vertex of B (+) complex extension of convex solid
+
+Intuition behind collision detection with Minkowski sums:
+	let there are two AABBs: A and B
+	in what situation A runs into B:
+
+Instead of seaching for a collision between two shapes/solids, we will look for a collision between a point and a combined shape.
+
+Minkowski Sum with other shapes
+A is an AABB, B is a triangle, A(+)B will be a convex
+
+If we have local models that do touch/include the origin, the minkowski sum of them, may be relatively close from the origin
+
+i.e.:
+	A = {(-2,-1),(-2,1),(2,-1),(2,1)}
+	B = {(-2,-2),(0,2),(2,-2)}
+
+This case doesn't work??? Next Class reveals
+
+Minkowski Difference:
+	A (+) - B
+
+-B is the symetric of B according to the origin.
