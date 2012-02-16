@@ -4,7 +4,7 @@
 		var keyboard;
 		var ground;
 		var dynamicsWorld;
-		var my_player, opposite_player, ai1, ai2;
+		var my_player, opp_player, my_ai, opp_ai;
 
 		if( !init() ) {
 			animate();
@@ -113,29 +113,29 @@
 			my_player.buildPhysic(Ammo);
 			dynamicsWorld.addRigidBody(my_player.phybody);
 			
-			//construct ai1
+			//construct my_ai
 			quat.setFromEuler(new THREE.Vector3(30, 20, 0));
-			ai1 = new AICRAFT.Ai(100,5,-5,quat.x,quat.y,quat.z,quat.w);
-			ai1.buildMesh(THREE);
-			scene.add(ai1.mesh);
-			ai1.buildPhysic(Ammo);
-			dynamicsWorld.addRigidBody(ai1.phybody);
+			my_ai = new AICRAFT.Ai(100,5,-5,quat.x,quat.y,quat.z,quat.w);
+			my_ai.buildMesh(THREE);
+			scene.add(my_ai.mesh);
+			my_ai.buildPhysic(Ammo);
+			dynamicsWorld.addRigidBody(my_ai.phybody);
 
-			//construct opposite_player
+			//construct opp_player
 			quat.setFromEuler(new THREE.Vector3(-30, -20, 0));
-			opposite_player = new AICRAFT.Player(-100,25,5,quat.x,quat.y,quat.z,quat.w);
-			opposite_player.buildMesh(THREE);
-			scene.add(opposite_player.mesh);
-			opposite_player.buildPhysic(Ammo);
-			dynamicsWorld.addRigidBody(opposite_player.phybody);
+			opp_player = new AICRAFT.Player(-100,25,5,quat.x,quat.y,quat.z,quat.w);
+			opp_player.buildMesh(THREE);
+			scene.add(opp_player.mesh);
+			opp_player.buildPhysic(Ammo);
+			dynamicsWorld.addRigidBody(opp_player.phybody);
 
-			//construct ai2
+			//construct opp_ai
 			quat.setFromEuler(new THREE.Vector3(30, -20, 0));
-			ai2 = new AICRAFT.Ai(-100,135,-5,quat.x,quat.y,quat.z,quat.w);
-			ai2.buildMesh(THREE);
-			scene.add(ai2.mesh);
-			ai2.buildPhysic(Ammo);
-			dynamicsWorld.addRigidBody(ai2.phybody);
+			opp_ai = new AICRAFT.Ai(-100,135,-5,quat.x,quat.y,quat.z,quat.w);
+			opp_ai.buildMesh(THREE);
+			scene.add(opp_ai.mesh);
+			opp_ai.buildPhysic(Ammo);
+			dynamicsWorld.addRigidBody(opp_ai.phybody);
 
 			//construct a coordinate helper
 			coordHelper(scene);
@@ -185,9 +185,9 @@
 			// update physics
 			dynamicsWorld.stepSimulation(1/30, 10);
 			my_player.physicAndGraphicUpdate(dynamicsWorld);
-			ai1.physicAndGraphicUpdate(dynamicsWorld);
-			opposite_player.physicAndGraphicUpdate(dynamicsWorld);
-			ai2.physicAndGraphicUpdate(dynamicsWorld);
+			my_ai.physicAndGraphicUpdate(dynamicsWorld);
+			opp_player.physicAndGraphicUpdate(dynamicsWorld);
+			opp_ai.physicAndGraphicUpdate(dynamicsWorld);
 
 			// update camera controls
 			cameraControls.update();

@@ -1,4 +1,4 @@
-//this function runs on node.js side
+//server engine runs on node.js 
 AICRAFT.Engine = function () {
 	//global vars
 	this.everyone = undefined;
@@ -6,8 +6,6 @@ AICRAFT.Engine = function () {
 	this.totalPlayers = 2;
 	this.players = new Array();
 	this.ais = new Array();
-
-
 };
 
 AICRAFT.Engine.prototype = {
