@@ -8,7 +8,11 @@ AICRAFT.GameObject = function (x,y,z, qx, qy, qz, qw) {
 	this.quaternion.x = qx || 0;
 	this.quaternion.y = qy || 0;
 	this.quaternion.z = qz || 0;
-	this.quaternion.w !== undefined ? qw : 1 ;
+	if (qw === undefined) {
+		this.quaternion.w = 1 ;
+	} else {
+		this.quaternion.w = qw;
+	}
 	this.mesh = undefined;
 	this.phybody = undefined;
 	this.width = 8;

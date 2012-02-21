@@ -14,12 +14,6 @@ AICRAFT.Engine.prototype = {
 
 	init: function(expressApp, Nowjs, Ammo) {
 
-		//now
-		this.everyone = Nowjs.initialize(expressApp);
-		this.everyone.now.logStuff = function(msg){
-			console.log(msg);
-			console.log(this.now.a);
-		};
 
 		//start physics
 		var collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
@@ -49,33 +43,42 @@ AICRAFT.Engine.prototype = {
 		
 		//init game characters
 		var quat = new Ammo.btQuaternion();
-		//construct player1
-		quat.setEuler(0,20,-30);
-		var player1 = new AICRAFT.Player(100, 125, 5, quat.getX(),quat.getY(),quat.getZ(),quat.getW());
-		player1.buildPhysic(Ammo);
-		this.dynamicsWorld.addRigidBody(player1.phybody);
-		this.players.push(player1);
-		
-		//construct ai1
-		quat.setEuler(0,20,30);
-		ai1 = new AICRAFT.Ai(100,5,-5,quat.getX(),quat.getY(),quat.getZ(),quat.getW());
-		ai1.buildPhysic(Ammo);
-		this.dynamicsWorld.addRigidBody(ai1.phybody);
-		this.ais.push(ai1);
+		var self = this;
+		(function() { 
+			for (var i=0; i< self.totalPlayers; i++) {
+			//construct player
+			quat.setEuler(0,20,-30);
+			self.players[i] = new AICRAFT.Player( -200 + Math.floor(Math.random()*401), 
+				25, 
+				-200 + Math.floor(Math.random()*301), 
+				quat.getX(),quat.getY(),quat.getZ(),quat.getW());
+			self.players[i].buildPhysic(Ammo);
+			self.dynamicsWorld.addRigidBody(self.players[i].phybody);
+			
+			//construct ai
+			quat.setEuler(0,20,30);
+			self.ais[i] = new AICRAFT.Ai(self.players[i].position.x,
+				5,
+				self.players[i].position.z - 5,
+				quat.getX(),quat.getY(),quat.getZ(),quat.getW());
+			self.ais[i].buildPhysic(Ammo);
+			self.dynamicsWorld.addRigidBody(self.ais[i].phybody);
+		}})();
 
-		//construct player2
-		quat.setEuler(0,-20,-30);
-		var player2 = new AICRAFT.Player(-100,25,5,quat.getX(),quat.getY(),quat.getZ(),quat.getW());
-		player2.buildPhysic(Ammo);
-		this.dynamicsWorld.addRigidBody(player2.phybody);
-		this.players.push(player2);
+		//network
+		//test now.js connection
+		this.everyone = Nowjs.initialize(expressApp);
+		this.everyone.now.logStuff = function(msg){
+			console.log(msg);
+			console.log(this.now.a);
+		};
 
-		//construct ai2
-		quat.setEuler(0,-20,30);
-		ai2 = new AICRAFT.Ai(-100,135,-5,quat.getX(),quat.getY(),quat.getZ(),quat.getW());
-		ai2.buildPhysic(Ammo);
-		this.dynamicsWorld.addRigidBody(ai2.phybody);
-		this.ais.push(ai2);
+		//save totalPlayers
+		this.everyone.now.totalPlayers = this.totalPlayers;
+
+		//broadcast player states using now and json
+		this.everyone.now.players = eval(this._makeJson(this.players));
+		this.everyone.now.ais = eval(this._makeJson(this.ais));
 
 	},
 
@@ -89,5 +92,28 @@ AICRAFT.Engine.prototype = {
 		this.ais.forEach( (function(ai) {
 			ai.physicUpdate(this.dynamicsWorld);
 		}), this);
+	},
+
+	_makeJson: function(xs){
+		var json_text = '({"bindings":[';
+		xs.forEach( (function(s) {
+			json_text += '{"position":';
+			json_text += '['+s.position.x+','+
+				s.position.y+','+
+				s.position.z+'],';
+			json_text += '"quaternion":';
+			json_text += '['+s.quaternion.x+','+
+				s.quaternion.y+','+
+				s.quaternion.z+','+
+				s.quaternion.w+'],';
+			json_text += '"velocity":';
+			json_text += '['+s.phybody.getAngularVelocity().getX()+','+
+				s.phybody.getAngularVelocity().getY()+','+
+				s.phybody.getAngularVelocity().getZ()+']';
+			json_text += '},';
+		}));
+		json_text += ']})';
+		return json_text;
 	}
+
 };
