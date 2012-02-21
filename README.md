@@ -2,6 +2,7 @@ Tasks:
 
 =========== To-Do:  ==============
 
+	replace now.js with socket.io
 	The physics simulation is reasonably deterministic given the same initial state and inputs, therefore sync physic states and inputs	
 	players sync per frame, Ais sync per second(something like that)
 	sync the players part of the game engine

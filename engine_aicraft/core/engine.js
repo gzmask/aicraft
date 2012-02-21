@@ -6,8 +6,11 @@ AICRAFT.Engine = function () {
 	this.totalPlayers = 2;
 	this.players = new Array();
 	this.ais = new Array();
+	
+
 };
 
+//object methods
 AICRAFT.Engine.prototype = {
 
 	constructor: AICRAFT.Engine,
@@ -76,9 +79,9 @@ AICRAFT.Engine.prototype = {
 		//save totalPlayers
 		this.everyone.now.totalPlayers = this.totalPlayers;
 
-		//broadcast player states using now and json
-		this.everyone.now.players = eval(this._makeJson(this.players));
-		this.everyone.now.ais = eval(this._makeJson(this.ais));
+		//broadcast player states using now and json. (this need compress using functions)
+		this.everyone.now.players = AICRAFT.Engine.makeJson(this.players);
+		this.everyone.now.ais = AICRAFT.Engine.makeJson(this.ais);
 
 	},
 
@@ -92,28 +95,34 @@ AICRAFT.Engine.prototype = {
 		this.ais.forEach( (function(ai) {
 			ai.physicUpdate(this.dynamicsWorld);
 		}), this);
-	},
-
-	_makeJson: function(xs){
-		var json_text = '({"bindings":[';
-		xs.forEach( (function(s) {
-			json_text += '{"position":';
-			json_text += '['+s.position.x+','+
-				s.position.y+','+
-				s.position.z+'],';
-			json_text += '"quaternion":';
-			json_text += '['+s.quaternion.x+','+
-				s.quaternion.y+','+
-				s.quaternion.z+','+
-				s.quaternion.w+'],';
-			json_text += '"velocity":';
-			json_text += '['+s.phybody.getAngularVelocity().getX()+','+
-				s.phybody.getAngularVelocity().getY()+','+
-				s.phybody.getAngularVelocity().getZ()+']';
-			json_text += '},';
-		}));
-		json_text += ']})';
-		return json_text;
 	}
+	
+};
+
+//static functions
+AICRAFT.Engine.makeJson = function(xs){
+	var json_text = '({"bindings":[';
+	xs.forEach( (function(s) {
+		json_text += '{"position":';
+		json_text += '['+s.position.x+','+
+			s.position.y+','+
+			s.position.z+'],';
+		json_text += '"quaternion":';
+		json_text += '['+s.quaternion.x+','+
+			s.quaternion.y+','+
+			s.quaternion.z+','+
+			s.quaternion.w+'],';
+		json_text += '"velocity":';
+		json_text += '['+s.phybody.getAngularVelocity().getX()+','+
+			s.phybody.getAngularVelocity().getY()+','+
+			s.phybody.getAngularVelocity().getZ()+']';
+		json_text += '},';
+	}));
+	json_text += ']})';
+	return eval(json_text);
+};
+
+AICRAFT.Engine.compressSocket = function() {
 
 };
+
