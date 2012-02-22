@@ -1,11 +1,11 @@
 //server engine runs on node.js 
 AICRAFT.Engine = function () {
 	//global vars
-	this.everyone = undefined;
 	this.dynamicsWorld = undefined;
 	this.totalPlayers = 2;
 	this.players = new Array();
 	this.ais = new Array();
+	//this.io = undefined;
 	
 
 };
@@ -15,8 +15,9 @@ AICRAFT.Engine.prototype = {
 
 	constructor: AICRAFT.Engine,
 
-	init: function(expressApp, Nowjs, Ammo) {
+	init: function(expressApp, Ammo) {
 
+		var self = this;
 
 		//start physics
 		var collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
@@ -46,7 +47,6 @@ AICRAFT.Engine.prototype = {
 		
 		//init game characters
 		var quat = new Ammo.btQuaternion();
-		var self = this;
 		(function() { 
 			for (var i=0; i< self.totalPlayers; i++) {
 			//construct player
@@ -68,38 +68,45 @@ AICRAFT.Engine.prototype = {
 			self.dynamicsWorld.addRigidBody(self.ais[i].phybody);
 		}})();
 
-		//network
-		//test now.js connection
-		this.everyone = Nowjs.initialize(expressApp);
-		this.everyone.now.logStuff = function(msg){
-			console.log(msg);
-			console.log(this.now.a);
-		};
+	},
 
-		//save totalPlayers
-		this.everyone.now.totalPlayers = this.totalPlayers;
+	//network
+	networkInit: function(socket) {
+		//tell client total players
+		socket.emit('totalPlayers', this.totalPlayers);
+		//tell client connected players
+		socket.emit('nextPnum', AICRAFT.Engine.getNextAvailablePnum(this.players));
+		//tell client player states
+		socket.emit('players', AICRAFT.Engine.makeJson(this.players));
+		//tell client ai states
+		socket.emit('ais', AICRAFT.Engine.makeJson(this.ais));
+	},
 
-		//broadcast player states using now and json. (this need compress using functions)
-		this.everyone.now.players = AICRAFT.Engine.makeJson(this.players);
-		this.everyone.now.ais = AICRAFT.Engine.makeJson(this.ais);
-
+	networkSync: function(socket) {
+		var self = this;
+		AICRAFT.requestNetworkFrame(function(){self.networkSync(socket)});
+		//broadcast a compressed packet to all clients every frame
 	},
 
 	animate: function() {
 		var self = this; //closure var, without the assignment, 'this' is animate() next call
 		AICRAFT.requestAnimationFrame(function(){self.animate();});
-		this.dynamicsWorld.stepSimulation(1/30, 10);
-		this.players.forEach( (function(player) {
-			player.physicUpdate(this.dynamicsWorld);
-		}), this);
-		this.ais.forEach( (function(ai) {
-			ai.physicUpdate(this.dynamicsWorld);
-		}), this);
+		self.dynamicsWorld.stepSimulation(1/30, 10);
+		self.players.forEach( (function(player) {
+			player.physicUpdate(self.dynamicsWorld);
+		}));
+		self.ais.forEach( (function(ai) {
+			ai.physicUpdate(self.dynamicsWorld);
+		}));
 	}
 	
 };
 
-//static functions
+/*static functions
+ * These funcitons can be shared with either client or server sides
+ */
+
+//returns a json obj. xs needs to be a gameobjects array
 AICRAFT.Engine.makeJson = function(xs){
 	var json_text = '({"bindings":[';
 	xs.forEach( (function(s) {
@@ -122,7 +129,12 @@ AICRAFT.Engine.makeJson = function(xs){
 	return eval(json_text);
 };
 
-AICRAFT.Engine.compressSocket = function() {
-
+//returns the next available slot number. If returns -1, game's full
+AICRAFT.Engine.getNextAvailablePnum = function(players) {
+	for (var i = 0; i<players.length; i++) {
+		if (!players[i].connected) {
+			return i;
+		}
+	}
+	return -1;
 };
-
