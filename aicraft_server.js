@@ -33,8 +33,9 @@
 	aiengine.init(app, Ammo);
 	io.sockets.on('connection', function (socket) {
 		aiengine.networkInit(socket);
+		aiengine.networkSync(socket);
+		aiengine.animate();
 	});
-	aiengine.animate();
 	
 }).call(this);
 

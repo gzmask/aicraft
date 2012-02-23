@@ -174,11 +174,16 @@ AICRAFT.ClientEngine.prototype = {
 		});
 	},
 
+	networkSync: function(){
+		var self = this;
+		var socket = io.connect('/');
+		socket.on('test', function(data) {
+			console.log(data);
+		});
+	},
+
 	animate: function() {
 		var self = this;
-		// loop on request animation loop
-		// - it has to be at the begining of the function
-		// - see details at http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
 		requestAnimationFrame(self.animate.bind(self));
 
 		// update inputs

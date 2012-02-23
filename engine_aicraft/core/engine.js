@@ -86,6 +86,7 @@ AICRAFT.Engine.prototype = {
 		var self = this;
 		AICRAFT.requestNetworkFrame(function(){self.networkSync(socket)});
 		//broadcast a compressed packet to all clients every frame
+		socket.emit('test', [0,[1.1, [3.3,2.1]],2.2]);
 	},
 
 	animate: function() {
@@ -105,6 +106,19 @@ AICRAFT.Engine.prototype = {
 /*static functions
  * These funcitons can be shared with either client or server sides
  */
+
+/*returns a compressed string. 
+ * input: xs is a gameobject array
+ * output: contains position, quaternion, velocity
+ * needs extractPacket() to extract the info
+ */
+AICRAFT.Engine.encryptedPacket = function(xs){
+	var result = new Array();
+	forEach( function(s) {
+		var slot = new Array();
+		//first float is position
+	});
+};
 
 //returns a json obj. xs needs to be a gameobjects array
 AICRAFT.Engine.makeJson = function(xs){
