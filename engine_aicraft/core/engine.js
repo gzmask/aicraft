@@ -72,21 +72,29 @@ AICRAFT.Engine.prototype = {
 
 	//network
 	networkInit: function(socket) {
+		var self = this;
 		//tell client total players
 		socket.emit('totalPlayers', this.totalPlayers);
 		//tell client connected players
-		socket.emit('nextPnum', AICRAFT.Engine.getNextAvailablePnum(this.players));
+		socket.emit('connect', AICRAFT.Engine.getNextAvailablePnum(this.players));
+		socket.on('connected', function(data) {
+			if (data) {
+				self.players[AICRAFT.Engine.getNextAvailablePnum(self.players)].connected = true;
+				console.log("Conected players:"+AICRAFT.Engine.getNextAvailablePnum(self.players));
+			}
+		});
 		//tell client player states
-		socket.emit('players', AICRAFT.Engine.makeJson(this.players));
+		socket.emit('pi', AICRAFT.Engine.encryptedPacket(this.players));
 		//tell client ai states
-		socket.emit('ais', AICRAFT.Engine.makeJson(this.ais));
+		socket.emit('ai', AICRAFT.Engine.encryptedPacket(this.ais));
 	},
 
 	networkSync: function(socket) {
 		var self = this;
 		AICRAFT.requestNetworkFrame(function(){self.networkSync(socket)});
 		//broadcast a compressed packet to all clients every frame
-		socket.emit('test', [0,[1.1, [3.3,2.1]],2.2]);
+		socket.emit('p', AICRAFT.Engine.encryptedPacket(self.players));
+		socket.emit('a', AICRAFT.Engine.encryptedPacket(self.ais));
 	},
 
 	animate: function() {
@@ -114,10 +122,50 @@ AICRAFT.Engine.prototype = {
  */
 AICRAFT.Engine.encryptedPacket = function(xs){
 	var result = new Array();
-	forEach( function(s) {
-		var slot = new Array();
-		//first float is position
+	xs.forEach( function(s) {
+		//first three floatings are position
+		result.push(parseFloat(s.position.x));
+		result.push(parseFloat(s.position.y));
+		result.push(parseFloat(s.position.z));
+		//next four are quats
+		result.push(s.quaternion.x);
+		result.push(s.quaternion.y);
+		result.push(s.quaternion.z);
+		result.push(s.quaternion.w);
+		//last three are velocity
+		result.push(s.phybody.getAngularVelocity().getX());
+		result.push(s.phybody.getAngularVelocity().getY());
+		result.push(s.phybody.getAngularVelocity().getZ());
 	});
+	return result;
+};
+
+/*returns human readable json object
+ * containing position, quats and velocity
+ */
+AICRAFT.Engine.extractPacket = function(packet){
+	if (packet.length % 10 != 0) {
+		return;
+	};
+	var json_text = '({"bindings":[';
+	for (var i=0; i<packet.length; i+=10) {
+		json_text += '{"position":';
+		json_text += '['+packet[i]+','+
+			packet[i+1]+','+
+			packet[i+2]+'],';
+		json_text += '"quaternion":';
+		json_text += '['+packet[i+3]+','+
+			packet[i+4]+','+
+			packet[i+5]+','+
+			packet[i+6]+'],';
+		json_text += '"velocity":';
+		json_text += '['+packet[i+7]+','+
+			packet[i+8]+','+
+			packet[i+9]+']';
+		json_text += '},';
+	};
+	json_text += ']})';
+	return eval(json_text);
 };
 
 //returns a json obj. xs needs to be a gameobjects array

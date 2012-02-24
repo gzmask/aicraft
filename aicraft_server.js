@@ -2,7 +2,7 @@
 
 
 (function() {
-	var IO, Ammo, Express, AICRAFT;
+	var io, Ammo, Express, AICRAFT;
 	var aiengine, app;
 
 
@@ -27,6 +27,7 @@
 	  
 	//game server 
 	io = require('socket.io').listen(app);
+	io.set('log level', 1);
 	Ammo = require('./engine_aicraft/vendor/ammo.js').Ammo;
 	AICRAFT = require('./engine_aicraft/build/aicraft.js').AICRAFT;
 	aiengine = new AICRAFT.Engine();

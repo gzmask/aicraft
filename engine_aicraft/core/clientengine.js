@@ -5,7 +5,6 @@ AICRAFT.ClientEngine = function () {
 	this.renderer = undefined;
 	this.camera = undefined;
    	this.cameraControl = undefined;
-	this.keyboard = undefined;
 	this.ground = undefined;
 	this.dynamicsWorld = undefined;
 	this.totalPlayers = undefined;
@@ -63,8 +62,7 @@ AICRAFT.ClientEngine.prototype = {
 		// create a camera contol
 		this.cameraControls	= new THREEx.DragPanControls(this.camera)
 
-		//start tracking keyboards
-		this.keyboard = new THREEx.KeyboardState();
+
 
 		// transparently support window resize
 		THREEx.WindowResize.bind(this.renderer, this.camera);
@@ -144,6 +142,16 @@ AICRAFT.ClientEngine.prototype = {
 			self.dynamicsWorld.addRigidBody(self.ais[i].phybody);
 		}})();
 
+		//start tracking keyboards
+		//document.onkeydown = self.players[self.myPnum].handleKeyDown;
+		//document.onkeyup = self.players[self.myPnum].handleKeyUp;
+		document.addEventListener("keydown", 
+				function(event){self.players[self.myPnum].handleKeyDown(event, 
+					self.players[self.myPnum]);}, false);
+		document.addEventListener("keyup", 
+				function(event){self.players[self.myPnum].handleKeyUp(event, 
+					self.players[self.myPnum]);}, false);
+
 		//construct a coordinate helper
 		AICRAFT.ClientEngine.coordHelper(this.scene);
 
@@ -157,15 +165,17 @@ AICRAFT.ClientEngine.prototype = {
 		socket.on('totalPlayers', function(data) {
 			self.totalPlayers = data;
 		});
-		socket.on('nextPnum', function(data) {
+		socket.on('connect', function(data) {
 			self.myPnum = data;
 		});
-		socket.on('players', function(data) {
-			socket.players = data;
-			socket.on('ais', function(data) {
-				socket.ais = data;
+		socket.on('pi', function(data) {
+			socket.players = AICRAFT.Engine.extractPacket(data);
+			socket.on('ai', function(data) {
+				socket.ais = AICRAFT.Engine.extractPacket(data);
 				if (self.myPnum != -1) {
 					init_cb(socket);
+					self.players[self.myPnum].connected = true;
+					socket.emit('connected', true);
 					animate_cb();
 				} else {
 					alert('game is full');
@@ -177,8 +187,11 @@ AICRAFT.ClientEngine.prototype = {
 	networkSync: function(){
 		var self = this;
 		var socket = io.connect('/');
-		socket.on('test', function(data) {
-			console.log(data);
+		socket.on('p', function(data) {
+			//console.log(AICRAFT.Engine.extractPacket(data));
+		});
+		socket.on('a', function(data) {
+			//console.log(data);
 		});
 	},
 
@@ -187,6 +200,9 @@ AICRAFT.ClientEngine.prototype = {
 		requestAnimationFrame(self.animate.bind(self));
 
 		// update inputs
+		self.players[self.myPnum].updateInput();
+
+		/*
 		(function(){
 			var impulse;
 			var velocity = self.players[self.myPnum].phybody.getLinearVelocity();
@@ -217,6 +233,7 @@ AICRAFT.ClientEngine.prototype = {
 				self.players[self.myPnum].phybody.applyCentralImpulse(impulse);
 			}
 		})();
+		*/
 
 		// update physics
 		self.dynamicsWorld.stepSimulation(1/30, 10);
@@ -289,4 +306,43 @@ AICRAFT.ClientEngine.coordHelper = function(scene) {
 //vertex maker
 AICRAFT.ClientEngine.v = function(x,y,z) {
 	return new THREE.Vertex(new THREE.Vector3(x,y,z));
+};
+
+/*keyboard input checker
+ * input: keycod and the key you want to know if it's pressed
+ * output: true if it's pressed, false otherwise
+ */
+AICRAFT.ClientEngine.key = function(keycode, key) {
+	if (key == "w") {
+		if (keycode & 8) {
+			return true;
+		} else {
+			return false;
+		};	
+	} else if (key == "a") {
+		if (keycode & 4) {
+			return true;
+		} else {
+			return false;
+		};	
+	} else if (key == "s") {
+		if (keycode & 2) {
+			return true;
+		} else {
+			return false;
+		};	
+	} else if (key == "d") {
+		if (keycode & 1) {
+			return true;
+		} else {
+			return false;
+		};	
+	} else if (key == "e") {
+		if (keycode & 16) {
+			return true;
+		} else {
+			return false;
+		};	
+	};
+	return false;
 };
