@@ -195,8 +195,11 @@ AICRAFT.ClientEngine.prototype = {
 		});
 	},
 
-	syncKey: function(socket) {
-
+	syncKey: function() {
+		var self = this;
+		requestAnimationFrame(self.syncKey.bind(self));
+		var socket = io.connect('/');
+		socket.emit('k'+self.myPnum, self.players[self.myPnum].keycode);
 	},
 
 	animate: function() {

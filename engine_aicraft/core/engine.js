@@ -91,14 +91,21 @@ AICRAFT.Engine.prototype = {
 
 	syncPos: function(socket) {
 		var self = this;
-		AICRAFT.requestNetworkFrame(function(){self.networkSync(socket)});
+		AICRAFT.requestNetworkFrame(function(){self.syncPos(socket)});
 		//broadcast a compressed packet to all clients every frame
 		socket.emit('p', AICRAFT.Engine.encryptedPacket(self.players));
 		socket.emit('a', AICRAFT.Engine.encryptedPacket(self.ais));
 	},
 
 	syncKey: function(socket) {
-
+		var self = this;
+		for (var i = 0; i < self.totalPlayers; i++) {
+			socket.on('k'+i, function(data) {
+				console.log(self.players[i]);
+				console.log(i);
+				self.players[i].keycode = data;
+			});
+		};
 	},
 
 	animate: function() {
