@@ -89,12 +89,16 @@ AICRAFT.Engine.prototype = {
 		socket.emit('ai', AICRAFT.Engine.encryptedPacket(this.ais));
 	},
 
-	networkSync: function(socket) {
+	syncPos: function(socket) {
 		var self = this;
 		AICRAFT.requestNetworkFrame(function(){self.networkSync(socket)});
 		//broadcast a compressed packet to all clients every frame
 		socket.emit('p', AICRAFT.Engine.encryptedPacket(self.players));
 		socket.emit('a', AICRAFT.Engine.encryptedPacket(self.ais));
+	},
+
+	syncKey: function(socket) {
+
 	},
 
 	animate: function() {

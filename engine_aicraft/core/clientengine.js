@@ -184,7 +184,7 @@ AICRAFT.ClientEngine.prototype = {
 		});
 	},
 
-	networkSync: function(){
+	syncPos: function(){
 		var self = this;
 		var socket = io.connect('/');
 		socket.on('p', function(data) {
@@ -195,45 +195,16 @@ AICRAFT.ClientEngine.prototype = {
 		});
 	},
 
+	syncKey: function(socket) {
+
+	},
+
 	animate: function() {
 		var self = this;
 		requestAnimationFrame(self.animate.bind(self));
 
 		// update inputs
 		self.players[self.myPnum].updateInput();
-
-		/*
-		(function(){
-			var impulse;
-			var velocity = self.players[self.myPnum].phybody.getLinearVelocity();
-			var absVelocity = Math.sqrt(velocity.getX()*velocity.getX() + velocity.getY()*velocity.getY() + velocity.getZ()*velocity.getZ()); 
-			if (self.keyboard.pressed("w") && absVelocity < self.players[self.myPnum].maxSpeed && self.players[self.myPnum].position.y < 1) {
-				self.players[self.myPnum].phybody.activate()
-				impulse = new Ammo.btVector3(0,0,0-self.players[self.myPnum].acceleration); 
-				self.players[self.myPnum].phybody.applyCentralImpulse(impulse);
-			}
-			if (self.keyboard.pressed("a") && absVelocity < self.players[self.myPnum].maxSpeed && self.players[self.myPnum].position.y < 1) {
-				self.players[self.myPnum].phybody.activate()
-				impulse = new Ammo.btVector3(0-self.players[self.myPnum].acceleration,0,0); 
-				self.players[self.myPnum].phybody.applyCentralImpulse(impulse);
-			}
-			if (self.keyboard.pressed("s") &&  absVelocity < self.players[self.myPnum].maxSpeed && self.players[self.myPnum].position.y < 1) {
-				self.players[self.myPnum].phybody.activate()
-				impulse = new Ammo.btVector3(0,0,self.players[self.myPnum].acceleration); 
-				self.players[self.myPnum].phybody.applyCentralImpulse(impulse);
-			}
-			if (self.keyboard.pressed("d") &&  absVelocity < self.players[self.myPnum].maxSpeed && self.players[self.myPnum].position.y < 1) {
-				self.players[self.myPnum].phybody.activate()
-				impulse = new Ammo.btVector3(self.players[self.myPnum].acceleration,0,0); 
-				self.players[self.myPnum].phybody.applyCentralImpulse(impulse);
-			}
-			if (self.keyboard.pressed("e") && self.players[self.myPnum].position.y < 0.1) {
-				self.players[self.myPnum].phybody.activate()
-				impulse = new Ammo.btVector3(0,1,0); 
-				self.players[self.myPnum].phybody.applyCentralImpulse(impulse);
-			}
-		})();
-		*/
 
 		// update physics
 		self.dynamicsWorld.stepSimulation(1/30, 10);
@@ -309,7 +280,7 @@ AICRAFT.ClientEngine.v = function(x,y,z) {
 };
 
 /*keyboard input checker
- * input: keycod and the key you want to know if it's pressed
+ * input: keycode and the key you want to know if it's pressed
  * output: true if it's pressed, false otherwise
  */
 AICRAFT.ClientEngine.key = function(keycode, key) {

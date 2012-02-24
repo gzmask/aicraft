@@ -1,5 +1,6 @@
 <script type="text/javascript">
 	var aiengine = new AICRAFT.ClientEngine();
 	aiengine.networkReady(aiengine.init.bind(aiengine), aiengine.animate.bind(aiengine));
-	aiengine.networkSync();
+	aiengine.syncPos();
+	aiengine.syncKey();
 </script>
