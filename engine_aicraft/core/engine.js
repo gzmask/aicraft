@@ -100,10 +100,9 @@ AICRAFT.Engine.prototype = {
 	syncKey: function(socket) {
 		var self = this;
 		for (var i = 0; i < self.totalPlayers; i++) {
-			socket.on('k'+i, function(data) {
-				console.log(self.players[i]);
-				console.log(i);
-				self.players[i].keycode = data;
+			var j = i;
+			socket.on('k'+j, function(data) {
+				self.players[j].keycode = data;
 			});
 		};
 	},

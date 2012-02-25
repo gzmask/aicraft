@@ -104,8 +104,7 @@ AICRAFT.ClientEngine.prototype = {
 			var myMotionState = new Ammo.btDefaultMotionState(groundTransform);
 			var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, groundShape, localInertia);
 			self.ground.phybody = new Ammo.btRigidBody(rbInfo);
-			self.dynamicsWorld.addRigidBody(self.ground.phybody);
-		})();
+			self.dynamicsWorld.addRigidBody(self.ground.phybody);})();
 
 
 		var quat = new THREE.Quaternion();
