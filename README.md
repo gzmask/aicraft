@@ -2,7 +2,7 @@ Tasks:
 
 =========== To-Do:  ==============
 
-	The physics simulation is reasonably deterministic given the same initial state and inputs, therefore sync physic states and inputs	
+	sync velocity
 	disconnection needs to be handle
 	players sync per frame, Ais sync per second(something like that)
 	sync the players part of the game engine
@@ -27,3 +27,4 @@ Tasks:
 	make THREE.js works in node.js
 	Player1 needs to wait for player2, when player2 enters the game, call init on server
 	replace now.js with socket.io
+	The physics simulation is reasonably deterministic given the same initial state and inputs, therefore sync physic states and inputs	
