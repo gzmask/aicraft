@@ -1,12 +1,8 @@
 Tasks:
 
 =========== To-Do:  ==============
-
-	sync velocity
-	disconnection needs to be handle
-	players sync per frame, Ais sync per second(something like that)
-	sync the players part of the game engine
-	implement the ai part of the game engine at server side
+	
+	implement ai on server side
 	sync the ai part of the game engine
 	Use gpl.internetconnection.net/vi/ for code emittor 
 	Use Dnode to reconstruct and server/client communication
@@ -14,6 +10,13 @@ Tasks:
 
 ============== done ===============
 
+	disconnection needs to be handle
+	sync velocity
+	sync the players part of the game engine
+	replace now.js with socket.io
+	The physics simulation is reasonably deterministic given the same initial state and inputs, therefore sync physic states and inputs	
+	implement the ai part of the game engine at server side
+	Player1 needs to wait for player2, when player2 enters the game, call init on server
 	get the game engine running on Node.JS at server side
 	Now.js running
 	Construct two boxes to represent players, add control to these boxes
@@ -25,6 +28,4 @@ Tasks:
 ============ backlog ==============
 
 	make THREE.js works in node.js
-	Player1 needs to wait for player2, when player2 enters the game, call init on server
-	replace now.js with socket.io
-	The physics simulation is reasonably deterministic given the same initial state and inputs, therefore sync physic states and inputs	
+	players sync per frame, Ais sync per second(something like that)

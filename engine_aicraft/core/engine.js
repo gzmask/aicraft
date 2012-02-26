@@ -5,8 +5,9 @@ AICRAFT.Engine = function () {
 	this.totalPlayers = 2;
 	this.players = new Array();
 	this.ais = new Array();
-	this.Pnums = new Array();
-	
+	this.animateFPS = 60;
+	this.posFPS = 20;
+	this.phyFPS = 30;
 
 };
 
@@ -77,49 +78,29 @@ AICRAFT.Engine.prototype = {
 		socket.emit('totalPlayers', this.totalPlayers);
 		//tell client connected players
 		socket.emit('connect', AICRAFT.Engine.getNextAvailablePnum(this.players));
-		socket.on('connected', function(data) {
-			if (self.players[data].connected) {
+		socket.on('connected', function(Pnum) {
+			if (self.players[Pnum].connected) {
 				return false;
 			};
-			var newPnum = AICRAFT.Engine.getNextAvailablePnum(self.players);
-			console.log("Conected players:" + newPnum);
-			self.players[newPnum].connected = true;
+			console.log("Conected players:" + Pnum);
+			self.players[Pnum].connected = true;
+			socket.set("Pnum", Pnum);
 		});
 		//tell client player states
 		socket.emit('pi', AICRAFT.Engine.encryptedPacket(this.players));
 		//tell client ai states
 		socket.emit('ai', AICRAFT.Engine.encryptedPacket(this.ais));
-		//keep alive reported function
-		socket.on('r', function(Pnum) {
-			//remove responded players
-			for (var j=0; j<self.Pnums.length; j++) {
-				if (self.Pnums[j] == Pnum) {
-					self.Pnums.splice(j,1);}
-			}
-		});
-
-	},
-
-	keepAlive: function(socket) {
-		var self = this;
-		AICRAFT.requestKeepAliveFrame(function(){self.keepAlive(socket);});
-		//push all players into Pnums
-		for (var i=0; i<self.totalPlayers; i++) {
-			self.Pnums.push(i);
-		};
-		socket.emit('l', null);
-		//set unresponsive players to be disconnected
-		setTimeout(function(){
-			self.Pnums.forEach(function(Pnum) {
+		//disconnect peers
+		socket.on('disconnect', function(){
+			socket.get('Pnum', function(err,Pnum) {
 				self.players[Pnum].connected = false;
 			});
-			self.Pnums = [];
-		}, 2500);
+		});
 	},
 
 	syncPos: function(socket) {
 		var self = this;
-		AICRAFT.requestPosFrame(function(){self.syncPos(socket)});
+		AICRAFT.requestPosFrame(function(){self.syncPos(socket)}, self.posFPS);
 		//broadcast a compressed packet to all clients every frame
 		socket.emit('p', AICRAFT.Engine.encryptedPacket(self.players));
 		socket.emit('a', AICRAFT.Engine.encryptedPacket(self.ais));
@@ -127,21 +108,20 @@ AICRAFT.Engine.prototype = {
 
 	syncKey: function(socket, Ammo) {
 		var self = this;
-		for (var i = 0; i < self.totalPlayers; i++) {
-			socket.on("k"+i.toString(), function(data) {
-				var j = data[1];
-				self.players[j].keycode = data[0];
-				self.players[j].updateInput(Ammo);
+		socket.on("k", function(keycode) {
+			socket.get('Pnum', function(err, Pnum) {
+				self.players[Pnum].keycode = keycode;
+				self.players[Pnum].updateInput(Ammo);
 			});
-		};
+		});
 	},
 
 	animate: function() {
 		var self = this; //closure var, without the assignment, 'this' is animate() next call
-		AICRAFT.requestAnimationFrame(function(){self.animate();});
+		AICRAFT.requestAnimationFrame(function(){self.animate();}, self.animateFPS);
 
 		//update physics
-		self.dynamicsWorld.stepSimulation(1/30, 10);
+		self.dynamicsWorld.stepSimulation(1/self.phyFPS, 10);
 		self.players.forEach( (function(player) {
 			player.physicUpdate(self.dynamicsWorld);
 		}));

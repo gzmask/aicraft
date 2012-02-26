@@ -1,5 +1,7 @@
 //client engine runs in browsers
 AICRAFT.ClientEngine = function () {
+	this.keyFPS = 30;
+	this.phyFPS = 30;
 	this.stats = undefined;
 	this.scene = undefined; 
 	this.renderer = undefined;
@@ -163,6 +165,7 @@ AICRAFT.ClientEngine.prototype = {
 		var socket = io.connect('/');
 		socket.on('totalPlayers', function(data) {
 			self.totalPlayers = data;
+			console.log("yo");
 		});
 		socket.on('connect', function(data) {
 			self.myPnum = data;
@@ -183,10 +186,6 @@ AICRAFT.ClientEngine.prototype = {
 					alert('game is full');
 				}
 			});
-		});
-		//keep alive response
-		socket.on('l', function() {
-			socket.emit('r', self.myPnum);
 		});
 	},
 
@@ -230,14 +229,13 @@ AICRAFT.ClientEngine.prototype = {
 	syncKey: function() {
 		var self = this;
 		//requestAnimationFrame(self.syncKey.bind(self));
-		AICRAFT.requestKeyFrame(self.syncKey.bind(self));
+		AICRAFT.requestKeyFrame(self.syncKey.bind(self), self.keyFPS);
 		var socket = io.connect('/');
 		if ( (self.myPnum !== undefined) && (self.players[self.myPnum].keycode != 0) ) {
-			socket.emit("k"+self.myPnum.toString(), 
-					[self.players[self.myPnum].keycode, self.myPnum]);
+			socket.emit("k", self.players[self.myPnum].keycode);
 			self.players[self.myPnum].updateInput();
 		} else if((self.myPnum !== undefined) && (self.players[self.myPnum].keycode == 0) && (self.lastKeycode != 0)) {
-			socket.emit("k"+self.myPnum.toString(), [0, self.myPnum]);
+			socket.emit("k", 0);
 		};
 		self.lastKeycode = self.players[self.myPnum].keycode;
 	},
@@ -247,7 +245,7 @@ AICRAFT.ClientEngine.prototype = {
 		requestAnimationFrame(self.animate.bind(self));
 
 		// update physics
-		self.dynamicsWorld.stepSimulation(1/30, 10);
+		self.dynamicsWorld.stepSimulation(1/self.phyFPS, 10);
 		(function(){ for (var i=0; i<self.totalPlayers; i++) {
 			self.players[i].physicAndGraphicUpdate(self.dynamicsWorld);
 			self.ais[i].physicAndGraphicUpdate(self.dynamicsWorld);

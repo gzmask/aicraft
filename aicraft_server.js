@@ -27,18 +27,17 @@
 	  
 	//game server 
 	io = require('socket.io').listen(app);
-	io.set('log level', 1);
+	io.set('log level', 0);
 	Ammo = require('./engine_aicraft/vendor/ammo.js').Ammo;
 	AICRAFT = require('./engine_aicraft/build/aicraft.js').AICRAFT;
 	aiengine = new AICRAFT.Engine();
 	aiengine.init(app, Ammo);
 	io.sockets.on('connection', function (socket) {
 		aiengine.networkInit(socket);
-		aiengine.syncPos(socket);
 		aiengine.syncKey(socket, Ammo);
-		aiengine.animate();
-		aiengine.keepAlive(socket);
 	});
+	aiengine.syncPos(io.sockets);
+	aiengine.animate();
 	
 }).call(this);
 
