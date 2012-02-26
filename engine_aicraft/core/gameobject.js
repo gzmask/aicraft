@@ -20,6 +20,7 @@ AICRAFT.GameObject = function (x,y,z, qx, qy, qz, qw) {
 	this.depth = 8;
 	this.radius = 5;
 	this.mass = 1;
+	this.friction = 3;
 };
 
 AICRAFT.GameObject.prototype = {
@@ -50,7 +51,10 @@ AICRAFT.GameObject.prototype = {
 	},	
 
 	//called by client and server
-	buildPhysic: function(Ammo) {
+	buildPhysic: function(AmmoIn) {
+		if (AmmoIn !== undefined) {
+			Ammo = AmmoIn;
+		};
 		var objShape = new Ammo.btBoxShape(new Ammo.btVector3(this.width/2,this.height/2,this.depth/2));
 		//var objShape = new Ammo.btSphereShape(this.radius);
 		//var objShape = new Ammo.btCylinderShape(new Ammo.btVector3(this.radius,this.height/2,this.radius));
@@ -67,7 +71,28 @@ AICRAFT.GameObject.prototype = {
 		var myMotionState = new Ammo.btDefaultMotionState(objTransform);
 		var rbInfo = new Ammo.btRigidBodyConstructionInfo(this.mass, myMotionState, objShape, localInertia);
 		this.phybody = new Ammo.btRigidBody(rbInfo);
-		this.phybody.setFriction(3);
+		this.phybody.setFriction(this.friction);
+	},
+
+	//sets the physic states of this object
+	setPos: function(AmmoIn,x,y,z,qx,qy,qz,qw) {
+		if (AmmoIn !== undefined) {
+			Ammo = AmmoIn;
+		};
+		var objTransform = new Ammo.btTransform();	
+		objTransform.setIdentity();
+		objTransform.setOrigin(new Ammo.btVector3(x, y, z));
+		objTransform.setRotation(new Ammo.btQuaternion(qx, qy, qz, qw));
+		this.position.x = x;
+		this.position.y = y;
+		this.position.z = z;
+		this.quaternion.x = qx;
+		this.quaternion.y = qy;
+		this.quaternion.z = qz;
+		this.quaternion.w = qw;
+		this.phybody.getMotionState().setWorldTransform(objTransform);
+		this.phybody.setCenterOfMassTransform(objTransform);
+		this.phybody.activate();
 	},
 
 	//called by client

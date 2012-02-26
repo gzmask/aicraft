@@ -154,8 +154,6 @@ AICRAFT.ClientEngine.prototype = {
 		//construct a coordinate helper
 		AICRAFT.ClientEngine.coordHelper(this.scene);
 
-		//console.log(AICRAFT.Engine.makeJson(players));
-		//console.log(AICRAFT.Engine.makeJson(ais));
 	},
 
 	networkReady: function(init_cb, animate_cb) {
@@ -187,18 +185,42 @@ AICRAFT.ClientEngine.prototype = {
 		var self = this;
 		var socket = io.connect('/');
 		socket.on('p', function(data) {
-			//console.log(AICRAFT.Engine.extractPacket(data));
+			var players = AICRAFT.Engine.extractPacket(data).bindings;
+			for (var i = 0; i<self.totalPlayers; i++) {
+				self.players[i].setPos(Ammo,
+					players[i].position[0],
+					players[i].position[1],
+					players[i].position[2],
+					players[i].quaternion[0],
+					players[i].quaternion[1],
+					players[i].quaternion[2],
+					players[i].quaternion[3]);
+			};
 		});
 		socket.on('a', function(data) {
-			//console.log(data);
+			var ais = AICRAFT.Engine.extractPacket(data).bindings;
+			for (var i = 0; i<self.totalPlayers; i++) {
+				self.ais[i].setPos(Ammo,
+					ais[i].position[0],
+					ais[i].position[1],
+					ais[i].position[2],
+					ais[i].quaternion[0],
+					ais[i].quaternion[1],
+					ais[i].quaternion[2],
+					ais[i].quaternion[3]);
+			};
 		});
 	},
 
 	syncKey: function() {
 		var self = this;
-		requestAnimationFrame(self.syncKey.bind(self));
+		//requestAnimationFrame(self.syncKey.bind(self));
+		AICRAFT.requestNetworkFrame(self.syncKey.bind(self));
 		var socket = io.connect('/');
-		socket.emit('k'+self.myPnum, self.players[self.myPnum].keycode);
+		if ( (self.myPnum !== undefined) && (self.players[self.myPnum].keycode != 0) ) {
+			socket.emit("k"+self.myPnum.toString(), 
+					[self.players[self.myPnum].keycode, self.myPnum]);
+		};
 	},
 
 	animate: function() {

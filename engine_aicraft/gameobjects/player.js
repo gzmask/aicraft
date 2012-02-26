@@ -37,34 +37,38 @@ AICRAFT.Player.prototype.handleKeyUp = function(event, self) {
 	};
 };
 
-AICRAFT.Player.prototype.updateInput = function() {
+AICRAFT.Player.prototype.updateInput = function(AmmoIn) {
+	if (AmmoIn !== undefined) {
+		Ammo = AmmoIn;
+		console.log("hello");
+	};
 	var self = this;
 
 	var impulse;
 	var velocity = this.phybody.getLinearVelocity();
 	var absVelocity = Math.sqrt(velocity.getX()*velocity.getX() + velocity.getY()*velocity.getY() + velocity.getZ()*velocity.getZ()); 
 	if (AICRAFT.ClientEngine.key(this.keycode,"w") && absVelocity < this.maxSpeed && this.position.y < 1) {
-		this.phybody.activate()
+		this.phybody.activate();
 		impulse = new Ammo.btVector3(0,0,0-this.acceleration); 
 		this.phybody.applyCentralImpulse(impulse);
 	}
 	if (AICRAFT.ClientEngine.key(this.keycode,"a") && absVelocity < this.maxSpeed && this.position.y < 1) {
-		this.phybody.activate()
+		this.phybody.activate();
 		impulse = new Ammo.btVector3(0-this.acceleration,0,0); 
 		this.phybody.applyCentralImpulse(impulse);
 	}
 	if (AICRAFT.ClientEngine.key(this.keycode,"s") &&  absVelocity < this.maxSpeed && this.position.y < 1) {
-		this.phybody.activate()
+		this.phybody.activate();
 		impulse = new Ammo.btVector3(0,0,this.acceleration); 
 		this.phybody.applyCentralImpulse(impulse);
 	}
 	if (AICRAFT.ClientEngine.key(this.keycode,"d") &&  absVelocity < this.maxSpeed && this.position.y < 1) {
-		this.phybody.activate()
+		this.phybody.activate();
 		impulse = new Ammo.btVector3(this.acceleration,0,0); 
 		this.phybody.applyCentralImpulse(impulse);
 	}
 	if (AICRAFT.ClientEngine.key(this.keycode,"e") && this.position.y < 0.1) {
-		this.phybody.activate()
+		this.phybody.activate();
 		impulse = new Ammo.btVector3(0,1,0); 
 		this.phybody.applyCentralImpulse(impulse);
 	}

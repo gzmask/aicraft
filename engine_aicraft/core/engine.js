@@ -100,16 +100,25 @@ AICRAFT.Engine.prototype = {
 	syncKey: function(socket) {
 		var self = this;
 		for (var i = 0; i < self.totalPlayers; i++) {
-			var j = i;
-			socket.on('k'+j, function(data) {
-				self.players[j].keycode = data;
+			socket.on("k"+i.toString(), function(data) {
+				var j = data[1];
+				self.players[j].keycode = data[0];
 			});
 		};
 	},
 
-	animate: function() {
+	animate: function(Ammo) {
 		var self = this; //closure var, without the assignment, 'this' is animate() next call
 		AICRAFT.requestAnimationFrame(function(){self.animate();});
+
+		//update inputs
+		self.players.forEach( (function(player) {
+			if (player.connected) {
+				player.updateInput(Ammo);
+			}
+		}));
+
+		//update physics
 		self.dynamicsWorld.stepSimulation(1/30, 10);
 		self.players.forEach( (function(player) {
 			player.physicUpdate(self.dynamicsWorld);
