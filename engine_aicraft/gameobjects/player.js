@@ -40,7 +40,6 @@ AICRAFT.Player.prototype.handleKeyUp = function(event, self) {
 AICRAFT.Player.prototype.updateInput = function(AmmoIn) {
 	if (AmmoIn !== undefined) {
 		Ammo = AmmoIn;
-		console.log("hello");
 	};
 	var self = this;
 

@@ -35,7 +35,7 @@
 	io.sockets.on('connection', function (socket) {
 		aiengine.networkInit(socket);
 		aiengine.syncPos(socket);
-		aiengine.syncKey(socket);
+		aiengine.syncKey(socket, Ammo);
 		aiengine.animate(Ammo);
 	});
 	

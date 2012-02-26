@@ -79,8 +79,8 @@ AICRAFT.Engine.prototype = {
 		socket.emit('connect', AICRAFT.Engine.getNextAvailablePnum(this.players));
 		socket.on('connected', function(data) {
 			if (data) {
-				self.players[AICRAFT.Engine.getNextAvailablePnum(self.players)].connected = true;
 				console.log("Conected players:"+AICRAFT.Engine.getNextAvailablePnum(self.players));
+				self.players[AICRAFT.Engine.getNextAvailablePnum(self.players)].connected = true;
 			}
 		});
 		//tell client player states
@@ -91,18 +91,19 @@ AICRAFT.Engine.prototype = {
 
 	syncPos: function(socket) {
 		var self = this;
-		AICRAFT.requestNetworkFrame(function(){self.syncPos(socket)});
+		AICRAFT.requestPosFrame(function(){self.syncPos(socket)});
 		//broadcast a compressed packet to all clients every frame
 		socket.emit('p', AICRAFT.Engine.encryptedPacket(self.players));
 		socket.emit('a', AICRAFT.Engine.encryptedPacket(self.ais));
 	},
 
-	syncKey: function(socket) {
+	syncKey: function(socket, Ammo) {
 		var self = this;
 		for (var i = 0; i < self.totalPlayers; i++) {
 			socket.on("k"+i.toString(), function(data) {
 				var j = data[1];
 				self.players[j].keycode = data[0];
+				self.players[j].updateInput(Ammo);
 			});
 		};
 	},
@@ -110,13 +111,6 @@ AICRAFT.Engine.prototype = {
 	animate: function(Ammo) {
 		var self = this; //closure var, without the assignment, 'this' is animate() next call
 		AICRAFT.requestAnimationFrame(function(){self.animate();});
-
-		//update inputs
-		self.players.forEach( (function(player) {
-			if (player.connected) {
-				player.updateInput(Ammo);
-			}
-		}));
 
 		//update physics
 		self.dynamicsWorld.stepSimulation(1/30, 10);

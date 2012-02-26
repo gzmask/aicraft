@@ -75,7 +75,7 @@ AICRAFT.GameObject.prototype = {
 	},
 
 	//sets the physic states of this object
-	setPos: function(AmmoIn,x,y,z,qx,qy,qz,qw) {
+	setPos: function(AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz) {
 		if (AmmoIn !== undefined) {
 			Ammo = AmmoIn;
 		};
@@ -90,9 +90,10 @@ AICRAFT.GameObject.prototype = {
 		this.quaternion.y = qy;
 		this.quaternion.z = qz;
 		this.quaternion.w = qw;
+		this.phybody.activate();
 		this.phybody.getMotionState().setWorldTransform(objTransform);
 		this.phybody.setCenterOfMassTransform(objTransform);
-		this.phybody.activate();
+		this.phybody.setAngularVelocity(new Ammo.btVector3(vx,vy,vz));
 	},
 
 	//called by client

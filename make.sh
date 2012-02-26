@@ -4,7 +4,6 @@ java -jar ./engine_aicraft/compiler.jar --js \
 	./engine_aicraft/gameobjects/ai.js\
 	./engine_aicraft/gameobjects/player.js\
 	./engine_aicraft/helpers/requestanimationframe.js\
-	./engine_aicraft/helpers/requestnetworkframe.js\
 	./engine_aicraft/core/engine.js\
 	./engine_aicraft/core/clientengine.js\
 	--js_output_file ./engine_aicraft/build/aicraft.js\

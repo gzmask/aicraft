@@ -12,6 +12,8 @@ AICRAFT.ClientEngine = function () {
 	this.myPnum = undefined;
 	this.players = new Array();
 	this.ais = new Array();
+	//dirty vars
+	this.lastKeycode = 0;
 };
 
 //proto methods
@@ -194,7 +196,10 @@ AICRAFT.ClientEngine.prototype = {
 					players[i].quaternion[0],
 					players[i].quaternion[1],
 					players[i].quaternion[2],
-					players[i].quaternion[3]);
+					players[i].quaternion[3],
+					players[i].velocity[0],
+					players[i].velocity[1],
+					players[i].velocity[2]);
 			};
 		});
 		socket.on('a', function(data) {
@@ -207,7 +212,10 @@ AICRAFT.ClientEngine.prototype = {
 					ais[i].quaternion[0],
 					ais[i].quaternion[1],
 					ais[i].quaternion[2],
-					ais[i].quaternion[3]);
+					ais[i].quaternion[3],
+					ais[i].velocity[0],
+					ais[i].velocity[1],
+					ais[i].velocity[2]);
 			};
 		});
 	},
@@ -215,20 +223,21 @@ AICRAFT.ClientEngine.prototype = {
 	syncKey: function() {
 		var self = this;
 		//requestAnimationFrame(self.syncKey.bind(self));
-		AICRAFT.requestNetworkFrame(self.syncKey.bind(self));
+		AICRAFT.requestKeyFrame(self.syncKey.bind(self));
 		var socket = io.connect('/');
 		if ( (self.myPnum !== undefined) && (self.players[self.myPnum].keycode != 0) ) {
 			socket.emit("k"+self.myPnum.toString(), 
 					[self.players[self.myPnum].keycode, self.myPnum]);
+			self.players[self.myPnum].updateInput();
+		} else if((self.myPnum !== undefined) && (self.players[self.myPnum].keycode == 0) && (self.lastKeycode != 0)) {
+			socket.emit("k"+self.myPnum.toString(), [0, self.myPnum]);
 		};
+		self.lastKeycode = self.players[self.myPnum].keycode;
 	},
 
 	animate: function() {
 		var self = this;
 		requestAnimationFrame(self.animate.bind(self));
-
-		// update inputs
-		self.players[self.myPnum].updateInput();
 
 		// update physics
 		self.dynamicsWorld.stepSimulation(1/30, 10);
