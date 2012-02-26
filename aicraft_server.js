@@ -36,7 +36,8 @@
 		aiengine.networkInit(socket);
 		aiengine.syncPos(socket);
 		aiengine.syncKey(socket, Ammo);
-		aiengine.animate(Ammo);
+		aiengine.animate();
+		aiengine.keepAlive(socket);
 	});
 	
 }).call(this);

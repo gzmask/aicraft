@@ -94,6 +94,9 @@ AICRAFT.Player.prototype.updateInput = function(a) {
 AICRAFT.requestAnimationFrame = function(a) {
   return setTimeout(a, 1E3 / 30)
 };
+AICRAFT.requestKeepAliveFrame = function(a) {
+  return setTimeout(a, 5E3)
+};
 AICRAFT.requestPosFrame = function(a) {
   return setTimeout(a, 1E3 / 30)
 };
@@ -104,7 +107,8 @@ AICRAFT.Engine = function() {
   this.dynamicsWorld = void 0;
   this.totalPlayers = 2;
   this.players = [];
-  this.ais = []
+  this.ais = [];
+  this.Pnums = []
 };
 AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(a, b) {
   var c = new b.btDefaultCollisionConfiguration, d = new b.btCollisionDispatcher(c), e = new b.btDbvtBroadphase, f = new b.btSequentialImpulseConstraintSolver;
@@ -129,10 +133,35 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(a, b) {
   a.emit("totalPlayers", this.totalPlayers);
   a.emit("connect", AICRAFT.Engine.getNextAvailablePnum(this.players));
   a.on("connected", function(a) {
-    a && (console.log("Conected players:" + AICRAFT.Engine.getNextAvailablePnum(b.players)), b.players[AICRAFT.Engine.getNextAvailablePnum(b.players)].connected = !0)
+    if(b.players[a].connected) {
+      return!1
+    }
+    a = AICRAFT.Engine.getNextAvailablePnum(b.players);
+    console.log("Conected players:" + a);
+    b.players[a].connected = !0
   });
   a.emit("pi", AICRAFT.Engine.encryptedPacket(this.players));
-  a.emit("ai", AICRAFT.Engine.encryptedPacket(this.ais))
+  a.emit("ai", AICRAFT.Engine.encryptedPacket(this.ais));
+  a.on("r", function(a) {
+    for(var d = 0;d < b.Pnums.length;d++) {
+      b.Pnums[d] == a && b.Pnums.splice(d, 1)
+    }
+  })
+}, keepAlive:function(a) {
+  var b = this;
+  AICRAFT.requestKeepAliveFrame(function() {
+    b.keepAlive(a)
+  });
+  for(var c = 0;c < b.totalPlayers;c++) {
+    b.Pnums.push(c)
+  }
+  a.emit("l", null);
+  setTimeout(function() {
+    b.Pnums.forEach(function(a) {
+      b.players[a].connected = !1
+    });
+    b.Pnums = []
+  }, 2500)
 }, syncPos:function(a) {
   var b = this;
   AICRAFT.requestPosFrame(function() {
@@ -185,6 +214,14 @@ AICRAFT.Engine.extractPacket = function(a) {
     return eval(b + "]})")
   }
 };
+AICRAFT.Engine.getNextAvailablePnum = function(a) {
+  for(var b = 0;b < a.length;b++) {
+    if(!a[b].connected) {
+      return b
+    }
+  }
+  return-1
+};
 AICRAFT.Engine.makeJson = function(a) {
   var b = '({"bindings":[';
   a.forEach(function(a) {
@@ -198,14 +235,6 @@ AICRAFT.Engine.makeJson = function(a) {
   });
   b += "]})";
   return eval(b)
-};
-AICRAFT.Engine.getNextAvailablePnum = function(a) {
-  for(var b = 0;b < a.length;b++) {
-    if(!a[b].connected) {
-      return b
-    }
-  }
-  return-1
 };
 AICRAFT.ClientEngine = function() {
   this.myPnum = this.totalPlayers = this.dynamicsWorld = this.ground = this.cameraControl = this.camera = this.renderer = this.scene = this.stats = void 0;
@@ -286,8 +315,11 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
     d.players = AICRAFT.Engine.extractPacket(e);
     d.on("ai", function(e) {
       d.ais = AICRAFT.Engine.extractPacket(e);
-      -1 != c.myPnum ? (a(d), c.players[c.myPnum].connected = !0, d.emit("connected", !0), b()) : alert("game is full")
+      -1 != c.myPnum ? (a(d), c.players[c.myPnum].connected = !0, d.emit("connected", c.myPnum), b()) : alert("game is full")
     })
+  });
+  d.on("l", function() {
+    d.emit("r", c.myPnum)
   })
 }, syncPos:function() {
   var a = this, b = io.connect("/");

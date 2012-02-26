@@ -167,19 +167,26 @@ AICRAFT.ClientEngine.prototype = {
 		socket.on('connect', function(data) {
 			self.myPnum = data;
 		});
+		//read player status from server
 		socket.on('pi', function(data) {
 			socket.players = AICRAFT.Engine.extractPacket(data);
+			//read ai status from server
 			socket.on('ai', function(data) {
 				socket.ais = AICRAFT.Engine.extractPacket(data);
 				if (self.myPnum != -1) {
 					init_cb(socket);
 					self.players[self.myPnum].connected = true;
-					socket.emit('connected', true);
+					//finished reading and reported connected
+					socket.emit('connected', self.myPnum);
 					animate_cb();
 				} else {
 					alert('game is full');
 				}
 			});
+		});
+		//keep alive response
+		socket.on('l', function() {
+			socket.emit('r', self.myPnum);
 		});
 	},
 

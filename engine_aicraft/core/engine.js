@@ -5,7 +5,7 @@ AICRAFT.Engine = function () {
 	this.totalPlayers = 2;
 	this.players = new Array();
 	this.ais = new Array();
-	//this.io = undefined;
+	this.Pnums = new Array();
 	
 
 };
@@ -78,15 +78,43 @@ AICRAFT.Engine.prototype = {
 		//tell client connected players
 		socket.emit('connect', AICRAFT.Engine.getNextAvailablePnum(this.players));
 		socket.on('connected', function(data) {
-			if (data) {
-				console.log("Conected players:"+AICRAFT.Engine.getNextAvailablePnum(self.players));
-				self.players[AICRAFT.Engine.getNextAvailablePnum(self.players)].connected = true;
-			}
+			if (self.players[data].connected) {
+				return false;
+			};
+			var newPnum = AICRAFT.Engine.getNextAvailablePnum(self.players);
+			console.log("Conected players:" + newPnum);
+			self.players[newPnum].connected = true;
 		});
 		//tell client player states
 		socket.emit('pi', AICRAFT.Engine.encryptedPacket(this.players));
 		//tell client ai states
 		socket.emit('ai', AICRAFT.Engine.encryptedPacket(this.ais));
+		//keep alive reported function
+		socket.on('r', function(Pnum) {
+			//remove responded players
+			for (var j=0; j<self.Pnums.length; j++) {
+				if (self.Pnums[j] == Pnum) {
+					self.Pnums.splice(j,1);}
+			}
+		});
+
+	},
+
+	keepAlive: function(socket) {
+		var self = this;
+		AICRAFT.requestKeepAliveFrame(function(){self.keepAlive(socket);});
+		//push all players into Pnums
+		for (var i=0; i<self.totalPlayers; i++) {
+			self.Pnums.push(i);
+		};
+		socket.emit('l', null);
+		//set unresponsive players to be disconnected
+		setTimeout(function(){
+			self.Pnums.forEach(function(Pnum) {
+				self.players[Pnum].connected = false;
+			});
+			self.Pnums = [];
+		}, 2500);
 	},
 
 	syncPos: function(socket) {
@@ -108,7 +136,7 @@ AICRAFT.Engine.prototype = {
 		};
 	},
 
-	animate: function(Ammo) {
+	animate: function() {
 		var self = this; //closure var, without the assignment, 'this' is animate() next call
 		AICRAFT.requestAnimationFrame(function(){self.animate();});
 
@@ -181,6 +209,16 @@ AICRAFT.Engine.extractPacket = function(packet){
 	return eval(json_text);
 };
 
+//returns the next available slot number. If returns -1, game's full
+AICRAFT.Engine.getNextAvailablePnum = function(players) {
+	for (var i = 0; i<players.length; i++) {
+		if (!players[i].connected) {
+			return i;
+		}
+	}
+	return -1;
+};
+
 //returns a json obj. xs needs to be a gameobjects array
 AICRAFT.Engine.makeJson = function(xs){
 	var json_text = '({"bindings":[';
@@ -204,12 +242,4 @@ AICRAFT.Engine.makeJson = function(xs){
 	return eval(json_text);
 };
 
-//returns the next available slot number. If returns -1, game's full
-AICRAFT.Engine.getNextAvailablePnum = function(players) {
-	for (var i = 0; i<players.length; i++) {
-		if (!players[i].connected) {
-			return i;
-		}
-	}
-	return -1;
-};
+
