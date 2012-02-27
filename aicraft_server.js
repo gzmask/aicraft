@@ -2,7 +2,7 @@
 
 
 (function() {
-	var io, Ammo, Express, AICRAFT;
+	var io, Ammo, Express, AICRAF, fs;
 	var aiengine, app;
 
 
@@ -38,6 +38,9 @@
 	});
 	aiengine.syncPos(io.sockets);
 	aiengine.animate();
+
+	//ai server
+	fs = require('fs');
 	
 }).call(this);
 
