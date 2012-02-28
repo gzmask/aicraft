@@ -28,7 +28,7 @@ AICRAFT.GameObject.prototype = {
 	constructor: AICRAFT.GameObject,
 
 	//called by client
-	buildMesh: function(THREE) {
+	buildMesh: function(THREE, scene) {
 		this.mesh = new THREE.Mesh(
 			new THREE.CubeGeometry(this.width,this.height,this.depth),
 			new THREE.MeshLambertMaterial({color: 0xffffff})	
@@ -48,6 +48,7 @@ AICRAFT.GameObject.prototype = {
 		this.mesh.position.z = this.position.z;
 		this.mesh.useQuaternion = true;
 		this.mesh.quaternion.set(this.quaternion.x, this.quaternion.y, this.quaternion.z, this.quaternion.w);
+		scene.add(this.mesh);
 	},	
 
 	//called by client and server

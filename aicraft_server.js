@@ -41,11 +41,11 @@
 
 	//ai server
 	var fs = require('fs');
-	var data = fs.readFileSync('engine_aicraft/aijail/templateAI.js');
+	var templateAI = fs.readFileSync('engine_aicraft/aijail/templateAI.js').toString();
 	aiengine = new AICRAFT.AIEngine();
-	aiengine.templateStr = data.toString();
-	aiengine.loadAI('', engine.ais[0], 'testAI');
-	engine.ais[0].ahead(50, Ammo);
+	aiengine.templateStr = templateAI;
+	aiengine.loadAI('', engine.ais[0], "killer");
+	aiengine.loadAI('', engine.ais[1], "saver");
 	aiengine.stepSimulation();
 }).call(this);
 

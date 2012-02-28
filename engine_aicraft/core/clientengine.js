@@ -95,7 +95,8 @@ AICRAFT.ClientEngine.prototype = {
 		this.scene.add(this.ground);
 		//ammo part
 		(function() {
-			var groundShape = new Ammo.btBoxShape(new Ammo.btVector3(400, 0.5, 400));
+			//ground
+			var groundShape = new Ammo.btBoxShape(new Ammo.btVector3(200, 0.5, 200));
 			var groundTransform = new Ammo.btTransform();
 			groundTransform.setIdentity();
 			groundTransform.setOrigin(new Ammo.btVector3(0,-5.5,0));
@@ -108,7 +109,69 @@ AICRAFT.ClientEngine.prototype = {
 			var myMotionState = new Ammo.btDefaultMotionState(groundTransform);
 			var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, groundShape, localInertia);
 			self.ground.phybody = new Ammo.btRigidBody(rbInfo);
-			self.dynamicsWorld.addRigidBody(self.ground.phybody);})();
+			self.dynamicsWorld.addRigidBody(self.ground.phybody);
+
+			//north wall
+			var NWallShape = new Ammo.btBoxShape(new Ammo.btVector3(200,15,0.5));
+			var NWallTransform = new Ammo.btTransform();
+			NWallTransform.setIdentity();
+			NWallTransform.setOrigin(new Ammo.btVector3(0,-5.5,-200));
+			mass = 0;
+			isDynamic = (mass != 0);
+			localInertia = new Ammo.btVector3(0, 0, 0);
+			if (isDynamic) {
+				NWallShape.calculateLocalInertia(mass, localInertia);
+			}
+			myMotionState = new Ammo.btDefaultMotionState(NWallTransform);
+			rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, NWallShape, localInertia);
+			var NWall_phybody = new Ammo.btRigidBody(rbInfo);
+			self.dynamicsWorld.addRigidBody(NWall_phybody);
+			//east wall
+			var EWallShape = new Ammo.btBoxShape(new Ammo.btVector3(0.5,15,200));
+			var EWallTransform = new Ammo.btTransform();
+			EWallTransform.setIdentity();
+			EWallTransform.setOrigin(new Ammo.btVector3(200,-5.5,0));
+			mass = 0;
+			isDynamic = (mass != 0);
+			localInertia = new Ammo.btVector3(0, 0, 0);
+			if (isDynamic) {
+				EWallShape.calculateLocalInertia(mass, localInertia);
+			}
+			myMotionState = new Ammo.btDefaultMotionState(EWallTransform);
+			rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, EWallShape, localInertia);
+			var EWall_phybody = new Ammo.btRigidBody(rbInfo);
+			self.dynamicsWorld.addRigidBody(EWall_phybody);
+			//south wall
+			var SWallShape = new Ammo.btBoxShape(new Ammo.btVector3(200,15,0.5));
+			var SWallTransform = new Ammo.btTransform();
+			SWallTransform.setIdentity();
+			SWallTransform.setOrigin(new Ammo.btVector3(0,-5.5,200));
+			mass = 0;
+			isDynamic = (mass != 0);
+			localInertia = new Ammo.btVector3(0, 0, 0);
+			if (isDynamic) {
+				SWallShape.calculateLocalInertia(mass, localInertia);
+			}
+			myMotionState = new Ammo.btDefaultMotionState(SWallTransform);
+			rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, SWallShape, localInertia);
+			var SWall_phybody = new Ammo.btRigidBody(rbInfo);
+			self.dynamicsWorld.addRigidBody(SWall_phybody);
+			//west wall
+			var WWallShape = new Ammo.btBoxShape(new Ammo.btVector3(0.5,15,200));
+			var WWallTransform = new Ammo.btTransform();
+			WWallTransform.setIdentity();
+			WWallTransform.setOrigin(new Ammo.btVector3(-200,-5.5,0));
+			mass = 0;
+			isDynamic = (mass != 0);
+			localInertia = new Ammo.btVector3(0, 0, 0);
+			if (isDynamic) {
+				WWallShape.calculateLocalInertia(mass, localInertia);
+			}
+			myMotionState = new Ammo.btDefaultMotionState(WWallTransform);
+			rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, WWallShape, localInertia);
+			var WWall_phybody = new Ammo.btRigidBody(rbInfo);
+			self.dynamicsWorld.addRigidBody(WWall_phybody);
+		})();
 
 
 		var quat = new THREE.Quaternion();
@@ -124,8 +187,7 @@ AICRAFT.ClientEngine.prototype = {
 					socket.players.bindings[i].quaternion[1], 
 					socket.players.bindings[i].quaternion[2], 
 					socket.players.bindings[i].quaternion[3]);
-			self.players[i].buildMesh(THREE);
-			self.scene.add(self.players[i].mesh);
+			self.players[i].buildMesh(THREE, self.scene);
 			self.players[i].buildPhysic(Ammo);
 			self.dynamicsWorld.addRigidBody(self.players[i].phybody);
 
@@ -139,8 +201,7 @@ AICRAFT.ClientEngine.prototype = {
 					socket.ais.bindings[i].quaternion[1], 
 					socket.ais.bindings[i].quaternion[2], 
 					socket.ais.bindings[i].quaternion[3]);
-			self.ais[i].buildMesh(THREE);
-			self.scene.add(self.ais[i].mesh);
+			self.ais[i].buildMesh(THREE, self.scene);
 			self.ais[i].buildPhysic(Ammo);
 			self.dynamicsWorld.addRigidBody(self.ais[i].phybody);
 		}})();
@@ -165,7 +226,6 @@ AICRAFT.ClientEngine.prototype = {
 		var socket = io.connect('/');
 		socket.on('totalPlayers', function(data) {
 			self.totalPlayers = data;
-			console.log("yo");
 		});
 		socket.on('connect', function(data) {
 			self.myPnum = data;
@@ -244,7 +304,7 @@ AICRAFT.ClientEngine.prototype = {
 		var self = this;
 		requestAnimationFrame(self.animate.bind(self));
 
-		// update physics
+		// update physics and graphics
 		self.dynamicsWorld.stepSimulation(1/self.phyFPS, 10);
 		(function(){ for (var i=0; i<self.totalPlayers; i++) {
 			self.players[i].physicAndGraphicUpdate(self.dynamicsWorld);
@@ -278,33 +338,33 @@ AICRAFT.ClientEngine.coordHelper = function(scene) {
 	//draw coords
 	var coordGeo = new THREE.Geometry();
 	coordGeo.vertices.push (
-		AICRAFT.ClientEngine.v(-200,0,0), AICRAFT.ClientEngine.v(200,0,0),/*x coord*/
-		AICRAFT.ClientEngine.v(0,-200,0), AICRAFT.ClientEngine.v(0,200,0),/*y coord*/
-		AICRAFT.ClientEngine.v(0,0,-200), AICRAFT.ClientEngine.v(0,0,200),/*z coord*/
-		AICRAFT.ClientEngine.v(200,1,0), AICRAFT.ClientEngine.v(200,-1,0),/*x units*/
-		AICRAFT.ClientEngine.v(150,1,0), AICRAFT.ClientEngine.v(150,-1,0),
-		AICRAFT.ClientEngine.v(100,1,0), AICRAFT.ClientEngine.v(100,-1,0),
-		AICRAFT.ClientEngine.v(50,1,0), AICRAFT.ClientEngine.v(50,-1,0),
-		AICRAFT.ClientEngine.v(-50,1,0), AICRAFT.ClientEngine.v(-50,-1,0),
-		AICRAFT.ClientEngine.v(-100,1,0), AICRAFT.ClientEngine.v(-100,-1,0),
-		AICRAFT.ClientEngine.v(-150,1,0), AICRAFT.ClientEngine.v(-150,-1,0),
-		AICRAFT.ClientEngine.v(-200,1,0), AICRAFT.ClientEngine.v(-200,-1,0),
-		AICRAFT.ClientEngine.v(1,200,0), AICRAFT.ClientEngine.v(-1,200,0),/*y units*/
-		AICRAFT.ClientEngine.v(1,150,0), AICRAFT.ClientEngine.v(-1,150,0),
-		AICRAFT.ClientEngine.v(1,100,0), AICRAFT.ClientEngine.v(-1,100,0),
-		AICRAFT.ClientEngine.v(1,50,0), AICRAFT.ClientEngine.v(-1,50,0),
-		AICRAFT.ClientEngine.v(1,-50,0), AICRAFT.ClientEngine.v(-1,-50,0),
-		AICRAFT.ClientEngine.v(1,-100,0), AICRAFT.ClientEngine.v(-1,-100,0),
-		AICRAFT.ClientEngine.v(1,-150,0), AICRAFT.ClientEngine.v(-1,-150,0),
-		AICRAFT.ClientEngine.v(1,-200,0), AICRAFT.ClientEngine.v(-1,-200,0),
-		AICRAFT.ClientEngine.v(0,1,200), AICRAFT.ClientEngine.v(0,-1,200),/*z units*/
-		AICRAFT.ClientEngine.v(0,1,150), AICRAFT.ClientEngine.v(0,-1,150),
-		AICRAFT.ClientEngine.v(0,1,100), AICRAFT.ClientEngine.v(0,-1,100),
-		AICRAFT.ClientEngine.v(0,1,50), AICRAFT.ClientEngine.v(0,-1,50),
-		AICRAFT.ClientEngine.v(0,1,-50), AICRAFT.ClientEngine.v(0,-1,-50),
-		AICRAFT.ClientEngine.v(0,1,-100), AICRAFT.ClientEngine.v(0,-1,-100),
-		AICRAFT.ClientEngine.v(0,1,-150), AICRAFT.ClientEngine.v(0,-1,-150),
-		AICRAFT.ClientEngine.v(0,1,-200), AICRAFT.ClientEngine.v(0,-1,-200)
+		AICRAFT.v(-200,0,0), AICRAFT.v(200,0,0),/*x coord*/
+		AICRAFT.v(0,-200,0), AICRAFT.v(0,200,0),/*y coord*/
+		AICRAFT.v(0,0,-200), AICRAFT.v(0,0,200),/*z coord*/
+		AICRAFT.v(200,1,0), AICRAFT.v(200,-1,0),/*x units*/
+		AICRAFT.v(150,1,0), AICRAFT.v(150,-1,0),
+		AICRAFT.v(100,1,0), AICRAFT.v(100,-1,0),
+		AICRAFT.v(50,1,0), AICRAFT.v(50,-1,0),
+		AICRAFT.v(-50,1,0), AICRAFT.v(-50,-1,0),
+		AICRAFT.v(-100,1,0), AICRAFT.v(-100,-1,0),
+		AICRAFT.v(-150,1,0), AICRAFT.v(-150,-1,0),
+		AICRAFT.v(-200,1,0), AICRAFT.v(-200,-1,0),
+		AICRAFT.v(1,200,0), AICRAFT.v(-1,200,0),/*y units*/
+		AICRAFT.v(1,150,0), AICRAFT.v(-1,150,0),
+		AICRAFT.v(1,100,0), AICRAFT.v(-1,100,0),
+		AICRAFT.v(1,50,0), AICRAFT.v(-1,50,0),
+		AICRAFT.v(1,-50,0), AICRAFT.v(-1,-50,0),
+		AICRAFT.v(1,-100,0), AICRAFT.v(-1,-100,0),
+		AICRAFT.v(1,-150,0), AICRAFT.v(-1,-150,0),
+		AICRAFT.v(1,-200,0), AICRAFT.v(-1,-200,0),
+		AICRAFT.v(0,1,200), AICRAFT.v(0,-1,200),/*z units*/
+		AICRAFT.v(0,1,150), AICRAFT.v(0,-1,150),
+		AICRAFT.v(0,1,100), AICRAFT.v(0,-1,100),
+		AICRAFT.v(0,1,50), AICRAFT.v(0,-1,50),
+		AICRAFT.v(0,1,-50), AICRAFT.v(0,-1,-50),
+		AICRAFT.v(0,1,-100), AICRAFT.v(0,-1,-100),
+		AICRAFT.v(0,1,-150), AICRAFT.v(0,-1,-150),
+		AICRAFT.v(0,1,-200), AICRAFT.v(0,-1,-200)
 	);
 	var coordMat = new THREE.LineBasicMaterial({color: 0x000000, lineWidth:1});
 	var coord = new THREE.Line(coordGeo, coordMat);
@@ -312,10 +372,6 @@ AICRAFT.ClientEngine.coordHelper = function(scene) {
 	scene.add(coord);
 };
 
-//vertex maker
-AICRAFT.ClientEngine.v = function(x,y,z) {
-	return new THREE.Vertex(new THREE.Vector3(x,y,z));
-};
 
 /*keyboard input checker
  * input: keycode and the key you want to know if it's pressed

@@ -31,21 +31,86 @@ AICRAFT.Engine.prototype = {
 		this.dynamicsWorld.trans = new Ammo.btTransform();
 		this.dynamicsWorld.trans.setIdentity();
 		
-		//ground construction
-		var groundShape = new Ammo.btBoxShape(new Ammo.btVector3(400, 0.5, 400));
-		var groundTransform = new Ammo.btTransform();
-		groundTransform.setIdentity();
-		groundTransform.setOrigin(new Ammo.btVector3(0,-5.5,0));
-		var mass = 0;
-		var isDynamic = (mass != 0);
-		var localInertia = new Ammo.btVector3(0, 0, 0);
+		//scene construction
+		(function(){
+			//ground
+			var groundShape = new Ammo.btBoxShape(new Ammo.btVector3(200, 0.5, 200));
+			var groundTransform = new Ammo.btTransform();
+			groundTransform.setIdentity();
+			groundTransform.setOrigin(new Ammo.btVector3(0,-5.5,0));
+			var mass = 0;
+			var isDynamic = (mass != 0);
+			var localInertia = new Ammo.btVector3(0, 0, 0);
 
-		if (isDynamic) {
-			groundShape.calculateLocalInertia(mass, localInertia);}
-		var myMotionState = new Ammo.btDefaultMotionState(groundTransform);
-		var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, groundShape, localInertia);
-		var ground_phybody = new Ammo.btRigidBody(rbInfo);
-		this.dynamicsWorld.addRigidBody(ground_phybody);
+			if (isDynamic) {
+				groundShape.calculateLocalInertia(mass, localInertia);
+			}
+			var myMotionState = new Ammo.btDefaultMotionState(groundTransform);
+			var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, groundShape, localInertia);
+			var ground_phybody = new Ammo.btRigidBody(rbInfo);
+			self.dynamicsWorld.addRigidBody(ground_phybody);
+
+			//north wall
+			var NWallShape = new Ammo.btBoxShape(new Ammo.btVector3(200,15,0.5));
+			var NWallTransform = new Ammo.btTransform();
+			NWallTransform.setIdentity();
+			NWallTransform.setOrigin(new Ammo.btVector3(0,-5.5,-200));
+			mass = 0;
+			isDynamic = (mass != 0);
+			localInertia = new Ammo.btVector3(0, 0, 0);
+			if (isDynamic) {
+				NWallShape.calculateLocalInertia(mass, localInertia);
+			}
+			myMotionState = new Ammo.btDefaultMotionState(NWallTransform);
+			rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, NWallShape, localInertia);
+			var NWall_phybody = new Ammo.btRigidBody(rbInfo);
+			self.dynamicsWorld.addRigidBody(NWall_phybody);
+			//east wall
+			var EWallShape = new Ammo.btBoxShape(new Ammo.btVector3(0.5,15,200));
+			var EWallTransform = new Ammo.btTransform();
+			EWallTransform.setIdentity();
+			EWallTransform.setOrigin(new Ammo.btVector3(200,-5.5,0));
+			mass = 0;
+			isDynamic = (mass != 0);
+			localInertia = new Ammo.btVector3(0, 0, 0);
+			if (isDynamic) {
+				EWallShape.calculateLocalInertia(mass, localInertia);
+			}
+			myMotionState = new Ammo.btDefaultMotionState(EWallTransform);
+			rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, EWallShape, localInertia);
+			var EWall_phybody = new Ammo.btRigidBody(rbInfo);
+			self.dynamicsWorld.addRigidBody(EWall_phybody);
+			//south wall
+			var SWallShape = new Ammo.btBoxShape(new Ammo.btVector3(200,15,0.5));
+			var SWallTransform = new Ammo.btTransform();
+			SWallTransform.setIdentity();
+			SWallTransform.setOrigin(new Ammo.btVector3(0,-5.5,200));
+			mass = 0;
+			isDynamic = (mass != 0);
+			localInertia = new Ammo.btVector3(0, 0, 0);
+			if (isDynamic) {
+				SWallShape.calculateLocalInertia(mass, localInertia);
+			}
+			myMotionState = new Ammo.btDefaultMotionState(SWallTransform);
+			rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, SWallShape, localInertia);
+			var SWall_phybody = new Ammo.btRigidBody(rbInfo);
+			self.dynamicsWorld.addRigidBody(SWall_phybody);
+			//west wall
+			var WWallShape = new Ammo.btBoxShape(new Ammo.btVector3(0.5,15,200));
+			var WWallTransform = new Ammo.btTransform();
+			WWallTransform.setIdentity();
+			WWallTransform.setOrigin(new Ammo.btVector3(-200,-5.5,0));
+			mass = 0;
+			isDynamic = (mass != 0);
+			localInertia = new Ammo.btVector3(0, 0, 0);
+			if (isDynamic) {
+				WWallShape.calculateLocalInertia(mass, localInertia);
+			}
+			myMotionState = new Ammo.btDefaultMotionState(WWallTransform);
+			rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, WWallShape, localInertia);
+			var WWall_phybody = new Ammo.btRigidBody(rbInfo);
+			self.dynamicsWorld.addRigidBody(WWall_phybody);
+		})();
 		
 		//init game characters
 		var quat = new Ammo.btQuaternion();
@@ -53,9 +118,9 @@ AICRAFT.Engine.prototype = {
 			for (var i=0; i< self.totalPlayers; i++) {
 			//construct player
 			quat.setEuler(0,20,-30);
-			self.players[i] = new AICRAFT.Player( -200 + Math.floor(Math.random()*401), 
-				25, 
-				-200 + Math.floor(Math.random()*301), 
+			self.players[i] = new AICRAFT.Player( -150 + Math.floor(Math.random()*301), 
+				0, 
+				-150 + Math.floor(Math.random()*301), 
 				quat.getX(),quat.getY(),quat.getZ(),quat.getW());
 			self.players[i].buildPhysic(Ammo);
 			self.dynamicsWorld.addRigidBody(self.players[i].phybody);
@@ -63,9 +128,9 @@ AICRAFT.Engine.prototype = {
 			//construct ai
 			quat.setEuler(0,20,30);
 			self.ais[i] = new AICRAFT.Ai(self.players[i].position.x,
-				5,
+				0,
 				self.players[i].position.z - 5,
-				quat.getX(),quat.getY(),quat.getZ(),quat.getW());
+				quat.getX(),quat.getY(),quat.getZ(),quat.getW(), Ammo);
 			self.ais[i].buildPhysic(Ammo);
 			self.dynamicsWorld.addRigidBody(self.ais[i].phybody);
 		}})();
@@ -94,7 +159,8 @@ AICRAFT.Engine.prototype = {
 		//disconnect peers
 		socket.on('disconnect', function(){
 			socket.get('Pnum', function(err,Pnum) {
-				self.players[Pnum].connected = false;
+				if (Pnum !== undefined) {
+					self.players[Pnum].connected = false;}
 			});
 		});
 	},

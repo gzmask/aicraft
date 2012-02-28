@@ -19,16 +19,13 @@ AICRAFT.AIEngine.prototype = {
 		eval(aiStr);
 		eval("var AI = AICRAFT.AI_"+AIname.toString());
 		var ai = new AI(AIbody);
-		this.ais[AIname.toString()] = ai;
+		this.ais.push(ai);
 	},
 
 	stepSimulation: function() {
-		console.log('steping ai');					
-		console.log(this.ais);
 		this.ais.forEach( function(ai) {
-			console.log('getting');
 			ai.run();
-		}, this);
+		});
 	}
 
 };
