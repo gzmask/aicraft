@@ -1,4 +1,5 @@
 //server engine runs on node.js 
+//this engine runs the physics part of ai and players
 AICRAFT.Engine = function () {
 	//global vars
 	this.dynamicsWorld = undefined;

@@ -2,10 +2,11 @@ Tasks:
 
 =========== To-Do:  ==============
 	
+	onScanned event should be generated using Ammo.js raycast feature: http://bulletphysics.org/mediawiki-1.5.8/index.php/Using_RayTest
 	implement ai on server side
+	eval of user ai code can not crash the core engines. First insigh is try...catch..., but this may need web workers.
 	sync the ai part of the game engine
-	Use gpl.internetconnection.net/vi/ for code emittor 
-	Use Dnode to reconstruct and server/client communication
+	code emittor options: gpl.internetconnection.net/vi/ or ssh or GateOne
 	Submit first level by Feb 28th at http://www.indiecade.com/submissions 
 
 ============== done ===============
@@ -29,3 +30,4 @@ Tasks:
 
 	make THREE.js works in node.js
 	players sync per frame, Ais sync per second(something like that)
+	Use Dnode to reconstruct and server/client communication

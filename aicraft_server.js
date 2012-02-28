@@ -2,8 +2,8 @@
 
 
 (function() {
-	var io, Ammo, Express, AICRAF, fs;
-	var aiengine, app;
+	var io, Ammo, Express, AICRAF;
+	var engine, aiengine, app;
 
 
 	//web server
@@ -30,17 +30,22 @@
 	io.set('log level', 0);
 	Ammo = require('./engine_aicraft/vendor/ammo.js').Ammo;
 	AICRAFT = require('./engine_aicraft/build/aicraft.js').AICRAFT;
-	aiengine = new AICRAFT.Engine();
-	aiengine.init(app, Ammo);
+	engine = new AICRAFT.Engine();
+	engine.init(app, Ammo);
 	io.sockets.on('connection', function (socket) {
-		aiengine.networkInit(socket);
-		aiengine.syncKey(socket, Ammo);
+		engine.networkInit(socket);//async
+		engine.syncKey(socket, Ammo);//async
 	});
-	aiengine.syncPos(io.sockets);
-	aiengine.animate();
+	engine.syncPos(io.sockets);//async
+	engine.animate();//async
 
 	//ai server
-	fs = require('fs');
-	
+	var fs = require('fs');
+	var data = fs.readFileSync('engine_aicraft/aijail/templateAI.js');
+	aiengine = new AICRAFT.AIEngine();
+	aiengine.templateStr = data.toString();
+	aiengine.loadAI('', engine.ais[0], 'testAI');
+	engine.ais[0].ahead(50, Ammo);
+	aiengine.stepSimulation();
 }).call(this);
 
