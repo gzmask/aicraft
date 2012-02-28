@@ -10,5 +10,17 @@ AICRAFT.ai_name_to_replace.prototype.constructor = AICRAFT.ai_name_to_replace;
 
 //user commiting code
 AICRAFT.ai_name_to_replace.prototype.run = function() {
-	this.body.ahead(100);
+	var self = this;
+	var Smove = function() {
+		self.body.ahead(10, function(){
+			self.body.turnLeft(90, function(){
+				self.body.ahead(10, function(){
+					self.body.turnLeft(90, function(){
+						Smove();
+					});
+				});
+			});
+		});
+	};
+	Smove();
 };

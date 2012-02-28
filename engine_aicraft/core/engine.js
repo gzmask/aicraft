@@ -117,19 +117,19 @@ AICRAFT.Engine.prototype = {
 		(function() { 
 			for (var i=0; i< self.totalPlayers; i++) {
 			//construct player
-			quat.setEuler(0,20,-30);
-			self.players[i] = new AICRAFT.Player( -150 + Math.floor(Math.random()*301), 
+			quat.setEuler(0,0,0);
+			self.players[i] = new AICRAFT.Player( -150 + Math.random()*301, 
 				0, 
-				-150 + Math.floor(Math.random()*301), 
+				-150 + Math.random()*301, 
 				quat.getX(),quat.getY(),quat.getZ(),quat.getW());
 			self.players[i].buildPhysic(Ammo);
 			self.dynamicsWorld.addRigidBody(self.players[i].phybody);
 			
 			//construct ai
-			quat.setEuler(0,20,30);
+			quat.setEuler(360*Math.random(),0,0);
 			self.ais[i] = new AICRAFT.Ai(self.players[i].position.x,
 				0,
-				self.players[i].position.z - 5,
+				self.players[i].position.z - 15,
 				quat.getX(),quat.getY(),quat.getZ(),quat.getW(), Ammo);
 			self.ais[i].buildPhysic(Ammo);
 			self.dynamicsWorld.addRigidBody(self.ais[i].phybody);

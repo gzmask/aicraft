@@ -2,12 +2,14 @@ Tasks:
 
 =========== To-Do:  ==============
 	
-	onScanned event should be generated using Ammo.js raycast feature: http://bulletphysics.org/mediawiki-1.5.8/index.php/Using_RayTest
+	sighting onScanned event can make use of convexSweepTest or rayCastTest
+	raycast with delay can be used for bullets: http://bulletphysics.org/mediawiki-1.5.8/index.php/Using_RayTest
 	implement ai on server side
 	eval of user ai code can not crash the core engines. First insigh is try...catch..., but this may need web workers.
 	ai event loops need to be terminated once newer version of user code is commited. Probably use class variables
 	code emittor options: gpl.internetconnection.net/vi/ or ssh or GateOne
 	Submit first level by Feb 28th at http://www.indiecade.com/submissions 
+	make player view first personal, and narrow the field of view to be about the same as what AI sees using fogs
 
 ============== done ===============
 
