@@ -1,0 +1,29 @@
+Midterm
+	period to minkovski sum
+	pesudo code only
+
+Minkowski Sums
+
+
+Collision detection with minkowski difference
+
+	instead of checking whether the triangle overlaps the square, we chck whether one point overlaps the min-diff of the two shapes
+
+	if shapes are rotating, this difference need to be calcualted per frame
+
+	use local cordinates
+
+	or
+
+	if two shapes are overlapping, their minkowski difference will contain the origin
+
+Controlling the complexity of collision detection
+	if we have N objects, then the naive method of collision checking is O(n^2) - check every object agaist every other ones
+	check all points in lower triangle on upper triangle
+
+Partitioning the grid
+	partition the space
+	keeps a list of objects in each grid square
+If resolution is higher, then there is an O(m^2) problem where m is # of grids per dimension for 2D, O(m^3) for 3D
+The size of the grid should be cube of cube root of n for 3D
+	

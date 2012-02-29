@@ -58,41 +58,13 @@ AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(dynamicsWorld) {
 };
 
 //controlling apis for intelligent part
+
+AICRAFT.Ai.prototype.back = function(units, cb) {
+	AICRAFT.Ai.move(units, cb, false, this);
+};
+
 AICRAFT.Ai.prototype.ahead = function(units, cb) {
-	var self = this;
-	if (units < 1 || 
-		self.hp < 1 ||
-		self.codeUploading) {
-		if (cb !== undefined) {
-			cb();}
-		return false;
-	}
-	var velocity = self.phybody.getLinearVelocity();
-	var absVelocity = Math.sqrt(velocity.getX()*velocity.getX() + velocity.getY()*velocity.getY() + velocity.getZ()*velocity.getZ()); 
-
-	self.phybody.activate();
-	var quat = self.phybody.getOrientation();
-
-	var transform = new self.Ammo.btTransform();
-	transform.setIdentity();
-	transform.setRotation(quat);
-
-	var frontVector = new self.Ammo.btVector3(0,0,-1);
-	frontVector = transform.op_mul(frontVector);
-
-	for (var i=0; i<self.acceleration; i++) {
-		frontVector.setX(frontVector.getX()*1.1);
-		frontVector.setY(frontVector.getY()*1.1);
-		frontVector.setZ(frontVector.getZ()*1.1);
-	};
-
-	if (absVelocity < self.maxSpeed && !self.aheadLock) {
-		self.phybody.applyCentralImpulse(frontVector);};
-
-	setTimeout( function(){
-		self.ahead(units-1, cb);
-	}, 500);
-
+	AICRAFT.Ai.move(units, cb, true, this);
 };
 
 AICRAFT.Ai.prototype.turnRight = function(degree, cb) {
@@ -139,3 +111,41 @@ AICRAFT.Ai.turn = function(degree, cb, IsLeft, self) {
 	}, 50);
 };
 
+AICRAFT.Ai.move = function(units, cb, IsAhead, self) {
+	if (units < 1 || self.hp < 1 || self.codeUploading) {
+		if (cb !== undefined) {
+			cb();}
+		return false;
+	}
+	var velocity = self.phybody.getLinearVelocity();
+	var absVelocity = Math.sqrt(velocity.getX()*velocity.getX() + velocity.getY()*velocity.getY() + velocity.getZ()*velocity.getZ()); 
+
+	self.phybody.activate();
+	var quat = self.phybody.getOrientation();
+
+	var transform = new self.Ammo.btTransform();
+	transform.setIdentity();
+	transform.setRotation(quat);
+
+	var frontVector = new self.Ammo.btVector3(0,0,-1);
+	frontVector = transform.op_mul(frontVector);
+
+	for (var i=0; i<self.acceleration; i++) {
+		frontVector.setX(frontVector.getX()*1.1);
+		frontVector.setY(frontVector.getY()*1.1);
+		frontVector.setZ(frontVector.getZ()*1.1);
+	};
+
+	if (!IsAhead) {
+		frontVector.setX(frontVector.getX()*-1);
+		frontVector.setY(frontVector.getY()*-1);
+		frontVector.setZ(frontVector.getZ()*-1);
+	};
+
+	if (absVelocity < self.maxSpeed && !self.aheadLock) {
+		self.phybody.applyCentralImpulse(frontVector);};
+
+	setTimeout( function(){
+		AICRAFT.Ai.move(units-1, cb, IsAhead, self);
+	}, 500);
+}

@@ -14,7 +14,7 @@ AICRAFT.ai_name_to_replace.prototype.run = function() {
 	var Smove = function() {
 		self.body.ahead(10, function(){
 			self.body.turnLeft(90, function(){
-				self.body.ahead(10, function(){
+				self.body.back(10, function(){
 					self.body.turnLeft(90, function(){
 						Smove();
 					});
