@@ -1,3 +1,10 @@
+/** @fileoverview AICRAFT.Ai class
+ */
+
+/** @class physical part of an A.I.
+ * @extends AICRAFT.GameObject
+ * @requires Ammo.js
+ */
 AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	AICRAFT.GameObject.call(this,x,y,z,qx,qy,qz,qw);
 	if (AmmoIn !== undefined) {

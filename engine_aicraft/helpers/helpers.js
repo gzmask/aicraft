@@ -1,3 +1,6 @@
+/** @fileoverview helper functions for computing vectors/quaternions/rotations etc.
+ */
+
 AICRAFT.v = function(x,y,z) {
 	return new THREE.Vertex(new THREE.Vector3(x,y,z));
 };

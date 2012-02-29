@@ -1,5 +1,10 @@
-//aiengine runs on node.js 
-//this engine runs the intelligent part of the ai
+/**
+ * @fileoverview aiengine runs on node.js 
+ */
+
+/**
+ * @class AI Engine runs the intelligent part of the ai on the server side
+ */
 AICRAFT.AIEngine = function () {
 	this.templateStr = undefined;
 	this.ais = new Array();
@@ -9,8 +14,10 @@ AICRAFT.AIEngine.prototype = {
 
 	constructor: AICRAFT.AIEngine,
 
-	/* load or reload the AI
-	 * input: code string, physical part, name
+	/** load or reload the AI
+	 * @param aiStr code string 
+	 * @param AIbody physical part 
+	 * @param AIname {string} name
 	 * Should be called on changed of the code string
 	 */
 	loadAI: function(aiStr, AIbody, AIname) {

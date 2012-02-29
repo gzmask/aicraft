@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-
+/** @fileoverview main entry point of the game
+ */
 (function() {
 	var io, Ammo, Express, AICRAF;
 	var engine, aiengine, app;

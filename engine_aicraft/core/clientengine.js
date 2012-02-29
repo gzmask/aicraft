@@ -1,4 +1,11 @@
-//client engine runs in browsers
+/** 
+ * @fileoverview Client Engine runs in browsers.
+ */
+
+/** 
+ * @class Client Engine runs in browsers. 
+ * @requires THREE.js, Ammo.JS, Socket.IO
+ */
 AICRAFT.ClientEngine = function () {
 	this.keyFPS = 30;
 	this.phyFPS = 30;

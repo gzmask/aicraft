@@ -1,4 +1,10 @@
-//x,y,z are positions and qx, qy, qz, qw are quaternion for rotations
+/** @fileoverview  GameOject class
+ */
+
+/**
+ * @class GameObjects in the scenes
+ * @constructor x,y,z are positions and qx, qy, qz, qw are quaternion for rotations
+ */
 AICRAFT.GameObject = function (x,y,z, qx, qy, qz, qw) {
 	this.position = new Object();
 	this.position.x = x; 

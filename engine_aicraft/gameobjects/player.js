@@ -1,3 +1,10 @@
+/** @fileoverview AICRAFT.Player class
+ */
+
+/** @class Player class controls the player models, physic collision bodies and user inputs
+ * @extends AICRAFT.GameObject
+ * @requires Ammo.js
+ */
 AICRAFT.Player = function (x,y,z,qx,qy,qz,qw) {
 	AICRAFT.GameObject.call(this,x,y,z,qx,qy,qz,qw);
 	this.maxSpeed = 20;

@@ -96,7 +96,7 @@ Another major different from Robocode is to physically put the players into the 
 
 
 
-\section{Technical Details(Draft)}
+\section{Technical Details}
 
 \subsection{NodeJS}
 ``Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices."\cite{nodejs}\\
@@ -108,6 +108,9 @@ In other words, NodeJS is a browser javascript engine running on the serverside 
 3. Checking if user submitted code is secure\\
 4. Executing user submitted code in real time\\
 5. Executing and storing game logic in real time\\
+
+Why NodeJS but not C++/Python/Ruby/LISP ... \\
+Javascript is supported in all major web browsers these days. Having NodeJS allows same code runs both at server side and in browser, and saves huge time in developments.\\
 
 \subsection{WebGL/HTML5}
 WebGL is a software graphical library that extends the capability of the JavaScript programming language to allow it to generate interactive 3D graphics within any compatible web browser. \\
@@ -139,35 +142,85 @@ A document-oriented database is a computer program designed for storing, retriev
 
 \subsection{Software architecture}
 
+A very important characteristic of Javascript is that it is event-driven, asynchronously non-blocking. That means if a line of code takes N seconds to finish, the next line of code does not need to wait for N seconds to be started. Instead, it can start executing instantly. This kind of behavior allows multiple events running concurrently. Hence the core of A.I. Craft is three concurrent running engines: Client Engine, Server Engine, A.I. Engine.\\
+
 ``Prototype-based programming is a style of object-oriented programming in which classes are not present, and behavior reuse (known as inheritance in class-based languages) is performed via a process of cloning existing objects that serve as prototypes." -- Wikipedia\\
 
-The whole game of A.I. Craft is based on Javascript, which is a prototype-based programming language. Here is a very basic layer of the game engine in Class Digram:\\
+The whole game of A.I. Craft is based on Javascript, which is a prototype-based programming language. In a classical OOP view, prototyping on an entity means inheritancing that entity.\\
+
+Here is a very basic layer of the game engine in Class Digram:\\
 
 \includegraphics[scale=0.4]{uml.jpg}\\
 
-The Scene class provides the game loop, thus there are varity of components for physics engine and graphic engine. The GameObject class is very interesting. All classes under GameObject tie to the game loop: they tell the game loop how much they weight, what models they will be using, what is the bounding box/octree they are binding to for collision dections, and the AI code that controls how they will react to various situtions etc.\\
+The Scene class provides three running loops: Server engine, client engine and AI engine. There are varity of components for physics engine and graphic engine. The GameObject class is very interesting. All classes under GameObject tie to the game loop: they tell the game loop how much they weight, what models they will be using, what is the bounding box/octree they are binding to for collision dections, and the AI code that controls how they will react to various situtions etc.\\
 
-The Ai Class, therefore, is the most interesting one. It is exposed to players to ``prototype" on its AI part. Here is a draft idea of what kind of code the players will be submitting:
+
+\subsection{A.I. Coding}
+The Ai Class is the most interesting one. It is exposed to let players to ``prototype" on their A.I.'s intelligence part. Here is a draft idea of what kind of code the players may be submitting:
+\begin{verbatim}
+AICRAFT.MyKickAssAI.prototype.run() {
+  var self = this;
+  self.ahead(100);
+  self.back(20);
+  self.turnLeft(20);
+}
+\end{verbatim}
+
+AICRAFT.MyKickAssAI is the ``Class" extended from AICRAFT.Ai Class. It may seems like the code will let the A.I. go forward 100 units, then back off 20 units, and then turn left 20 degress by its look. In fact, this code is telling the A.I. to perform all these three actions at the same time. The correct way to code the A.I. that the behavior I described is:\\ 
 
 \begin{verbatim}
-AICRAFT.Ai.prototype.onScannedRobot(e) {
-  this.fireAt(e.enemy.position);
+AICRAFT.MyKickAssAI.prototype.run() {
+  var self = this;
+  self.ahead(100, function(){
+    self.back(20, function(){ self.turnLeft(20); })	
+  });
  }
 \end{verbatim}
 
-Or:
-
-\begin{verbatim}
-myAi.__proto__.onScannedRobot(e) {
-  this.fireAt(e.enemy.position);
- }
-\end{verbatim}
-
-Where AICRAFT.Ai is the ``Class", which really is the constructor function since every thing is Javascript is an object. And myAi is an instance.\\
+You should notice the functional style of the code. This is due to the non-blocking nature of Javascript.\\
 
 Each code submitting would only allow one prototype in one function, thus forcing the player to ``livecode" their A.I., but not copying a big chunk of existed code which is equal to cheating.\\
 
 By prototyping on the A.I. object, players therefore intractively improvise their A.I.s on the fly. And this is the core concept of the A.I. Craft project.\\
+
+Let's look at the controlling code at aicraft\_server.js of the A.I. Engine:\\
+
+\begin{verbatim}
+var fs = require('fs');
+var templateAI = fs.readFileSync('engine_aicraft/aijail/templateAI.js').toString();
+aiengine = new AICRAFT.AIEngine();
+aiengine.templateStr = templateAI;
+aiengine.loadAI('', engine.ais[0], "killer");
+aiengine.loadAI('', engine.ais[1], "saver");
+aiengine.stepSimulation();
+\end{verbatim}
+
+User submitted code will go into aiengine.load() as the first argument.
+ 
+\subsection{network}
+
+Network communication is using WebSockets protocol. Which is on top of TCP/IP. While it's not as fast as UDP, it does garantee the packet orders and handles the connection/disconnections nicely. A.I. Craft engines compressed all the network packets to as minimum as possible. Keybord inputs are compressed to bits using bit operators, and the final packet sending to server from clients is just one byte. Same goes for position syncing packets. No text information is transmitted on network.\\
+
+Another nice feature provided by Node.JS and Javascript is the asynchronouslism. Network transmition can be completely free from main game loops, thus keyboard byte, position bytes transmition can be done 20 times per second, while the game loop is running at 60 times per second.\\
+
+Futher more, between two network packets, there is 2 frames of missing detail. 20/60 = 3, 3 times more detail, get it? Now, since Physics engine running both on server and clients, therefore the 2 frames missing detail after every network syncing frame can be calculated and filled. The physics simulation is reasonably deterministic given the same initial state and inputs. That means if I tell the clients the initial velocity and position for game objects, it will calculated the the ``good enough" game state for next couple frames. These approach allows me to have the network syncing runs at 20 frame per second, and the users still looking at nicely 60 frame per second animation on their screen. Best part of all, since the game loop, network loop are seperated, the code to implement this technique is very natual.\\
+
+\subsection{Quaternion}
+Instead of using rotation matrix for all the turnning, aiming, spinning etc., I use quaterion to represent all the rotation/orientation related information.\\
+
+The sync the rotation/orientation across loops and network using axis-angle or matrix is a huge hassle. While matrix being too big in data: 9x9 in size, axis-angle requires too much convertions. Quaternions solves my problem easily. A vector4 is all I need to rotate or point anything to anywhere.\\
+
+\section{Installation instructions}
+
+First of all, to run this game, you will need a WebGL supported Browser with a WebGL enabled video cards. Recommand and tested browser is Google Chrome \url{https://www.google.com/chrome}. Firefox, Safari and Opera works.\\
+
+To run the game server, you will be internet connection (not behind a NAT). Supported Operating Systems are Linux and Mac OSX.\\
+
+To run the server, you will need Node.JS \url{http://www.nodejs.org}.\\
+
+To start the server, simply run the command ``node aicraft\_server.js"\\
+
+To compile the source code, run the command ``./cmake.sh", java is required. You don't need to compile the code since javascript runs universally anywhere.
 
 \begin{thebibliography}{9}
 
