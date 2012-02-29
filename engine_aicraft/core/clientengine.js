@@ -279,6 +279,10 @@ AICRAFT.ClientEngine.prototype = {
 					ais[i].quaternion[1],
 					ais[i].quaternion[2],
 					ais[i].quaternion[3],
+					ais[i].sightQuaternion[0],
+					ais[i].sightQuaternion[1],
+					ais[i].sightQuaternion[2],
+					ais[i].sightQuaternion[3],
 					ais[i].velocity[0],
 					ais[i].velocity[1],
 					ais[i].velocity[2]);

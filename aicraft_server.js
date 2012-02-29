@@ -34,6 +34,7 @@
 	engine.syncPos(io.sockets);//async
 	engine.animate();//async
 
+
 	//ai server
 	var fs = require('fs');
 	var templateAI = fs.readFileSync('engine_aicraft/aijail/templateAI.js').toString();

@@ -113,11 +113,10 @@ AICRAFT.Engine.prototype = {
 		})();
 		
 		//init game characters
-		var quat = new Ammo.btQuaternion();
 		(function() { 
 			for (var i=0; i< self.totalPlayers; i++) {
 			//construct player
-			quat.setEuler(0,0,0);
+			quat = AICRAFT.quatFromEuler(0,0,0, Ammo);
 			self.players[i] = new AICRAFT.Player( -150 + Math.random()*301, 
 				0, 
 				-150 + Math.random()*301, 
@@ -126,7 +125,7 @@ AICRAFT.Engine.prototype = {
 			self.dynamicsWorld.addRigidBody(self.players[i].phybody);
 			
 			//construct ai
-			quat.setEuler(360*Math.random(),0,0);
+			quat = AICRAFT.quatFromEuler(360*Math.random(),0,0,Ammo);
 			self.ais[i] = new AICRAFT.Ai(self.players[i].position.x,
 				0,
 				self.players[i].position.z - 15,
@@ -220,6 +219,12 @@ AICRAFT.Engine.encryptedPacket = function(xs){
 		result.push(s.quaternion.y);
 		result.push(s.quaternion.z);
 		result.push(s.quaternion.w);
+		if (s.sightQuaternion !== undefined) {
+			result.push(s.sightQuaternion.x);
+			result.push(s.sightQuaternion.y);
+			result.push(s.sightQuaternion.z);
+			result.push(s.sightQuaternion.w);
+		}
 		//last three are velocity
 		result.push(s.phybody.getAngularVelocity().getX());
 		result.push(s.phybody.getAngularVelocity().getY());
@@ -232,28 +237,52 @@ AICRAFT.Engine.encryptedPacket = function(xs){
  * containing position, quats and velocity
  */
 AICRAFT.Engine.extractPacket = function(packet){
-	if (packet.length % 10 != 0) {
-		return;
+	if (packet.length % 10 == 0) {
+		var json_text = '({"bindings":[';
+		for (var i=0; i<packet.length; i+=10) {
+			json_text += '{"position":';
+			json_text += '['+packet[i]+','+
+				packet[i+1]+','+
+				packet[i+2]+'],';
+			json_text += '"quaternion":';
+			json_text += '['+packet[i+3]+','+
+				packet[i+4]+','+
+				packet[i+5]+','+
+				packet[i+6]+'],';
+			json_text += '"velocity":';
+			json_text += '['+packet[i+7]+','+
+				packet[i+8]+','+
+				packet[i+9]+']';
+			json_text += '},';
+		};
+		json_text += ']})';
+		return eval(json_text);
+	} else if(packet.length % 14 == 0) {
+		var json_text = '({"bindings":[';
+		for (var i=0; i<packet.length; i+=14) {
+			json_text += '{"position":';
+			json_text += '['+packet[i]+','+
+				packet[i+1]+','+
+				packet[i+2]+'],';
+			json_text += '"quaternion":';
+			json_text += '['+packet[i+3]+','+
+				packet[i+4]+','+
+				packet[i+5]+','+
+				packet[i+6]+'],';
+			json_text += '"sightQuaternion":';
+			json_text += '['+packet[i+7]+','+
+				packet[i+8]+','+
+				packet[i+9]+','+
+				packet[i+10]+'],';
+			json_text += '"velocity":';
+			json_text += '['+packet[i+11]+','+
+				packet[i+12]+','+
+				packet[i+13]+']';
+			json_text += '},';
+		};
+		json_text += ']})';
+		return eval(json_text);
 	};
-	var json_text = '({"bindings":[';
-	for (var i=0; i<packet.length; i+=10) {
-		json_text += '{"position":';
-		json_text += '['+packet[i]+','+
-			packet[i+1]+','+
-			packet[i+2]+'],';
-		json_text += '"quaternion":';
-		json_text += '['+packet[i+3]+','+
-			packet[i+4]+','+
-			packet[i+5]+','+
-			packet[i+6]+'],';
-		json_text += '"velocity":';
-		json_text += '['+packet[i+7]+','+
-			packet[i+8]+','+
-			packet[i+9]+']';
-		json_text += '},';
-	};
-	json_text += ']})';
-	return eval(json_text);
 };
 
 //returns the next available slot number. If returns -1, game's full

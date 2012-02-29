@@ -99,16 +99,14 @@ AICRAFT.GameObject.prototype = {
 
 	//called by client
 	physicAndGraphicUpdate: function(dynamicsWorld) {
-		if (this.phybody.getMotionState()) {
-			this.phybody.getMotionState().getWorldTransform(dynamicsWorld.trans);
-			this.position.x = this.mesh.position.x = dynamicsWorld.trans.getOrigin().x().toFixed(2);
-			this.position.y = this.mesh.position.y = dynamicsWorld.trans.getOrigin().y().toFixed(2);
-			this.position.z = this.mesh.position.z = dynamicsWorld.trans.getOrigin().z().toFixed(2);
-			this.quaternion.x = this.mesh.quaternion.x = dynamicsWorld.trans.getRotation().x();
-			this.quaternion.y = this.mesh.quaternion.y = dynamicsWorld.trans.getRotation().y();
-			this.quaternion.z = this.mesh.quaternion.z = dynamicsWorld.trans.getRotation().z();
-			this.quaternion.w = this.mesh.quaternion.w = dynamicsWorld.trans.getRotation().w();
-		}
+		this.physicUpdate.call(this, dynamicsWorld);
+		this.mesh.position.x = this.position.x;
+		this.mesh.position.y = this.position.y;
+		this.mesh.position.z = this.position.z;
+		this.mesh.quaternion.x = this.quaternion.x;
+		this.mesh.quaternion.y = this.quaternion.y;
+		this.mesh.quaternion.z = this.quaternion.z;
+		this.mesh.quaternion.w = this.quaternion.w;
 	},
 
 	//called by server
