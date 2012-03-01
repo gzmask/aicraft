@@ -93,27 +93,26 @@ AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(dynamicsWorld) {
 
 //controlling apis for intelligent part
 
-AICRAFT.Ai.prototype.lookAt = function(degree, cb) {
-	degree = Math.abs(degree);
-	var quat = new this.Ammo.btQuaternion();
-	var ori_quat = new this.Ammo.btQuaternion(this.sightQuaternion.x,
-			this.sightQuaternion.y,
-			this.sightQuaternion.z,
-			this.sightQuaternion.w);
-	quat = AICRAFT.quatFromEuler(degree,0,0);
-	quat = AICRAFT.quatMul(ori_quat, quat);
-	this.sightQuaternion.x = quat.getX();
-	this.sightQuaternion.y = quat.getY();
-	this.sightQuaternion.z = quat.getZ();
-	this.sightQuaternion.w = quat.getW();
-};
-
 AICRAFT.Ai.prototype.back = function(units, cb) {
 	AICRAFT.Ai.move(units, cb, false, this);
 };
 
 AICRAFT.Ai.prototype.ahead = function(units, cb) {
 	AICRAFT.Ai.move(units, cb, true, this);
+};
+
+/** turns the sight of the AI to the left
+ * @param degree this can be negative
+ */
+AICRAFT.Ai.prototype.lookLeft = function(degree, cb) {
+	AICRAFT.Ai.lookAt(degree, cb, true, this);
+};
+
+/** turns the sight of the AI to the right
+ * @param degree this can be negative
+ */
+AICRAFT.Ai.prototype.lookRight = function(degree, cb) {
+	AICRAFT.Ai.lookAt(degree, cb, false, this);
 };
 
 AICRAFT.Ai.prototype.turnRight = function(degree, cb) {
@@ -197,4 +196,39 @@ AICRAFT.Ai.move = function(units, cb, IsAhead, self) {
 	setTimeout( function(){
 		AICRAFT.Ai.move(units-1, cb, IsAhead, self);
 	}, 500);
-}
+};
+
+/** Controls the sight of the AI
+ * @param degree this can be negative
+ */
+AICRAFT.Ai.lookAt = function(degree, cb, IsLeft, self) {
+	if (degree < 0) {
+		IsLeft = !IsLeft;
+		degree = degree*-1;
+	};
+	if (degree < 1 || self.hp < 1 || self.codeUploading) {
+		if (cb !== undefined) {
+			cb();}
+		return false;
+	}
+	var quat = new self.Ammo.btQuaternion();
+	var ori_quat = new self.Ammo.btQuaternion(self.sightQuaternion.x,
+			self.sightQuaternion.y,
+			self.sightQuaternion.z,
+			self.sightQuaternion.w);
+	if (IsLeft === true) {
+		quat = AICRAFT.quatFromEuler(1,0,0);
+	} else {
+		quat = AICRAFT.quatFromEuler(-1,0,0);
+	}
+	quat = AICRAFT.quatMul(ori_quat, quat);
+	self.sightQuaternion.x = quat.getX();
+	self.sightQuaternion.y = quat.getY();
+	self.sightQuaternion.z = quat.getZ();
+	self.sightQuaternion.w = quat.getW();
+	setTimeout(function(){
+		AICRAFT.Ai.lookAt(degree-1, cb, IsLeft, self);
+	}, 30);
+};
+
+
