@@ -13,12 +13,14 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 		this.Ammo = Ammo;
 	}
 
-	this.sight = new Array();
-	this.sightQuaternion = new Object();
-	this.sightQuaternion.x = 0;
-	this.sightQuaternion.y = 0;
-	this.sightQuaternion.z = 0;
-	this.sightQuaternion.w = 1;
+	this.sight = new Object();
+	this.sight.lock = true;
+	this.sight.lines = new Array();
+	this.sight.quaternion = new Object();
+	this.sight.quaternion.x = 0;
+	this.sight.quaternion.y = 0;
+	this.sight.quaternion.z = 0;
+	this.sight.quaternion.w = 1;
 	this.clientSight = undefined;
 	this.maxSpeed = 10;
 	this.acceleration = 28;
@@ -60,7 +62,11 @@ AICRAFT.Ai.prototype.buildMesh = function(THREE, scene) {
 
 AICRAFT.Ai.prototype.buildPhysic = function(AmmoIn) {
 	AICRAFT.GameObject.prototype.buildPhysic.call(this,AmmoIn);
-	this.sight.push( [AICRAFT.bv(0,0,0), AICRAFT.bv(-84.5,0,-260)],
+	this.sight.quaternion.x = this.quaternion.x;
+	this.sight.quaternion.y = this.quaternion.y;
+	this.sight.quaternion.z = this.quaternion.z;
+	this.sight.quaternion.w = this.quaternion.w;
+	this.sight.lines.push( [AICRAFT.bv(0,0,0), AICRAFT.bv(-84.5,0,-260)],
 		[AICRAFT.bv(0,0,0), AICRAFT.bv(-47.6,0,-267.8)],
 		[AICRAFT.bv(0,0,0), AICRAFT.bv(0,0,-273)],
 		[AICRAFT.bv(0,0,0), AICRAFT.bv(47.6,0,-267.8)],
@@ -69,14 +75,14 @@ AICRAFT.Ai.prototype.buildPhysic = function(AmmoIn) {
 
 AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,vx,vy,vz) {
 	AICRAFT.GameObject.prototype.setPos.call(this,AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz);
-	this.sightQuaternion.x = sqx;
-	this.sightQuaternion.y = sqy;
-	this.sightQuaternion.z = sqz;
-	this.sightQuaternion.w = sqw;
-	this.clientSight.quaternion.x = this.sightQuaternion.x;
-	this.clientSight.quaternion.y = this.sightQuaternion.y;
-	this.clientSight.quaternion.z = this.sightQuaternion.z;
-	this.clientSight.quaternion.w = this.sightQuaternion.w;
+	this.sight.quaternion.x = sqx;
+	this.sight.quaternion.y = sqy;
+	this.sight.quaternion.z = sqz;
+	this.sight.quaternion.w = sqw;
+	this.clientSight.quaternion.x = this.sight.quaternion.x;
+	this.clientSight.quaternion.y = this.sight.quaternion.y;
+	this.clientSight.quaternion.z = this.sight.quaternion.z;
+	this.clientSight.quaternion.w = this.sight.quaternion.w;
 };
 
 //override physic and graphic update method
@@ -85,81 +91,101 @@ AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(dynamicsWorld) {
 	this.clientSight.position.x = this.position.x;
 	this.clientSight.position.y = this.position.y;
 	this.clientSight.position.z = this.position.z;
-	this.clientSight.quaternion.x = this.sightQuaternion.x;
-	this.clientSight.quaternion.y = this.sightQuaternion.y;
-	this.clientSight.quaternion.z = this.sightQuaternion.z;
-	this.clientSight.quaternion.w = this.sightQuaternion.w;
+	this.clientSight.quaternion.x = this.sight.quaternion.x;
+	this.clientSight.quaternion.y = this.sight.quaternion.y;
+	this.clientSight.quaternion.z = this.sight.quaternion.z;
+	this.clientSight.quaternion.w = this.sight.quaternion.w;
 };
 
 //controlling apis for intelligent part
 
 AICRAFT.Ai.prototype.back = function(units, cb) {
-	AICRAFT.Ai.move(units, cb, false, this);
+	AICRAFT.Ai.move(this, units, cb, false, 600);
 };
 
 AICRAFT.Ai.prototype.ahead = function(units, cb) {
-	AICRAFT.Ai.move(units, cb, true, this);
+	AICRAFT.Ai.move(this, units, cb, true, 400);
 };
 
 /** turns the sight of the AI to the left
- * @param degree this can be negative
+ * @param degree this can not be negative
  */
 AICRAFT.Ai.prototype.lookLeft = function(degree, cb) {
-	AICRAFT.Ai.lookAt(degree, cb, true, this);
+	AICRAFT.Ai.look(this, degree, cb, true);
 };
 
 /** turns the sight of the AI to the right
- * @param degree this can be negative
+ * @param degree this can not be negative
  */
 AICRAFT.Ai.prototype.lookRight = function(degree, cb) {
-	AICRAFT.Ai.lookAt(degree, cb, false, this);
+	AICRAFT.Ai.look(this, degree, cb, false);
 };
 
 AICRAFT.Ai.prototype.turnRight = function(degree, cb) {
-	if (degree > 0) {
-		AICRAFT.Ai.turn(degree, cb, false, this);
-	} else {
-		AICRAFT.Ai.turn(-1*degree, cb, true, this);
-	}
+	AICRAFT.Ai.turn(this, degree, cb, false);
 };
 
 AICRAFT.Ai.prototype.turnLeft = function(degree, cb) {
-	if (degree > 0) {
-		AICRAFT.Ai.turn(degree, cb, true, this);
-	} else {
-		AICRAFT.Ai.turn(-1*degree, cb, false, this);
-	}
+	AICRAFT.Ai.turn(this, degree, cb, true);
 };
 
-//static functions
-AICRAFT.Ai.turn = function(degree, cb, IsLeft, self) {
-	self.phybody.setFriction(self.friction);
-	self.aheadLock = false;
+
+/** Controls the sight of the AI
+ * @param degree this can not be negative
+ */
+AICRAFT.Ai.look = function(self, degree, cb, IsLeft) {
+	AICRAFT.Ai.rotate(self, degree, cb, IsLeft, false, true, 20);
+};
+
+AICRAFT.Ai.turn = function(self, degree, cb, IsLeft) {
+	AICRAFT.Ai.rotate(self, degree, cb, IsLeft, true, false, 40);
+};
+
+AICRAFT.Ai.rotate = function(self, degree, cb, IsLeft, IsBody, IsSight, delay) {
 	if (degree < 1 || self.hp < 1 || self.codeUploading) {
 		if (cb !== undefined) {
 			cb();}
 		return false;
 	}
-	var sign;
-	if (IsLeft == true) {
-		sign = 1;
+	var ori_quat = self.phybody.getOrientation();
+	var sight_quat = new self.Ammo.btQuaternion(self.sight.quaternion.x,
+		self.sight.quaternion.y,
+		self.sight.quaternion.z,
+		self.sight.quaternion.w);
+	var quat = new self.Ammo.btQuaternion();
+	if (IsLeft === true) {
+		quat = AICRAFT.quatFromEuler(1,0,0);
 	} else {
-		sign = -1;
-	};
-	self.phybody.activate();
-	self.phybody.setAngularVelocity(new self.Ammo.btVector3(0,0,0));
-	self.phybody.setLinearVelocity(new self.Ammo.btVector3(0,0,0));
-	self.aheadLock = true;
-	self.phybody.setFriction(0);
-	if (!self.turnLock) {
-		self.phybody.applyTorqueImpulse(new self.Ammo.btVector3(0, 4*sign, 0));
+		quat = AICRAFT.quatFromEuler(-1,0,0);
 	}
-	setTimeout( function(){
-		AICRAFT.Ai.turn(degree-2, cb, IsLeft, self);
-	}, 50);
+	var result_quat;
+	if (IsBody === true) {
+		result_quat = AICRAFT.quatMul(ori_quat, quat);
+		self.quaternion.x = result_quat.getX();
+		self.quaternion.y = result_quat.getY();
+		self.quaternion.z = result_quat.getZ();
+		self.quaternion.w = result_quat.getW();
+		var trans = new self.Ammo.btTransform();	
+		trans.setIdentity();
+		trans.setOrigin(new self.Ammo.btVector3(self.position.x, self.position.y, self.position.z));
+		trans.setRotation(result_quat);
+		self.phybody.activate();
+		self.phybody.getMotionState().setWorldTransform(trans);
+		self.phybody.setCenterOfMassTransform(trans);
+	} 
+	if (IsSight === true || self.sight.lock === true) {
+		result_quat = AICRAFT.quatMul(sight_quat, quat);
+		self.sight.quaternion.x = result_quat.getX();
+		self.sight.quaternion.y = result_quat.getY();
+		self.sight.quaternion.z = result_quat.getZ();
+		self.sight.quaternion.w = result_quat.getW();
+	} 
+	setTimeout(function(){
+		AICRAFT.Ai.rotate(self, degree-1, cb, IsLeft, IsBody, IsSight, delay);
+	}, delay);
 };
 
-AICRAFT.Ai.move = function(units, cb, IsAhead, self) {
+AICRAFT.Ai.move = function(self, units, cb, IsAhead, delay) {
 	if (units < 1 || self.hp < 1 || self.codeUploading) {
 		if (cb !== undefined) {
 			cb();}
@@ -194,41 +220,7 @@ AICRAFT.Ai.move = function(units, cb, IsAhead, self) {
 		self.phybody.applyCentralImpulse(frontVector);};
 
 	setTimeout( function(){
-		AICRAFT.Ai.move(units-1, cb, IsAhead, self);
-	}, 500);
+		AICRAFT.Ai.move(self, units-1, cb, IsAhead, delay);
+	}, delay);
 };
-
-/** Controls the sight of the AI
- * @param degree this can be negative
- */
-AICRAFT.Ai.lookAt = function(degree, cb, IsLeft, self) {
-	if (degree < 0) {
-		IsLeft = !IsLeft;
-		degree = degree*-1;
-	};
-	if (degree < 1 || self.hp < 1 || self.codeUploading) {
-		if (cb !== undefined) {
-			cb();}
-		return false;
-	}
-	var quat = new self.Ammo.btQuaternion();
-	var ori_quat = new self.Ammo.btQuaternion(self.sightQuaternion.x,
-			self.sightQuaternion.y,
-			self.sightQuaternion.z,
-			self.sightQuaternion.w);
-	if (IsLeft === true) {
-		quat = AICRAFT.quatFromEuler(1,0,0);
-	} else {
-		quat = AICRAFT.quatFromEuler(-1,0,0);
-	}
-	quat = AICRAFT.quatMul(ori_quat, quat);
-	self.sightQuaternion.x = quat.getX();
-	self.sightQuaternion.y = quat.getY();
-	self.sightQuaternion.z = quat.getZ();
-	self.sightQuaternion.w = quat.getW();
-	setTimeout(function(){
-		AICRAFT.Ai.lookAt(degree-1, cb, IsLeft, self);
-	}, 30);
-};
-
 

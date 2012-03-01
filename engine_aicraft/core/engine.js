@@ -251,11 +251,11 @@ AICRAFT.Engine.encryptedPacket = function(xs){
 		result.push(s.quaternion.y);
 		result.push(s.quaternion.z);
 		result.push(s.quaternion.w);
-		if (s.sightQuaternion !== undefined) {
-			result.push(s.sightQuaternion.x);
-			result.push(s.sightQuaternion.y);
-			result.push(s.sightQuaternion.z);
-			result.push(s.sightQuaternion.w);
+		if (s.sight !== undefined) {
+			result.push(s.sight.quaternion.x);
+			result.push(s.sight.quaternion.y);
+			result.push(s.sight.quaternion.z);
+			result.push(s.sight.quaternion.w);
 		}
 		//last three are velocity
 		result.push(s.phybody.getAngularVelocity().getX());
