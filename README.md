@@ -2,6 +2,7 @@ Tasks:
 
 =========== To-Do:  ==============
 	
+	implement lookAt AI call
 	sighting onScanned event can make use of convexSweepTest or rayCastTest
 	raycast with delay can be used for bullets: http://bulletphysics.org/mediawiki-1.5.8/index.php/Using_RayTest
 	implement ai on server side

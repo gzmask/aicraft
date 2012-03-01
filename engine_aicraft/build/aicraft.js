@@ -134,29 +134,33 @@ AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(a) {
   this.clientSight.quaternion.z = this.sight.quaternion.z;
   this.clientSight.quaternion.w = this.sight.quaternion.w
 };
-AICRAFT.Ai.prototype.back = function(a, b) {
-  AICRAFT.Ai.move(this, a, b, !1, 600)
-};
 AICRAFT.Ai.prototype.ahead = function(a, b) {
+  a = Math.abs(a);
   AICRAFT.Ai.move(this, a, b, !0, 400)
 };
+AICRAFT.Ai.prototype.back = function(a, b) {
+  a = Math.abs(a);
+  AICRAFT.Ai.move(this, a, b, !1, 600)
+};
 AICRAFT.Ai.prototype.lookLeft = function(a, b) {
-  AICRAFT.Ai.look(this, a, b, !0)
+  AICRAFT.Ai.lookRotate(this, a, b, !0)
 };
 AICRAFT.Ai.prototype.lookRight = function(a, b) {
-  AICRAFT.Ai.look(this, a, b, !1)
+  AICRAFT.Ai.lookRotate(this, a, b, !1)
+};
+AICRAFT.Ai.prototype.lookTo = function(a, b) {
+  var c = new this.Ammo.btQuaternion(this.sight.quaternion.x, this.sight.quaternion.y, this.sight.quaternion.x, this.sight.quaternion.w), d = this.phybody.getOrientation(), c = 360 * c.angle(d) / Math.PI;
+  console.log("rotate angle :" + c);
+  AICRAFT.Ai.rotate(this, Math.abs(a - c), b, !0, !1, !0, 10)
 };
 AICRAFT.Ai.prototype.turnRight = function(a, b) {
-  AICRAFT.Ai.turn(this, a, b, !1)
+  AICRAFT.Ai.rotate(this, a, b, !1, !0, !1, 40)
 };
 AICRAFT.Ai.prototype.turnLeft = function(a, b) {
-  AICRAFT.Ai.turn(this, a, b, !0)
+  AICRAFT.Ai.rotate(this, a, b, !0, !0, !1, 40)
 };
-AICRAFT.Ai.look = function(a, b, c, d) {
+AICRAFT.Ai.lookRotate = function(a, b, c, d) {
   AICRAFT.Ai.rotate(a, b, c, d, !1, !0, 20)
-};
-AICRAFT.Ai.turn = function(a, b, c, d) {
-  AICRAFT.Ai.rotate(a, b, c, d, !0, !1, 40)
 };
 AICRAFT.Ai.rotate = function(a, b, c, d, f, e, g) {
   if(1 > b || 1 > a.hp || a.codeUploading) {

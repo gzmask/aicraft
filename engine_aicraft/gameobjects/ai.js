@@ -97,50 +97,81 @@ AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(dynamicsWorld) {
 	this.clientSight.quaternion.w = this.sight.quaternion.w;
 };
 
-//controlling apis for intelligent part
 
-AICRAFT.Ai.prototype.back = function(units, cb) {
-	AICRAFT.Ai.move(this, units, cb, false, 600);
+
+/** push the body of the AI forward
+ * @param units this can not be negative
+ */
+AICRAFT.Ai.prototype.ahead = function(units, cb) {
+	units = Math.abs(units);
+	AICRAFT.Ai.move(this, units, cb, true, 400);
 };
 
-AICRAFT.Ai.prototype.ahead = function(units, cb) {
-	AICRAFT.Ai.move(this, units, cb, true, 400);
+/** push the body of the AI backward
+ * @param units this can not be negative
+ */
+AICRAFT.Ai.prototype.back = function(units, cb) {
+	units = Math.abs(units);
+	AICRAFT.Ai.move(this, units, cb, false, 600);
 };
 
 /** turns the sight of the AI to the left
  * @param degree this can not be negative
  */
 AICRAFT.Ai.prototype.lookLeft = function(degree, cb) {
-	AICRAFT.Ai.look(this, degree, cb, true);
+	AICRAFT.Ai.lookRotate(this, degree, cb, true);
 };
 
 /** turns the sight of the AI to the right
  * @param degree this can not be negative
  */
 AICRAFT.Ai.prototype.lookRight = function(degree, cb) {
-	AICRAFT.Ai.look(this, degree, cb, false);
+	AICRAFT.Ai.lookRotate(this, degree, cb, false);
 };
 
+/** Rotates the sight to a degree related to the front of the AI
+ * @param to degree that needs to be rotated.
+ */
+AICRAFT.Ai.prototype.lookTo = function(degree, cb) {
+	var self = this;
+	var sight_quat = new self.Ammo.btQuaternion(
+			self.sight.quaternion.x,
+			self.sight.quaternion.y,
+			self.sight.quaternion.x,
+			self.sight.quaternion.w);
+	var front_quat = self.phybody.getOrientation();
+	//get the angle between them
+	var angle = sight_quat.angle(front_quat)*360/Math.PI;
+	console.log("rotate angle :"+angle);
+	AICRAFT.Ai.rotate(self, Math.abs(degree-angle), cb, true, false, true, 10);
+};
+
+
+/** turns the body of the AI to the right
+ * @param degree this can not be negative
+ */
 AICRAFT.Ai.prototype.turnRight = function(degree, cb) {
-	AICRAFT.Ai.turn(this, degree, cb, false);
+	AICRAFT.Ai.rotate(this, degree, cb, false, true, false, 40);
 };
 
+/** turns the body of the AI to the left
+ * @param degree this can not be negative
+ */
 AICRAFT.Ai.prototype.turnLeft = function(degree, cb) {
-	AICRAFT.Ai.turn(this, degree, cb, true);
+	AICRAFT.Ai.rotate(this, degree, cb, true, true, false, 40);
 };
-
 
 /** Controls the sight of the AI
  * @param degree this can not be negative
  */
-AICRAFT.Ai.look = function(self, degree, cb, IsLeft) {
+AICRAFT.Ai.lookRotate = function(self, degree, cb, IsLeft) {
 	AICRAFT.Ai.rotate(self, degree, cb, IsLeft, false, true, 20);
 };
 
-AICRAFT.Ai.turn = function(self, degree, cb, IsLeft) {
-	AICRAFT.Ai.rotate(self, degree, cb, IsLeft, true, false, 40);
-};
-
+/** Rotates the body to a degree related to the front of the AI or
+ * Rotates the sight to a degree related to the front of the Sight
+ * @param degree degrees that needs to be rotated.
+ */
 AICRAFT.Ai.rotate = function(self, degree, cb, IsLeft, IsBody, IsSight, delay) {
 	if (degree < 1 || self.hp < 1 || self.codeUploading) {
 		if (cb !== undefined) {
