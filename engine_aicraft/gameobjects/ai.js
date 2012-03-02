@@ -14,7 +14,6 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	}
 
 	this.sight = new Object();
-	this.sight.lock = true;
 	this.sight.lines = new Array();
 	this.sight.quaternion = new Object();
 	this.sight.quaternion.x = 0;
@@ -27,6 +26,7 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.codeUploading = false;
 	this.aheadLock = false;
 	this.turnLock = false;
+	this.lookAtLock = false;
 	this.hp = 100;
 };
 
@@ -129,21 +129,29 @@ AICRAFT.Ai.prototype.lookRight = function(degree, cb) {
 	AICRAFT.Ai.lookRotate(this, degree, cb, false);
 };
 
-/** Rotates the sight to a degree related to the front of the AI
+/** set the sight to a degree related to the front of the AI instantely. Only allow once per second
  * @param to degree that needs to be rotated.
+ * @cb callback function to execute after the lookAt lock is release
  */
-AICRAFT.Ai.prototype.lookTo = function(degree, cb) {
+AICRAFT.Ai.prototype.lookAt = function(degree, cb) {
 	var self = this;
-	var sight_quat = new self.Ammo.btQuaternion(
-			self.sight.quaternion.x,
-			self.sight.quaternion.y,
-			self.sight.quaternion.x,
-			self.sight.quaternion.w);
+	if (self.lookAtLock === true) {
+		return;}	
+	if (degree > 360) {
+		degree = degree % 360;}
 	var front_quat = self.phybody.getOrientation();
-	//get the angle between them
-	var angle = sight_quat.angle(front_quat)*360/Math.PI;
-	console.log("rotate angle :"+angle);
-	AICRAFT.Ai.rotate(self, Math.abs(degree-angle), cb, true, false, true, 10);
+	var target_quat = AICRAFT.quatFromEuler(degree,0,0,self.Ammo);
+	var sight_quat = AICRAFT.quatMul(target_quat,front_quat);
+	self.sight.quaternion.x = sight_quat.getX();
+	self.sight.quaternion.y = sight_quat.getY();
+	self.sight.quaternion.z = sight_quat.getZ();
+	self.sight.quaternion.w = sight_quat.getW();
+	self.lookAtLock = true;
+	setTimeout(function(){
+		self.lookAtLock = false;
+		if (cb !== undefined) {
+			cb();}
+	}, 1000);
 };
 
 
@@ -204,7 +212,7 @@ AICRAFT.Ai.rotate = function(self, degree, cb, IsLeft, IsBody, IsSight, delay) {
 		self.phybody.getMotionState().setWorldTransform(trans);
 		self.phybody.setCenterOfMassTransform(trans);
 	} 
-	if (IsSight === true || self.sight.lock === true) {
+	if (IsSight === true) {
 		result_quat = AICRAFT.quatMul(sight_quat, quat);
 		self.sight.quaternion.x = result_quat.getX();
 		self.sight.quaternion.y = result_quat.getY();

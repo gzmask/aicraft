@@ -313,6 +313,15 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#lookAt">lookAt</a></b>(to, cb)
+								</div>
+								<div class="description">set the sight to a degree related to the front of the AI instantely.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#lookLeft">lookLeft</a></b>(degree, cb)
 								</div>
 								<div class="description">turns the sight of the AI to the left</div>
@@ -358,18 +367,10 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">AICRAFT.Ai.<b><a href="../symbols/AICRAFT.Ai.html#.rotate">rotate</a></b>(self, degree, cb, IsLeft, IsBody, IsSight, delay)
+								<div class="fixedFont">AICRAFT.Ai.<b><a href="../symbols/AICRAFT.Ai.html#.rotate">rotate</a></b>(degree, degree, cb, IsLeft, IsBody, IsSight, delay)
 								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">AICRAFT.Ai.<b><a href="../symbols/AICRAFT.Ai.html#.rotateFromTo">rotateFromTo</a></b>(self, from, to, cb, IsLeft, IsBody, IsSight, delay)
-								</div>
-								<div class="description"></div>
+								<div class="description">Rotates the body to a degree related to the front of the AI or
+Rotates the sight to a degree related to the front of the Sight</div>
 							</td>
 						</tr>
 					
@@ -674,6 +675,48 @@ ul.inheritsList
 
 					<hr />
 				
+					<a name="lookAt"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>lookAt</b>(to, cb)
+					
+					</div>
+					<div class="description">
+						set the sight to a degree related to the front of the AI instantely. Only allow once per second
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>to</b>
+									
+								</dt>
+								<dd>degree that needs to be rotated.</dd>
+							
+								<dt>
+									<b>cb</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="lookLeft"> </a>
 					<div class="fixedFont">
 					
@@ -912,11 +955,12 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">AICRAFT.Ai.</span><b>rotate</b>(self, degree, cb, IsLeft, IsBody, IsSight, delay)
+					<span class="light">AICRAFT.Ai.</span><b>rotate</b>(degree, degree, cb, IsLeft, IsBody, IsSight, delay)
 					
 					</div>
 					<div class="description">
-						
+						Rotates the body to a degree related to the front of the AI or
+Rotates the sight to a degree related to the front of the Sight
 						
 						
 					</div>
@@ -926,93 +970,15 @@ ul.inheritsList
 						
 							<dl class="detailList">
 							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>self</b>
-									
-								</dt>
-								<dd></dd>
 							
 								<dt>
 									<b>degree</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>degrees that needs to be rotated.</dd>
 							
 								<dt>
-									<b>cb</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>IsLeft</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>IsBody</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>IsSight</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>delay</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name=".rotateFromTo"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">AICRAFT.Ai.</span><b>rotateFromTo</b>(self, from, to, cb, IsLeft, IsBody, IsSight, delay)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>self</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>from</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>to</b>
+									<b>degree</b>
 									
 								</dt>
 								<dd></dd>
@@ -1273,7 +1239,7 @@ ul.inheritsList
 		
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
-			Documentation generated on Thu Mar 01 2012 13:24:13 GMT-0600 (CST)
+			Documentation generated on Thu Mar 01 2012 23:06:37 GMT-0600 (CST)
 		</div>
 	</body>
 </html>

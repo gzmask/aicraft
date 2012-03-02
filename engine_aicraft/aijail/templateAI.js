@@ -12,11 +12,15 @@ AICRAFT.ai_name_to_replace.prototype.constructor = AICRAFT.ai_name_to_replace;
 AICRAFT.ai_name_to_replace.prototype.run = function() {
 	var self = this;
 	var Smove = function() {
-		self.body.lookTo(60);
+		self.body.lookAt(0);
 		self.body.ahead(10, function(){
-			self.body.lookTo(0);
+			self.body.lookAt(180, function(){
+				self.body.lookLeft(30, function(){
+					self.body.lookRight(30);
+				});
+			});
 			self.body.back(10, function(){
-					Smove();
+				Smove();
 			});
 		});
 	};

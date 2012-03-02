@@ -163,7 +163,7 @@ AICRAFT.Engine.prototype = {
 		//tell client connected players
 		socket.emit('connect', AICRAFT.Engine.getNextAvailablePnum(this.players));
 		socket.on('connected', function(Pnum) {
-			if (self.players[Pnum].connected) {
+			if (self.players[Pnum].connected || self.players[Pnum] === undefined) {
 				return false;
 			};
 			console.log("Conected players:" + Pnum);
@@ -325,6 +325,9 @@ AICRAFT.Engine.extractPacket = function(packet){
  * @return the available index for the player array, or -1 if nothing available
  */
 AICRAFT.Engine.getNextAvailablePnum = function(players) {
+	if (players === undefined) {
+		return -1;
+	}
 	for (var i = 0; i<players.length; i++) {
 		if (!players[i].connected) {
 			return i;
