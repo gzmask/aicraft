@@ -2,7 +2,6 @@ Tasks:
 
 =========== To-Do:  ==============
 	
-	implement lookAt AI call
 	sighting onScanned event can make use of convexSweepTest or rayCastTest
 	raycast with delay can be used for bullets: http://bulletphysics.org/mediawiki-1.5.8/index.php/Using_RayTest
 	implement ai on server side
@@ -14,6 +13,7 @@ Tasks:
 
 ============== done ===============
 
+	Implement lookAt AI call
 	AI needs another mesh, thus need to override the buildMesh and graphic update method in AI class
 	need walls, can be invisible therefore don't need THREE.js code
 	disconnection needs to be handle

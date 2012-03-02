@@ -87,17 +87,24 @@ AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,
 
 //override physic and graphic update method
 AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(dynamicsWorld) {
-	AICRAFT.GameObject.prototype.physicAndGraphicUpdate.call(this, dynamicsWorld);
-	this.clientSight.position.x = this.position.x;
-	this.clientSight.position.y = this.position.y;
-	this.clientSight.position.z = this.position.z;
+	//AICRAFT.GameObject.prototype.physicAndGraphicUpdate.call(this, dynamicsWorld);
+	this.physicUpdate.call(this, dynamicsWorld);
+	this.clientSight.position.x = this.mesh.position.x = this.position.x;
+	this.clientSight.position.y = this.mesh.position.y = this.position.y;
+	this.clientSight.position.z = this.mesh.position.z = this.position.z;
+	this.mesh.quaternion.x = this.quaternion.x;
+	this.mesh.quaternion.y = this.quaternion.y;
+	this.mesh.quaternion.z = this.quaternion.z;
+	this.mesh.quaternion.w = this.quaternion.w;
 	this.clientSight.quaternion.x = this.sight.quaternion.x;
 	this.clientSight.quaternion.y = this.sight.quaternion.y;
 	this.clientSight.quaternion.z = this.sight.quaternion.z;
 	this.clientSight.quaternion.w = this.sight.quaternion.w;
 };
 
-
+AICRAFT.Ai.prototype.physicUpdate = function(dynamicsWorld) {
+	AICRAFT.GameObject.prototype.physicUpdate.call(this, dynamicsWorld);
+};
 
 /** push the body of the AI forward
  * @param units this can not be negative
@@ -129,7 +136,7 @@ AICRAFT.Ai.prototype.lookRight = function(degree, cb) {
 	AICRAFT.Ai.lookRotate(this, degree, cb, false);
 };
 
-/** set the sight to a degree related to the front of the AI instantely. Only allow once per second
+/** set the sight to a degree related to the front of the AI instantely. Only allow once per period of time
  * @param to degree that needs to be rotated.
  * @cb callback function to execute after the lookAt lock is release
  */
@@ -151,7 +158,7 @@ AICRAFT.Ai.prototype.lookAt = function(degree, cb) {
 		self.lookAtLock = false;
 		if (cb !== undefined) {
 			cb();}
-	}, 1000);
+	}, 3000);
 };
 
 
@@ -173,7 +180,7 @@ AICRAFT.Ai.prototype.turnLeft = function(degree, cb) {
  * @param degree this can not be negative
  */
 AICRAFT.Ai.lookRotate = function(self, degree, cb, IsLeft) {
-	AICRAFT.Ai.rotate(self, degree, cb, IsLeft, false, true, 20);
+	AICRAFT.Ai.rotate(self, degree, cb, IsLeft, false, true, 30);
 };
 
 /** Rotates the body to a degree related to the front of the AI or
@@ -186,6 +193,8 @@ AICRAFT.Ai.rotate = function(self, degree, cb, IsLeft, IsBody, IsSight, delay) {
 			cb();}
 		return false;
 	}
+	if (degree > 360) {
+		degree = degree % 360;}
 	var ori_quat = self.phybody.getOrientation();
 	var sight_quat = new self.Ammo.btQuaternion(self.sight.quaternion.x,
 		self.sight.quaternion.y,
