@@ -67,11 +67,8 @@ AICRAFT.ClientEngine.prototype = {
 
 		// put a camera in the scene
 		this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000 );
-		this.camera.position.set(0, 0, 200);
 		this.scene.add(this.camera);
 
-		// create a camera contol
-		this.cameraControls	= new THREEx.DragPanControls(this.camera)
 
 
 
@@ -212,6 +209,10 @@ AICRAFT.ClientEngine.prototype = {
 			self.ais[i].buildPhysic(Ammo);
 			self.dynamicsWorld.addRigidBody(self.ais[i].phybody);
 		}})();
+
+		// create a camera contol
+		//this.cameraControls	= new THREEx.DragPanControls(this.camera);
+		this.cameraControls	= new AICRAFT.CameraControl(this.camera, this.players[this.myPnum]);
 
 		//start tracking keyboards
 		//document.onkeydown = self.players[self.myPnum].handleKeyDown;

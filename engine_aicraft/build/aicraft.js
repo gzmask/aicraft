@@ -248,6 +248,24 @@ AICRAFT.Player.prototype.updateInput = function(a) {
   AICRAFT.ClientEngine.key(this.keycode, "d") && b < this.maxSpeed && 1 > this.position.y && (this.phybody.activate(), a = new Ammo.btVector3(this.acceleration, 0, 0), this.phybody.applyCentralImpulse(a));
   AICRAFT.ClientEngine.key(this.keycode, "e") && 0.1 > this.position.y && (this.phybody.activate(), a = new Ammo.btVector3(0, 1, 0), this.phybody.applyCentralImpulse(a))
 };
+AICRAFT.CameraControl = function(a, b, c) {
+  this.camera = a;
+  this.camera.useQuaternion = !0;
+  this.camera.lookAt(new THREE.Vector3(0, 0, -1));
+  this.domElement = c || document;
+  this.gameObj = b;
+  this.target = new THREE.Vector3(0, 0, 0)
+};
+AICRAFT.CameraControl.prototype.constructor = AICRAFT.CameraControl;
+AICRAFT.CameraControl.prototype.update = function() {
+  this.camera.position.x = this.gameObj.position.x;
+  this.camera.position.y = this.gameObj.position.y;
+  this.camera.position.z = this.gameObj.position.z;
+  this.camera.quaternion.x = this.gameObj.quaternion.x;
+  this.camera.quaternion.y = this.gameObj.quaternion.y;
+  this.camera.quaternion.z = this.gameObj.quaternion.z;
+  this.camera.quaternion.w = this.gameObj.quaternion.w
+};
 AICRAFT.requestAnimationFrame = function(a, b) {
   return setTimeout(a, 1E3 / b)
 };
@@ -499,9 +517,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
     b.dynamicsWorld.trans.setIdentity()
   })();
   this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1E4);
-  this.camera.position.set(0, 0, 200);
   this.scene.add(this.camera);
-  this.cameraControls = new THREEx.DragPanControls(this.camera);
   THREEx.WindowResize.bind(this.renderer, this.camera);
   THREEx.Screenshot.bindKey(this.renderer);
   THREEx.FullScreen.available() && (THREEx.FullScreen.bindKey(), document.getElementById("inlineDoc").innerHTML += "- <i>f</i> for fullscreen");
@@ -581,6 +597,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
       -20, 0)), b.ais[c] = new AICRAFT.Ai(a.ais.bindings[c].position[0], a.ais.bindings[c].position[1], a.ais.bindings[c].position[2], a.ais.bindings[c].quaternion[0], a.ais.bindings[c].quaternion[1], a.ais.bindings[c].quaternion[2], a.ais.bindings[c].quaternion[3]), b.ais[c].buildMesh(THREE, b.scene), b.ais[c].buildPhysic(Ammo), b.dynamicsWorld.addRigidBody(b.ais[c].phybody)
     }
   })();
+  this.cameraControls = new AICRAFT.CameraControl(this.camera, this.players[this.myPnum]);
   document.addEventListener("keydown", function(a) {
     b.players[b.myPnum].handleKeyDown(a, b.players[b.myPnum])
   }, !1);
