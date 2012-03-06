@@ -47,3 +47,15 @@ AICRAFT.quatFromEuler = function (pitch, yaw, roll, AmmoIn){
  
 	return quat.normalize();
 };
+
+/**
+ * binds a 'this' to a function
+ * @param scope this
+ * @param fn function
+ */
+AICRAFT.bind = function( scope, fn ) {
+	return function () {
+		fn.apply( scope, arguments );
+	};
+};
+

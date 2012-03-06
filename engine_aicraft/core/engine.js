@@ -135,7 +135,7 @@ AICRAFT.Engine.prototype = {
 			self.players[i] = new AICRAFT.Player( -150 + Math.random()*301, 
 				0, 
 				-150 + Math.random()*301, 
-				quat.getX(),quat.getY(),quat.getZ(),quat.getW());
+				quat.getX(),quat.getY(),quat.getZ(),quat.getW(), Ammo);
 			self.players[i].buildPhysic(Ammo);
 			self.dynamicsWorld.addRigidBody(self.players[i].phybody);
 			

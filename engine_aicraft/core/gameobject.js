@@ -7,9 +7,9 @@
  */
 AICRAFT.GameObject = function (x,y,z, qx, qy, qz, qw) {
 	this.position = new Object();
-	this.position.x = x; 
-	this.position.y = y; 
-	this.position.z = z; 
+	this.position.x = parseFloat(x); 
+	this.position.y = parseFloat(y); 
+	this.position.z = parseFloat(z); 
 	this.quaternion = new Object();
 	this.quaternion.x = qx || 0;
 	this.quaternion.y = qy || 0;
@@ -19,6 +19,10 @@ AICRAFT.GameObject = function (x,y,z, qx, qy, qz, qw) {
 	} else {
 		this.quaternion.w = qw;
 	}
+	this.quaternion.x = parseFloat(this.quaternion.x);
+	this.quaternion.y = parseFloat(this.quaternion.y);
+	this.quaternion.z = parseFloat(this.quaternion.z);
+	this.quaternion.w = parseFloat(this.quaternion.w);
 	this.mesh = undefined;
 	this.phybody = undefined;
 	this.width = 8;
@@ -83,6 +87,16 @@ AICRAFT.GameObject.prototype = {
 
 	//sets the physic states of this object
 	setPos: function(AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz) {
+		x = parseFloat(x);
+		y = parseFloat(y);
+		z = parseFloat(z);
+		qx = parseFloat(qx);
+		qy = parseFloat(qy);
+		qz = parseFloat(qz);
+		qw = parseFloat(qw);
+		vx = parseFloat(vx);
+		vy = parseFloat(vy);
+		vz = parseFloat(vz);
 		if (AmmoIn !== undefined) {
 			Ammo = AmmoIn;
 		};
@@ -119,13 +133,13 @@ AICRAFT.GameObject.prototype = {
 	physicUpdate: function(dynamicsWorld) {
 		if (this.phybody.getMotionState()) {
 			this.phybody.getMotionState().getWorldTransform(dynamicsWorld.trans);
-			this.position.x = dynamicsWorld.trans.getOrigin().x().toFixed(2);
-			this.position.y = dynamicsWorld.trans.getOrigin().y().toFixed(2);
-			this.position.z = dynamicsWorld.trans.getOrigin().z().toFixed(2);
-			this.quaternion.x = dynamicsWorld.trans.getRotation().x();
-			this.quaternion.y = dynamicsWorld.trans.getRotation().y();
-			this.quaternion.z = dynamicsWorld.trans.getRotation().z();
-			this.quaternion.w = dynamicsWorld.trans.getRotation().w();
+			this.position.x = parseFloat(dynamicsWorld.trans.getOrigin().x().toFixed(2));
+			this.position.y = parseFloat(dynamicsWorld.trans.getOrigin().y().toFixed(2));
+			this.position.z = parseFloat(dynamicsWorld.trans.getOrigin().z().toFixed(2));
+			this.quaternion.x = parseFloat(dynamicsWorld.trans.getRotation().x());
+			this.quaternion.y = parseFloat(dynamicsWorld.trans.getRotation().y());
+			this.quaternion.z = parseFloat(dynamicsWorld.trans.getRotation().z());
+			this.quaternion.w = parseFloat(dynamicsWorld.trans.getRotation().w());
 		}
 	}
 };

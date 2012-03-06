@@ -3,6 +3,8 @@ Tasks:
 =========== To-Do:  ==============
 	
 	make player view first personal, and narrow the field of view to be about the same as what AI sees using fogs
+	use pointer lock API for FPS control and prevent user from copy/paste
+	implement code emitter
 	can anyone explain to me the rough idea of how to combine character animations of walking and headbobing ? chandlerp: gzmask: if you have the two morph targets setup you can animate them separately: material.morphTargetInfluences[0] = .5 // walking chandlerp: material.morphTargetInfluences[1] = .2 // head bobbing chandlerp: animate the influence values between 0 and 1 at whatever pace fits
 	reduce network load for area where player and ai can not see
 	sighting onScanned event can make use of rayCastTest only client side

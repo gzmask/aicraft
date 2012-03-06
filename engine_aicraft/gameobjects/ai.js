@@ -2,6 +2,7 @@
  */
 
 /** @class physical part of an A.I.
+ * init to be facing north
  * @extends AICRAFT.GameObject
  * @requires Ammo.js
  */
@@ -74,6 +75,20 @@ AICRAFT.Ai.prototype.buildPhysic = function(AmmoIn) {
 };
 
 AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,vx,vy,vz) {
+	x = parseFloat(x);
+	y = parseFloat(y);
+	z = parseFloat(z);
+	qx = parseFloat(qx);
+	qy = parseFloat(qy);
+	qz = parseFloat(qz);
+	qw = parseFloat(qw);
+	sqx = parseFloat(sqx);
+	sqy = parseFloat(sqy);
+	sqz = parseFloat(sqz);
+	sqw = parseFloat(sqw);
+	vx = parseFloat(vx);
+	vy = parseFloat(vy);
+	vz = parseFloat(vz);
 	AICRAFT.GameObject.prototype.setPos.call(this,AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz);
 	this.sight.quaternion.x = sqx;
 	this.sight.quaternion.y = sqy;
