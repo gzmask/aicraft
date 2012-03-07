@@ -14,6 +14,7 @@ AICRAFT.ClientEngine = function () {
 	this.renderer = undefined;
 	this.camera = undefined;
    	this.cameraControl = undefined;
+	this.clock = new THREE.Clock();
 	this.ground = undefined;
 	this.dynamicsWorld = undefined;
 	this.totalPlayers = undefined;
@@ -313,14 +314,18 @@ AICRAFT.ClientEngine.prototype = {
 	},
 
 	animate: function() {
+		// update delta
+		this.delta = this.clock.getDelta();
+
 		var self = this;
+
 		requestAnimationFrame(self.animate.bind(self));
 
 		// update physics and graphics
 		self.dynamicsWorld.stepSimulation(1/self.phyFPS, 10);
 		(function(){ for (var i=0; i<self.totalPlayers; i++) {
-			self.players[i].physicAndGraphicUpdate(self.dynamicsWorld);
-			self.ais[i].physicAndGraphicUpdate(self.dynamicsWorld);
+			self.players[i].physicAndGraphicUpdate(self.dynamicsWorld, self.delta);
+			self.ais[i].physicAndGraphicUpdate(self.dynamicsWorld, self.delta);
 		}})();
 
 		// update camera controls

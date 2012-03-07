@@ -102,11 +102,31 @@ AICRAFT.Ai = function(a, b, c, d, f, e, g, h) {
 AICRAFT.Ai.prototype = new AICRAFT.GameObject;
 AICRAFT.Ai.prototype.constructor = AICRAFT.Ai;
 AICRAFT.Ai.prototype.buildMesh = function(a, b) {
-  AICRAFT.GameObject.prototype.buildMesh.call(this, a, b);
-  var c = new a.Geometry;
-  c.vertices.push(AICRAFT.v(0, 0, 0), AICRAFT.v(-84.5, 0, -260), AICRAFT.v(0, 0, 0), AICRAFT.v(-47.6, 0, -267.8), AICRAFT.v(0, 0, 0), AICRAFT.v(0, 0, -273), AICRAFT.v(0, 0, 0), AICRAFT.v(47.6, 0, -267.8), AICRAFT.v(0, 0, 0), AICRAFT.v(84.5, 0, -260));
-  var d = new a.LineBasicMaterial({color:3407667, lineWidth:1});
-  this.clientSight = new a.Line(c, d);
+  var c = this;
+  (new a.JSONLoader).load("asset/rat_walk.js", function(d) {
+    var g = d.materials[0];
+    g.morphTargets = !0;
+    g.color.setHex(11184810);
+    g.ambient.setHex(2236962);
+    g = new a.MeshFaceMaterial;
+    morph = new a.MorphAnimMesh(d, g);
+    morph.duration = 1E3;
+    morph.time = 0;
+    c.mesh = morph;
+    c.mesh.castShadow = !0;
+    c.mesh.receiveShadow = !0;
+    c.mesh.position.x = c.position.x;
+    c.mesh.position.y = c.position.y;
+    c.mesh.position.z = c.position.z;
+    c.mesh.useQuaternion = !0;
+    c.mesh.quaternion.set(c.quaternion.x, c.quaternion.y, c.quaternion.z, c.quaternion.w);
+    c.mesh.scale.set(5, 5, 5);
+    b.add(c.mesh)
+  });
+  var d = new a.Geometry;
+  d.vertices.push(AICRAFT.v(0, 0, 0), AICRAFT.v(-84.5, 0, -260), AICRAFT.v(0, 0, 0), AICRAFT.v(-47.6, 0, -267.8), AICRAFT.v(0, 0, 0), AICRAFT.v(0, 0, -273), AICRAFT.v(0, 0, 0), AICRAFT.v(47.6, 0, -267.8), AICRAFT.v(0, 0, 0), AICRAFT.v(84.5, 0, -260));
+  var f = new a.LineBasicMaterial({color:3407667, lineWidth:1});
+  this.clientSight = new a.Line(d, f);
   this.clientSight.type = a.Lines;
   this.clientSight.useQuaternion = !0;
   this.clientSight.position.x = this.position.x;
@@ -151,7 +171,7 @@ AICRAFT.Ai.prototype.setPos = function(a, b, c, d, f, e, g, h, k, i, j, l, m, n,
   this.clientSight.quaternion.z = this.sight.quaternion.z;
   this.clientSight.quaternion.w = this.sight.quaternion.w
 };
-AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(a) {
+AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(a, b) {
   this.physicUpdate.call(this, a);
   this.clientSight.position.x = this.mesh.position.x = this.position.x;
   this.clientSight.position.y = this.mesh.position.y = this.position.y;
@@ -163,7 +183,8 @@ AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(a) {
   this.clientSight.quaternion.x = this.sight.quaternion.x;
   this.clientSight.quaternion.y = this.sight.quaternion.y;
   this.clientSight.quaternion.z = this.sight.quaternion.z;
-  this.clientSight.quaternion.w = this.sight.quaternion.w
+  this.clientSight.quaternion.w = this.sight.quaternion.w;
+  this.mesh.updateAnimation(1E3 * b)
 };
 AICRAFT.Ai.prototype.physicUpdate = function(a) {
   AICRAFT.GameObject.prototype.physicUpdate.call(this, a)
@@ -317,19 +338,13 @@ AICRAFT.CameraControl.prototype.update = function() {
   this.camera.quaternion.x = this.gameObj.quaternion.x;
   this.camera.quaternion.y = this.gameObj.quaternion.y;
   this.camera.quaternion.z = this.gameObj.quaternion.z;
-  this.camera.quaternion.w = this.gameObj.quaternion.w;
-  var a = this.frontVector();
-  a.x += 20 * this.mouseX;
-  a.y += 20 * this.mouseY;
-  this.camera.lookAt(this.camera.position.addSelf(a))
+  this.camera.quaternion.w = this.gameObj.quaternion.w
 };
 AICRAFT.CameraControl.prototype.onMouseMove = function(a) {
   this.domElement === document ? (this.mouseX = a.pageX - this.viewHalfX, this.mouseY = a.pageY - this.viewHalfY) : (this.mouseX = a.pageX - this.domElement.offsetLeft - this.viewHalfX, this.mouseY = a.pageY - this.domElement.offsetTop - this.viewHalfY);
   this.mouseY *= -1;
   this.mouseX /= this.viewHalfX;
-  this.mouseY /= this.viewHalfY;
-  console.log("mouse X: " + this.mouseX);
-  console.log("mouse Y: " + this.mouseY)
+  this.mouseY /= this.viewHalfY
 };
 AICRAFT.CameraControl.prototype.tailVector = function() {
   return AICRAFT.CameraControl.setVector(this, 10, !1)
@@ -573,7 +588,9 @@ AICRAFT.AIEngine.prototype = {constructor:AICRAFT.AIEngine, loadAI:function(a, b
 }};
 AICRAFT.ClientEngine = function() {
   this.phyFPS = this.keyFPS = 30;
-  this.myPnum = this.totalPlayers = this.dynamicsWorld = this.ground = this.cameraControl = this.camera = this.renderer = this.scene = this.stats = void 0;
+  this.cameraControl = this.camera = this.renderer = this.scene = this.stats = void 0;
+  this.clock = new THREE.Clock;
+  this.myPnum = this.totalPlayers = this.dynamicsWorld = this.ground = void 0;
   this.players = [];
   this.ais = [];
   this.lastKeycode = 0
@@ -722,10 +739,11 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   void 0 !== this.myPnum && 0 != this.players[this.myPnum].keycode ? (a.emit("k", this.players[this.myPnum].keycode), this.players[this.myPnum].updateInput()) : void 0 !== this.myPnum && 0 == this.players[this.myPnum].keycode && 0 != this.lastKeycode && a.emit("k", 0);
   this.lastKeycode = this.players[this.myPnum].keycode
 }, animate:function() {
+  this.delta = this.clock.getDelta();
   requestAnimationFrame(this.animate.bind(this));
   this.dynamicsWorld.stepSimulation(1 / this.phyFPS, 10);
   for(var a = 0;a < this.totalPlayers;a++) {
-    this.players[a].physicAndGraphicUpdate(this.dynamicsWorld), this.ais[a].physicAndGraphicUpdate(this.dynamicsWorld)
+    this.players[a].physicAndGraphicUpdate(this.dynamicsWorld, this.delta), this.ais[a].physicAndGraphicUpdate(this.dynamicsWorld, this.delta)
   }
   this.cameraControls.update();
   this.render();

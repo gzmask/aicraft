@@ -227,6 +227,7 @@ ul.inheritsList
 				
 			
 				Player class controls the player models, physic collision bodies and user inputs
+init to be facing north
 				
 				
 					<br /><i>Defined in: </i> <a href="../symbols/src/engine_aicraft_gameobjects_player.js.html">player.js</a>.
@@ -248,7 +249,7 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/AICRAFT.Player.html#constructor">AICRAFT.Player</a></b>(x, y, z, qx, qy, qz, qw)
+								<b><a href="../symbols/AICRAFT.Player.html#constructor">AICRAFT.Player</a></b>(x, y, z, qx, qy, qz, qw, AmmoIn)
 							</div>
 							<div class="description"></div>
 						</td>
@@ -275,6 +276,15 @@ ul.inheritsList
 					<tbody>
 					
 						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">AICRAFT.Player.<b><a href="../symbols/AICRAFT.Player.html#.ahead">ahead</a></b>(self, IsAhead)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Player.html#handleKeyDown">handleKeyDown</a></b>(event, self)
@@ -287,6 +297,24 @@ ul.inheritsList
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Player.html#handleKeyUp">handleKeyUp</a></b>(event, self)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">AICRAFT.Player.<b><a href="../symbols/AICRAFT.Player.html#.move">move</a></b>(self, frontVector)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">AICRAFT.Player.<b><a href="../symbols/AICRAFT.Player.html#.side">side</a></b>(self, IsLeft)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -322,7 +350,7 @@ ul.inheritsList
 				</div>
 				
 				<div class="fixedFont">
-						<b>AICRAFT.Player</b>(x, y, z, qx, qy, qz, qw)
+						<b>AICRAFT.Player</b>(x, y, z, qx, qy, qz, qw, AmmoIn)
 				</div>
 				
 				<div class="description">
@@ -379,6 +407,12 @@ ul.inheritsList
 							</dt>
 								<dd></dd>
 						
+							<dt>
+								 <b>AmmoIn</b>
+								
+							</dt>
+								<dd></dd>
+						
 						</dl>
 					
 					
@@ -406,6 +440,48 @@ ul.inheritsList
 				<div class="sectionTitle">
 					Method Detail
 				</div>
+				
+					<a name=".ahead"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">AICRAFT.Player.</span><b>ahead</b>(self, IsAhead)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>self</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>IsAhead</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
 				
 					<a name="handleKeyDown"> </a>
 					<div class="fixedFont">
@@ -491,6 +567,90 @@ ul.inheritsList
 
 					<hr />
 				
+					<a name=".move"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">AICRAFT.Player.</span><b>move</b>(self, frontVector)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>self</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>frontVector</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".side"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">AICRAFT.Player.</span><b>side</b>(self, IsLeft)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>self</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>IsLeft</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="updateInput"> </a>
 					<div class="fixedFont">
 					
@@ -538,7 +698,7 @@ ul.inheritsList
 		
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
-			Documentation generated on Fri Mar 02 2012 13:50:41 GMT-0600 (CST)
+			Documentation generated on Wed Mar 07 2012 15:44:50 GMT-0600 (CST)
 		</div>
 	</body>
 </html>

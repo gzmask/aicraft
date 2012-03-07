@@ -227,6 +227,7 @@ ul.inheritsList
 				
 			
 				physical part of an A.I.
+init to be facing north
 				
 				
 					<br /><i>Defined in: </i> <a href="../symbols/src/engine_aicraft_gameobjects_ai.js.html">ai.js</a>.
@@ -358,7 +359,16 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#physicAndGraphicUpdate">physicAndGraphicUpdate</a></b>(dynamicsWorld)
+								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#physicAndGraphicUpdate">physicAndGraphicUpdate</a></b>(dynamicsWorld, delta)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#physicUpdate">physicUpdate</a></b>(dynamicsWorld)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -407,7 +417,7 @@ Rotates the sight to a degree related to the front of the Sight</div>
 				
 				
 				<dl class="inheritsList">
-				<dt>Methods borrowed from class <a href="../symbols/AICRAFT.GameObject.html">AICRAFT.GameObject</a>: </dt><dd><a href="../symbols/AICRAFT.GameObject.html#physicUpdate">physicUpdate</a></dd>
+				
 				</dl>
 				
 			
@@ -683,7 +693,7 @@ Rotates the sight to a degree related to the front of the Sight</div>
 					
 					</div>
 					<div class="description">
-						set the sight to a degree related to the front of the AI instantely. Only allow once per second
+						set the sight to a degree related to the front of the AI instantely. Only allow once per period of time
 						
 						
 					</div>
@@ -919,7 +929,49 @@ Rotates the sight to a degree related to the front of the Sight</div>
 					<div class="fixedFont">
 					
 					
-					<b>physicAndGraphicUpdate</b>(dynamicsWorld)
+					<b>physicAndGraphicUpdate</b>(dynamicsWorld, delta)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>dynamicsWorld</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>delta</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="physicUpdate"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>physicUpdate</b>(dynamicsWorld)
 					
 					</div>
 					<div class="description">
@@ -1239,7 +1291,7 @@ Rotates the sight to a degree related to the front of the Sight
 		
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
-			Documentation generated on Fri Mar 02 2012 13:50:41 GMT-0600 (CST)
+			Documentation generated on Wed Mar 07 2012 15:44:50 GMT-0600 (CST)
 		</div>
 	</body>
 </html>

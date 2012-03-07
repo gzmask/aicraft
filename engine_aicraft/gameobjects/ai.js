@@ -45,11 +45,12 @@ AICRAFT.Ai.prototype.buildMesh = function(THREE, scene) {
 	loader.load( "asset/rat_walk.js", function(geometry){
 		var material = geometry.materials[ 0 ];
 		material.morphTargets = true;
-		material.color.setHex( 0xffaaaa );
+		material.color.setHex( 0xaaaaaa );
 		material.ambient.setHex( 0x222222 );
 		var faceMaterial = new THREE.MeshFaceMaterial();
 		morph = new THREE.MorphAnimMesh( geometry, faceMaterial );
 		morph.duration = 1000;
+		morph.time = 0; //stands for when I am at in the duration
 		self.mesh = morph;
 		self.mesh.castShadow = true;
 		self.mesh.receiveShadow = true;
@@ -58,7 +59,8 @@ AICRAFT.Ai.prototype.buildMesh = function(THREE, scene) {
 		self.mesh.position.z = self.position.z;
 		self.mesh.useQuaternion = true;
 		self.mesh.quaternion.set(self.quaternion.x, self.quaternion.y, self.quaternion.z, self.quaternion.w);
-		scene.add( morph );
+		self.mesh.scale.set(5, 5, 5);
+		scene.add( self.mesh );
 	}); 
 
 	//build clientSight ray
@@ -124,7 +126,7 @@ AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,
 };
 
 //override physic and graphic update method
-AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(dynamicsWorld) {
+AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(dynamicsWorld, delta) {
 	//AICRAFT.GameObject.prototype.physicAndGraphicUpdate.call(this, dynamicsWorld);
 	this.physicUpdate.call(this, dynamicsWorld);
 	this.clientSight.position.x = this.mesh.position.x = this.position.x;
@@ -138,6 +140,7 @@ AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(dynamicsWorld) {
 	this.clientSight.quaternion.y = this.sight.quaternion.y;
 	this.clientSight.quaternion.z = this.sight.quaternion.z;
 	this.clientSight.quaternion.w = this.sight.quaternion.w;
+	this.mesh.updateAnimation(1000*delta);
 };
 
 AICRAFT.Ai.prototype.physicUpdate = function(dynamicsWorld) {
