@@ -36,8 +36,31 @@ AICRAFT.Ai.prototype.constructor = AICRAFT.Ai;
 
 //override buildMesh method
 AICRAFT.Ai.prototype.buildMesh = function(THREE, scene) {
+	var self = this;
 	//calls super method
-	AICRAFT.GameObject.prototype.buildMesh.call(this,THREE, scene);
+	//AICRAFT.GameObject.prototype.buildMesh.call(this,THREE, scene);
+
+	//build character model
+	var loader = new THREE.JSONLoader();
+	loader.load( "asset/rat_walk.js", function(geometry){
+		var material = geometry.materials[ 0 ];
+		material.morphTargets = true;
+		material.color.setHex( 0xffaaaa );
+		material.ambient.setHex( 0x222222 );
+		var faceMaterial = new THREE.MeshFaceMaterial();
+		morph = new THREE.MorphAnimMesh( geometry, faceMaterial );
+		morph.duration = 1000;
+		self.mesh = morph;
+		self.mesh.castShadow = true;
+		self.mesh.receiveShadow = true;
+		self.mesh.position.x = self.position.x;
+		self.mesh.position.y = self.position.y;
+		self.mesh.position.z = self.position.z;
+		self.mesh.useQuaternion = true;
+		self.mesh.quaternion.set(self.quaternion.x, self.quaternion.y, self.quaternion.z, self.quaternion.w);
+		scene.add( morph );
+	}); 
+
 	//build clientSight ray
 	var clientSightGeo = new THREE.Geometry();
 	clientSightGeo.vertices.push (

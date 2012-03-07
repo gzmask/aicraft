@@ -22,6 +22,25 @@ AICRAFT.Player = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 AICRAFT.Player.prototype = new AICRAFT.GameObject();
 AICRAFT.Player.prototype.constructor = AICRAFT.Player;
 
+//called by client
+/*
+AICRAFT.Player.prototype.buildMesh = function(THREE, scene) {
+	this.mesh = new THREE.Mesh(
+		new THREE.CubeGeometry(this.width,this.height,this.depth),
+		new THREE.MeshLambertMaterial({color: 0xffffff})	
+	);
+	this.mesh.castShadow = true;
+	this.mesh.receiveShadow = true;
+	this.mesh.position.x = this.position.x;
+	this.mesh.position.y = this.position.y;
+	this.mesh.position.z = this.position.z;
+	this.mesh.useQuaternion = true;
+	this.mesh.quaternion.set(this.quaternion.x, this.quaternion.y, this.quaternion.z, this.quaternion.w);
+	scene.add(this.mesh);
+};
+*/
+
+
 AICRAFT.Player.prototype.handleKeyDown = function(event, self) {
 	if (String.fromCharCode(event.keyCode) == "W") {
 		self.keycode = self.keycode | 8;
