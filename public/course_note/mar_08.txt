@@ -1,0 +1,39 @@
+Sense Think Act Cycle
+	sense
+		see - distance; angle
+		hear - send message/event
+			 - reaction time - add a perception time before an agent becomes aware of a change in the environment
+				- e.g. until a player is seen
+	thinking
+		declarative
+			decision tree
+			decision list - if/then rules
+		procedural
+			search for pathfinding
+	
+Path finding
+	series of cells/nodes/states from a start to a goal
+	intended for the agent to compute a complete route from start to the goal
+
+	random Trace
+		go towards the goal, unless encounter obstacles
+		randomly go around left or right untill no obstacle in the way
+		if no choice, go back
+
+	open list: unvisited nodes 
+	close list: visited nodes
+
+	Depth first search
+		always chose the most recently added node from the open list, 
+		manage open list as a stack
+
+	Breath frist search
+		always chose the most recently added node from the open list
+		manage open list as a queue
+
+	Best first search 
+		most promising first
+
+	Dijkstra
+		least cost path / min path algorithm	
+		select the node that pops the least to reach
