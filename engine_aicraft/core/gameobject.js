@@ -26,11 +26,12 @@ AICRAFT.GameObject = function (x,y,z, qx, qy, qz, qw) {
 	this.mesh = undefined;
 	this.phybody = undefined;
 	this.width = 8;
-	this.height = 1;
+	this.height = 8;
 	this.depth = 8;
 	this.radius = 5;
 	this.mass = 1;
 	this.friction = 3;
+	this.angularFactor = 0;
 };
 
 AICRAFT.GameObject.prototype = {
@@ -39,18 +40,22 @@ AICRAFT.GameObject.prototype = {
 
 	//called by client
 	buildMesh: function(THREE, scene) {
+		/*
 		this.mesh = new THREE.Mesh(
 			new THREE.CubeGeometry(this.width,this.height,this.depth),
 			new THREE.MeshLambertMaterial({color: 0xffffff})	
 		);
-		/*this.mesh = new THREE.Mesh(
+		*/
+		/*
+		this.mesh = new THREE.Mesh(
 			new THREE.CylinderGeometry(this.radius,this.radius,this.height),
 			new THREE.MeshLambertMaterial({color: 0xffffff})	
-		);*/
-		/*this.mesh = new THREE.Mesh(
+		);
+		*/
+		this.mesh = new THREE.Mesh(
 			new THREE.SphereGeometry(this.radius),
 			new THREE.MeshLambertMaterial({color: 0xffffff})	
-		);*/
+		);
 		this.mesh.castShadow = true;
 		this.mesh.receiveShadow = true;
 		this.mesh.position.x = this.position.x;
@@ -66,8 +71,8 @@ AICRAFT.GameObject.prototype = {
 		if (AmmoIn !== undefined) {
 			Ammo = AmmoIn;
 		};
-		var objShape = new Ammo.btBoxShape(new Ammo.btVector3(this.width/2,this.height/2,this.depth/2));
-		//var objShape = new Ammo.btSphereShape(this.radius);
+		//var objShape = new Ammo.btBoxShape(new Ammo.btVector3(this.width/2,this.height/2,this.depth/2));
+		var objShape = new Ammo.btSphereShape(this.radius);
 		//var objShape = new Ammo.btCylinderShape(new Ammo.btVector3(this.radius,this.height/2,this.radius));
 		var objTransform = new Ammo.btTransform();	
 		objTransform.setIdentity();
@@ -83,6 +88,7 @@ AICRAFT.GameObject.prototype = {
 		var rbInfo = new Ammo.btRigidBodyConstructionInfo(this.mass, myMotionState, objShape, localInertia);
 		this.phybody = new Ammo.btRigidBody(rbInfo);
 		this.phybody.setFriction(this.friction);
+		this.phybody.setAngularFactor(this.angularFactor);
 	},
 
 	//sets the physic states of this object

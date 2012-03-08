@@ -209,6 +209,11 @@ AICRAFT.Engine.prototype = {
 				self.players[Pnum].updateInput(Ammo);
 			});
 		});
+		socket.on("m", function(deltaX) {
+			socket.get('Pnum', function(err, Pnum) {
+				self.players[Pnum].rotate(deltaX);
+			});
+		});
 	},
 
 	/** Animate the scene and all entities with Ammo.js physic simulations

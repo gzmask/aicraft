@@ -12,6 +12,7 @@ java -jar ./engine_aicraft/compiler.jar --js \
 	--js_output_file ./engine_aicraft/build/aicraft.js\
 
 cp ./engine_aicraft/build/aicraft.js ./public/js/
+cp ./3dobj/*.js ./public/asset/
 
 java -jar jsdoc/jsrun.jar jsdoc/app/run.js -a -t=jsdoc/templates/aicraft \
 	./engine_aicraft/aicraft.js\

@@ -112,9 +112,35 @@ AICRAFT.Player.prototype.updateInput = function(AmmoIn) {
 	}
 	if (AICRAFT.ClientEngine.key(this.keycode,"e") && this.position.y < 0.1) {
 		this.phybody.activate();
-		impulse = new Ammo.btVector3(0,1,0); 
+		impulse = new Ammo.btVector3(0,0,0); 
 		this.phybody.applyCentralImpulse(impulse);
 	}
+};
+
+AICRAFT.Player.prototype.rotate = function(degree,IsInverted) {
+	var self = this;
+	if (IsInverted === undefined) {
+		IsInverted = false;}
+	var ori_quat = self.phybody.getOrientation();
+	var quat = new self.Ammo.btQuaternion();
+	if (IsInverted === true) {
+		quat = AICRAFT.quatFromEuler(degree,0,0);
+	} else {
+		quat = AICRAFT.quatFromEuler(-1*degree,0,0);
+	}
+	var result_quat;
+	result_quat = AICRAFT.quatMul(ori_quat, quat);
+	self.quaternion.x = result_quat.getX();
+	self.quaternion.y = result_quat.getY();
+	self.quaternion.z = result_quat.getZ();
+	self.quaternion.w = result_quat.getW();
+	var trans = new self.Ammo.btTransform();	
+	trans.setIdentity();
+	trans.setOrigin(new self.Ammo.btVector3(self.position.x, self.position.y, self.position.z));
+	trans.setRotation(result_quat);
+	self.phybody.activate();
+	self.phybody.getMotionState().setWorldTransform(trans);
+	self.phybody.setCenterOfMassTransform(trans);
 };
 
 AICRAFT.Player.side = function(self, IsLeft) {
@@ -149,3 +175,4 @@ AICRAFT.Player.move = function(self, frontVector) {
 	};
 	self.phybody.applyCentralImpulse(frontVector);
 };
+

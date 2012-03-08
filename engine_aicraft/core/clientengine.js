@@ -13,7 +13,7 @@ AICRAFT.ClientEngine = function () {
 	this.scene = undefined; 
 	this.renderer = undefined;
 	this.camera = undefined;
-   	this.cameraControl = undefined;
+   	this.cameraControls = undefined;
 	this.clock = new THREE.Clock();
 	this.ground = undefined;
 	this.dynamicsWorld = undefined;
@@ -311,6 +311,10 @@ AICRAFT.ClientEngine.prototype = {
 			socket.emit("k", 0);
 		};
 		self.lastKeycode = self.players[self.myPnum].keycode;
+		if (self.cameraControls.mouseDragOn === true) {
+			var deltaX = self.cameraControls.deltaX * self.cameraControls.speed;
+			socket.emit("m", deltaX);
+			self.players[self.myPnum].rotate(deltaX);}
 	},
 
 	animate: function() {
