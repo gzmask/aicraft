@@ -13,3 +13,4 @@ java -jar ./engine_aicraft/compiler.jar --js \
 	--formatting PRETTY_PRINT
 
 cp ./engine_aicraft/build/aicraft.js ./public/js/
+cp ./3dobj/*.js ./public/asset/
