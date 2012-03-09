@@ -67,7 +67,7 @@ AICRAFT.ClientEngine.prototype = {
 			self.dynamicsWorld.trans.setIdentity();})();
 
 		// put a camera in the scene
-		this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000 );
+		this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000 );
 		this.scene.add(this.camera);
 
 
@@ -303,11 +303,13 @@ AICRAFT.ClientEngine.prototype = {
 		var self = this;
 		//requestAnimationFrame(self.syncKey.bind(self));
 		AICRAFT.requestKeyFrame(self.syncKey.bind(self), self.keyFPS);
+		if (self.players[self.myPnum] === undefined || self.myPnum === undefined) {
+			return;}
 		var socket = io.connect('/');
-		if ( (self.myPnum !== undefined) && (self.players[self.myPnum].keycode != 0) ) {
+		if (self.players[self.myPnum].keycode != 0) {
 			socket.emit("k", self.players[self.myPnum].keycode);
 			self.players[self.myPnum].updateInput();
-		} else if((self.myPnum !== undefined) && (self.players[self.myPnum].keycode == 0) && (self.lastKeycode != 0)) {
+		} else if((self.players[self.myPnum].keycode == 0) && (self.lastKeycode != 0)) {
 			socket.emit("k", 0);
 		};
 		self.lastKeycode = self.players[self.myPnum].keycode;

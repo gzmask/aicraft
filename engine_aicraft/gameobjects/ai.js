@@ -29,6 +29,7 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.turnLock = false;
 	this.lookAtLock = false;
 	this.hp = 100;
+	this.walkMesh = undefined;
 };
 
 AICRAFT.Ai.prototype = new AICRAFT.GameObject();
@@ -39,29 +40,7 @@ AICRAFT.Ai.prototype.buildMesh = function(THREE, scene) {
 	var self = this;
 	//calls super method
 	//AICRAFT.GameObject.prototype.buildMesh.call(this,THREE, scene);
-
-	//build character model
-	var loader = new THREE.JSONLoader();
-	loader.load( "asset/rat_walk.js", function(geometry){
-		var material = geometry.materials[ 0 ];
-		material.morphTargets = true;
-		material.color.setHex( 0xaaaaaa );
-		material.ambient.setHex( 0x222222 );
-		var faceMaterial = new THREE.MeshFaceMaterial();
-		morph = new THREE.MorphAnimMesh( geometry, faceMaterial );
-		morph.duration = 1000;
-		morph.time = 0; //stands for when I am at in the duration
-		self.mesh = morph;
-		self.mesh.castShadow = true;
-		self.mesh.receiveShadow = true;
-		self.mesh.position.x = self.position.x;
-		self.mesh.position.y = self.position.y;
-		self.mesh.position.z = self.position.z;
-		self.mesh.useQuaternion = true;
-		self.mesh.quaternion.set(self.quaternion.x, self.quaternion.y, self.quaternion.z, self.quaternion.w);
-		self.mesh.scale.set(5, 5, 5);
-		scene.add( self.mesh );
-	}); 
+	AICRAFT.Ai.JSONloader(self,"asset/rat_walk.js", self.walkMesh, scene, THREE);
 
 	//build clientSight ray
 	var clientSightGeo = new THREE.Geometry();
@@ -127,6 +106,8 @@ AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,
 
 //override physic and graphic update method
 AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(dynamicsWorld, delta) {
+	if (this.mesh === undefined) {
+		return;}
 	//AICRAFT.GameObject.prototype.physicAndGraphicUpdate.call(this, dynamicsWorld);
 	this.physicUpdate.call(this, dynamicsWorld);
 	this.clientSight.position.x = this.mesh.position.x = this.position.x;
@@ -313,3 +294,28 @@ AICRAFT.Ai.move = function(self, units, cb, IsAhead, delay) {
 	}, delay);
 };
 
+//animation loader
+AICRAFT.Ai.JSONloader = function(self, url, mesh, scene, THREE) {
+	var loader = new THREE.JSONLoader();
+	loader.load( url, function(geometry){
+		var material = geometry.materials[ 0 ];
+		material.morphTargets = true;
+		material.color.setHex( 0xaaaaaa );
+		material.ambient.setHex( 0x222222 );
+		var faceMaterial = new THREE.MeshFaceMaterial();
+		var morph = new THREE.MorphAnimMesh( geometry, faceMaterial );
+		morph.duration = 1000;
+		morph.time = 0; //stands for when I am at in the duration
+		mesh = morph;
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
+		mesh.position.x = self.position.x;
+		mesh.position.y = self.position.y;
+		mesh.position.z = self.position.z;
+		mesh.useQuaternion = true;
+		mesh.quaternion.set(self.quaternion.x, self.quaternion.y, self.quaternion.z, self.quaternion.w);
+		mesh.scale.set(5, 5, 5);
+		self.mesh = mesh;
+		scene.add( mesh );
+	}); 
+};
