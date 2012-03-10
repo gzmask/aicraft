@@ -12,7 +12,7 @@ AICRAFT.CameraControl = function(camera, gameObj, domElement) {
 	this.prevMouseY = 0;
 	this.deltaY = 0;
 	this.mouseDragOn = false;
-	this.speed = 100;
+	this.speed = 20;
 	if ( this.domElement === document ) {
 		this.viewHalfX = window.innerWidth / 2;
 		this.viewHalfY = window.innerHeight / 2;
@@ -59,10 +59,8 @@ AICRAFT.CameraControl.prototype.onMouseMove = function(event) {
 	this.deltaY = this.mouseY - this.prevMouseY;
 
 	//insert code to mouse look
-	/*
 	if (this.mouseDragOn === true) {
-		this.gameObj.rotate(deltaX*this.speed, true);}
-		*/
+		this.gameObj.rotate(deltaX*this.speed);}
 
 
 	this.prevMouseX = this.mouseX;

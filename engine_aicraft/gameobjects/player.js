@@ -52,6 +52,8 @@ AICRAFT.Player.prototype.handleKeyDown = function(event, self) {
 		self.keycode = self.keycode | 1;
 	} else if (String.fromCharCode(event.keyCode) == "E") {
 		self.keycode = self.keycode | 16;
+	} else if (String.fromCharCode(event.keyCode) == "Q") {
+		self.keycode = self.keycode | 32;
 	};
 };
 
@@ -66,6 +68,8 @@ AICRAFT.Player.prototype.handleKeyUp = function(event, self) {
 		self.keycode = self.keycode ^ 1;
 	} else if (String.fromCharCode(event.keyCode) == "E") {
 		self.keycode = self.keycode ^ 16;
+	} else if (String.fromCharCode(event.keyCode) == "Q") {
+		self.keycode = self.keycode ^ 32;
 	};
 };
 
@@ -111,9 +115,10 @@ AICRAFT.Player.prototype.updateInput = function(AmmoIn) {
 		AICRAFT.Player.side(this, false);
 	}
 	if (AICRAFT.ClientEngine.key(this.keycode,"e") && this.position.y < 0.1) {
-		this.phybody.activate();
-		impulse = new Ammo.btVector3(0,0,0); 
-		this.phybody.applyCentralImpulse(impulse);
+		this.rotate(5);
+	}
+	if (AICRAFT.ClientEngine.key(this.keycode,"q") && this.position.y < 0.1) {
+		this.rotate(5, true);
 	}
 };
 

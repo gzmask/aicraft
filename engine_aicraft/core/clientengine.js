@@ -80,8 +80,7 @@ AICRAFT.ClientEngine.prototype = {
 		// allow 'f' to go fullscreen where this feature is supported
 		if( THREEx.FullScreen.available() ){
 			THREEx.FullScreen.bindKey();
-			document.getElementById('inlineDoc').innerHTML	+= "- <i>f</i> for fullscreen";
-		}
+			document.getElementById('inlineDoc').innerHTML	+= "- <i>f</i> for fullscreen";}
 
 		//construct a light
 		var light = new THREE.SpotLight();
@@ -427,6 +426,12 @@ AICRAFT.ClientEngine.key = function(keycode, key) {
 		};	
 	} else if (key == "e") {
 		if (keycode & 16) {
+			return true;
+		} else {
+			return false;
+		};	
+	} else if (key == "q") {
+		if (keycode & 32) {
 			return true;
 		} else {
 			return false;
