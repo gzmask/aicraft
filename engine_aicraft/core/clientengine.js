@@ -14,6 +14,7 @@ AICRAFT.ClientEngine = function () {
 	this.renderer = undefined;
 	this.camera = undefined;
    	this.cameraControls = undefined;
+	this.codeEmitter = undefined;
 	this.clock = new THREE.Clock();
 	this.ground = undefined;
 	this.dynamicsWorld = undefined;
@@ -215,6 +216,9 @@ AICRAFT.ClientEngine.prototype = {
 		// create a camera control
 		//this.cameraControls	= new THREEx.DragPanControls(this.camera);
 		this.cameraControls	= new AICRAFT.CameraControl(this.camera, this.players[this.myPnum], this.renderer.domElemen);
+		
+		// create a code emitter
+		this.codeEmitter = new AICRAFT.CodeEmitter(this.cameraControls, this.players[this.myPnum], this.ais[this.myPnum]);
 
 		//start tracking keyboards
 		//document.onkeydown = self.players[self.myPnum].handleKeyDown;
@@ -309,7 +313,7 @@ AICRAFT.ClientEngine.prototype = {
 		var socket = io.connect('/');
 		if (self.players[self.myPnum].keycode != 0) {
 			socket.emit("k", self.players[self.myPnum].keycode);
-			self.players[self.myPnum].updateInput(Ammo, self.cameraControls);
+			self.players[self.myPnum].updateInput(Ammo, self.codeEmitter);
 		} else if((self.players[self.myPnum].keycode == 0) && (self.lastKeycode != 0)) {
 			socket.emit("k", 0);
 		};

@@ -80,7 +80,7 @@ AICRAFT.Player.prototype.handleKeyUp = function(event, self) {
 /**
  * This function got called by server and client
  */
-AICRAFT.Player.prototype.updateInput = function(AmmoIn, cameraControls) {
+AICRAFT.Player.prototype.updateInput = function(AmmoIn, codeEmitter) {
 	if (AmmoIn !== undefined) {
 		Ammo = AmmoIn;
 	};
@@ -108,21 +108,7 @@ AICRAFT.Player.prototype.updateInput = function(AmmoIn, cameraControls) {
 	}
 	if (AICRAFT.ClientEngine.key(this.keycode,"c")) {
 		if (this.IsClient === true) {
-			//calls code emitter
-			console.log("codingX:"+cameraControls.mouseX);
-			console.log("codingY:"+cameraControls.mouseY);
-			var newDom = document.createElement('div');
-			newDom.style.background = 'white';
-			newDom.style.left = cameraControls.mouseX.toString()+'px';
-			newDom.style.top = cameraControls.mouseY.toString()+'px';
-			newDom.style.width = '100px';
-			newDom.style.height = '100px';
-			newDom.style.zIndex = '3';
-			newDom.style.position = 'absolute';
-			document.body.appendChild(newDom);
-		} else {
-			//start the code receiver
-		}
+			codeEmitter.switcher();} 
 	}
 };
 
@@ -153,19 +139,21 @@ AICRAFT.Player.prototype.rotate = function(degree,IsInverted) {
 };
 
 AICRAFT.Player.side = function(self, IsLeft) {
+	var frontVector;
 	if (IsLeft === true) {
-		var frontVector = new self.Ammo.btVector3(-1,0,0);
+		frontVector = new self.Ammo.btVector3(-1,0,0);
 	} else {
-		var frontVector = new self.Ammo.btVector3(1,0,0);
+		frontVector = new self.Ammo.btVector3(1,0,0);
 	}
 	AICRAFT.Player.move(self, frontVector);
 };
 
 AICRAFT.Player.ahead = function(self, IsAhead) {
+	var frontVector;
 	if (IsAhead === true) {
-		var frontVector = new self.Ammo.btVector3(0,0,-1);
+		frontVector = new self.Ammo.btVector3(0,0,-1);
 	} else {
-		var frontVector = new self.Ammo.btVector3(0,0,1);
+		frontVector = new self.Ammo.btVector3(0,0,1);
 	}
 	AICRAFT.Player.move(self, frontVector);
 };

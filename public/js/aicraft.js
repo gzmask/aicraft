@@ -292,7 +292,7 @@ AICRAFT.Player.prototype.updateInput = function(a, b) {
   AICRAFT.ClientEngine.key(this.keycode, "d") && c < this.maxSpeed && 1 > this.position.y && AICRAFT.Player.side(this, !1);
   AICRAFT.ClientEngine.key(this.keycode, "e") && 0.1 > this.position.y && this.rotate(2);
   AICRAFT.ClientEngine.key(this.keycode, "q") && 0.1 > this.position.y && this.rotate(2, !0);
-  AICRAFT.ClientEngine.key(this.keycode, "c") && !0 === this.IsClient && (console.log("codingX:" + b.mouseX), console.log("codingY:" + b.mouseY), c = document.createElement("div"), c.style.background = "white", c.style.left = b.mouseX.toString() + "px", c.style.top = b.mouseY.toString() + "px", c.style.width = "100px", c.style.height = "100px", c.style.zIndex = "3", c.style.position = "absolute", document.body.appendChild(c))
+  AICRAFT.ClientEngine.key(this.keycode, "c") && !0 === this.IsClient && b.switcher()
 };
 AICRAFT.Player.prototype.rotate = function(a, b) {
   void 0 === b && (b = !1);
@@ -310,11 +310,13 @@ AICRAFT.Player.prototype.rotate = function(a, b) {
   this.phybody.setCenterOfMassTransform(d)
 };
 AICRAFT.Player.side = function(a, b) {
-  var c = !0 === b ? new a.Ammo.btVector3(-1, 0, 0) : new a.Ammo.btVector3(1, 0, 0);
+  var c;
+  c = !0 === b ? new a.Ammo.btVector3(-1, 0, 0) : new a.Ammo.btVector3(1, 0, 0);
   AICRAFT.Player.move(a, c)
 };
 AICRAFT.Player.ahead = function(a, b) {
-  var c = !0 === b ? new a.Ammo.btVector3(0, 0, -1) : new a.Ammo.btVector3(0, 0, 1);
+  var c;
+  c = !0 === b ? new a.Ammo.btVector3(0, 0, -1) : new a.Ammo.btVector3(0, 0, 1);
   AICRAFT.Player.move(a, c)
 };
 AICRAFT.Player.move = function(a, b) {
@@ -391,6 +393,42 @@ AICRAFT.CameraControl.setVector = function(a, b, c) {
   d.setRotation(a);
   c = d.op_mul(c);
   return new THREE.Vector3(c.getX() * b, c.getY() * b, c.getZ() * b)
+};
+AICRAFT.CodeEmitter = function(a, b, c, d) {
+  this.cameraControls = a;
+  this.player = b;
+  this.ai = c;
+  if(void 0 === d || null === d) {
+    d = document.body
+  }
+  this.switching = this.IsEnable = !1;
+  this.editor = document.createElement("div");
+  this.editor.style.background = "#333";
+  this.editor.style.width = "100px";
+  this.editor.style.height = "100px";
+  this.editor.style.zIndex = "3";
+  this.editor.style.position = "absolute";
+  this.editor.style.visibility = "hidden";
+  this.editor.style.left = this.cameraControls.viewHalfX;
+  this.editor.style.top = this.cameraControls.viewHalfY;
+  d.appendChild(this.editor)
+};
+AICRAFT.CodeEmitter.prototype.constructor = AICRAFT.CodeEmitter;
+AICRAFT.CodeEmitter.prototype.switcher = function() {
+  if(!0 !== this.switching) {
+    this.switching = !0;
+    !0 === this.IsEnable ? this.disable() : this.enable();
+    var a = this;
+    setTimeout(function() {
+      a.switching = !1
+    }, 500)
+  }
+};
+AICRAFT.CodeEmitter.prototype.enable = function() {
+  !0 !== this.IsEnable && (this.IsEnable = !0, this.editor.style.visibility = "visible", this.editor.style.left = this.cameraControls.mouseX.toString() + "px", this.editor.style.top = this.cameraControls.mouseY.toString() + "px")
+};
+AICRAFT.CodeEmitter.prototype.disable = function() {
+  !1 !== this.IsEnable && (this.IsEnable = !1, this.editor.style.visibility = "hidden")
 };
 AICRAFT.requestAnimationFrame = function(a, b) {
   return setTimeout(a, 1E3 / b)
@@ -626,7 +664,7 @@ AICRAFT.AIEngine.prototype = {constructor:AICRAFT.AIEngine, loadAI:function(a, b
 }};
 AICRAFT.ClientEngine = function() {
   this.phyFPS = this.keyFPS = 30;
-  this.cameraControls = this.camera = this.renderer = this.scene = this.stats = void 0;
+  this.codeEmitter = this.cameraControls = this.camera = this.renderer = this.scene = this.stats = void 0;
   this.clock = new THREE.Clock;
   this.myPnum = this.totalPlayers = this.dynamicsWorld = this.ground = void 0;
   this.players = [];
@@ -737,6 +775,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
     }
   })();
   this.cameraControls = new AICRAFT.CameraControl(this.camera, this.players[this.myPnum], this.renderer.domElemen);
+  this.codeEmitter = new AICRAFT.CodeEmitter(this.cameraControls, this.players[this.myPnum], this.ais[this.myPnum]);
   document.addEventListener("keydown", function(a) {
     b.players[b.myPnum].handleKeyDown(a, b.players[b.myPnum])
   }, !1);
@@ -775,7 +814,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   AICRAFT.requestKeyFrame(this.syncKey.bind(this), this.keyFPS);
   if(!(void 0 === this.players[this.myPnum] || void 0 === this.myPnum)) {
     var a = io.connect("/");
-    0 != this.players[this.myPnum].keycode ? (a.emit("k", this.players[this.myPnum].keycode), this.players[this.myPnum].updateInput(Ammo, this.cameraControls)) : 0 == this.players[this.myPnum].keycode && 0 != this.lastKeycode && a.emit("k", 0);
+    0 != this.players[this.myPnum].keycode ? (a.emit("k", this.players[this.myPnum].keycode), this.players[this.myPnum].updateInput(Ammo, this.codeEmitter)) : 0 == this.players[this.myPnum].keycode && 0 != this.lastKeycode && a.emit("k", 0);
     this.lastKeycode = this.players[this.myPnum].keycode;
     if(!0 === this.cameraControls.mouseDragOn) {
       var b = this.cameraControls.deltaX * this.cameraControls.speed;
