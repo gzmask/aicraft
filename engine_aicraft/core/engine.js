@@ -190,7 +190,7 @@ AICRAFT.Engine.prototype = {
 	 */
 	syncPos: function(socket) {
 		var self = this;
-		AICRAFT.requestPosFrame(function(){self.syncPos(socket)}, self.posFPS);
+		AICRAFT.requestPosFrame(function(){self.syncPos(socket);}, self.posFPS);
 		//broadcast a compressed packet to all clients every frame
 		socket.emit('p', AICRAFT.Engine.encryptedPacket(self.players));
 		socket.emit('a', AICRAFT.Engine.encryptedPacket(self.ais));

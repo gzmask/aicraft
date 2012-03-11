@@ -191,6 +191,7 @@ AICRAFT.ClientEngine.prototype = {
 					socket.players.bindings[i].quaternion[1], 
 					socket.players.bindings[i].quaternion[2], 
 					socket.players.bindings[i].quaternion[3]);
+			self.players[i].IsClient = true;
 			self.players[i].buildMesh(THREE, self.scene);
 			self.players[i].buildPhysic(Ammo);
 			self.dynamicsWorld.addRigidBody(self.players[i].phybody);
@@ -205,14 +206,15 @@ AICRAFT.ClientEngine.prototype = {
 					socket.ais.bindings[i].quaternion[1], 
 					socket.ais.bindings[i].quaternion[2], 
 					socket.ais.bindings[i].quaternion[3]);
+			self.ais[i].IsClient = true;
 			self.ais[i].buildMesh(THREE, self.scene);
 			self.ais[i].buildPhysic(Ammo);
 			self.dynamicsWorld.addRigidBody(self.ais[i].phybody);
 		}})();
 
-		// create a camera contol
+		// create a camera control
 		//this.cameraControls	= new THREEx.DragPanControls(this.camera);
-		this.cameraControls	= new AICRAFT.CameraControl(this.camera, this.players[this.myPnum]);
+		this.cameraControls	= new AICRAFT.CameraControl(this.camera, this.players[this.myPnum], this.renderer.domElemen);
 
 		//start tracking keyboards
 		//document.onkeydown = self.players[self.myPnum].handleKeyDown;
@@ -307,7 +309,7 @@ AICRAFT.ClientEngine.prototype = {
 		var socket = io.connect('/');
 		if (self.players[self.myPnum].keycode != 0) {
 			socket.emit("k", self.players[self.myPnum].keycode);
-			self.players[self.myPnum].updateInput();
+			self.players[self.myPnum].updateInput(Ammo, self.cameraControls);
 		} else if((self.players[self.myPnum].keycode == 0) && (self.lastKeycode != 0)) {
 			socket.emit("k", 0);
 		};
@@ -420,6 +422,12 @@ AICRAFT.ClientEngine.key = function(keycode, key) {
 		};	
 	} else if (key == "d") {
 		if (keycode & 1) {
+			return true;
+		} else {
+			return false;
+		};	
+	} else if (key == "c") {
+		if (keycode & 64) {
 			return true;
 		} else {
 			return false;

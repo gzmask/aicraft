@@ -2,8 +2,6 @@ Tasks:
 
 =========== To-Do:  ==============
 	
-	make player view first personal, and narrow the field of view to be about the same as what AI sees using fogs
-	use pointer lock API for FPS control and prevent user from copy/paste
 	implement code emitter using bullet constraints, such that when uploaidng code, player is freezed and dragged by the A.I.
 	can anyone explain to me the rough idea of how to combine character animations of walking and headbobing ? chandlerp: gzmask: if you have the two morph targets setup you can animate them separately: material.morphTargetInfluences[0] = .5 // walking chandlerp: material.morphTargetInfluences[1] = .2 // head bobbing chandlerp: animate the influence values between 0 and 1 at whatever pace fits
 	reduce network load for area where player and ai can not see
@@ -14,9 +12,11 @@ Tasks:
 	ai event loops need to be terminated once newer version of user code is commited. Probably use class variables
 	code emittor options: gpl.internetconnection.net/vi/ or ssh or GateOne
 	Submit first level by Feb 28th at http://www.indiecade.com/submissions 
+	use pointer lock API for FPS control and prevent user from copy/paste
 
 ============== done ===============
 
+	make player view first personal 
 	Implement lookAt AI call
 	AI needs another mesh, thus need to override the buildMesh and graphic update method in AI class
 	need walls, can be invisible therefore don't need THREE.js code
@@ -39,5 +39,6 @@ Tasks:
 
 ============ backlog ==============
 
+	narrow the field of view to be about the same as what AI sees using fogs
 	make THREE.js works in node.js
 	Use Dnode to reconstruct and server/client communication

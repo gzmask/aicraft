@@ -6,13 +6,15 @@ AICRAFT.CameraControl = function(camera, gameObj, domElement) {
 	this.gameObj	= gameObj;
 	this.target	= new THREE.Vector3(0, 0, 0);
 	this.mouseX = 0;
+	this.mouseXc = 0;
 	this.prevMouseX = 0;
 	this.deltaX = 0;
 	this.mouseY = 0;
+	this.mouseYc = 0;
 	this.prevMouseY = 0;
 	this.deltaY = 0;
 	this.mouseDragOn = false;
-	this.speed = 20;
+	this.speed = 2;
 	if ( this.domElement === document ) {
 		this.viewHalfX = window.innerWidth / 2;
 		this.viewHalfY = window.innerHeight / 2;
@@ -44,24 +46,26 @@ AICRAFT.CameraControl.prototype.update = function() {
 
 AICRAFT.CameraControl.prototype.onMouseMove = function(event) {
 	if ( this.domElement === document ) {
+		this.mouseX = event.pageX;
+		this.mouseY = event.pageY;
+	} else {
 		this.mouseX = event.pageX - this.viewHalfX;
 		this.mouseY = event.pageY - this.viewHalfY;
-	} else {
-		this.mouseX = event.pageX - this.domElement.offsetLeft - this.viewHalfX;
-		this.mouseY = event.pageY - this.domElement.offsetTop - this.viewHalfY;
 	}
-	//flip Y axis
-	this.mouseY = this.mouseY*-1;
+	if ( this.domElement === document ) {
+		this.mouseXc = event.pageX - this.viewHalfX;
+		this.mouseYc = event.pageY - this.viewHalfY;
+	} else {
+		this.mouseXc = event.pageX - this.domElement.offsetLeft - this.viewHalfX;
+		this.mouseYc = event.pageY - this.domElement.offsetTop - this.viewHalfY;
+	}
 	//convert to percentage
+	/*
 	this.mouseX = this.mouseX / this.viewHalfX;
 	this.mouseY = this.mouseY / this.viewHalfY;
+	*/
 	this.deltaX = this.mouseX - this.prevMouseX;
 	this.deltaY = this.mouseY - this.prevMouseY;
-
-	//insert code to mouse look
-	if (this.mouseDragOn === true) {
-		this.gameObj.rotate(deltaX*this.speed);}
-
 
 	this.prevMouseX = this.mouseX;
 	this.prevMouseY = this.mouseY;
