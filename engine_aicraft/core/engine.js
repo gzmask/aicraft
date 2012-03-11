@@ -181,6 +181,18 @@ AICRAFT.Engine.prototype = {
 					self.players[Pnum].connected = false;}
 			});
 		});
+		socket.on('coding', function(){
+			socket.get('Pnum', function(err, Pnum) {
+				self.ais[Pnum].codeUploading = true;
+				console.log(self.ais[Pnum].codeUploading);
+			});
+		});
+		socket.on('coded', function(){
+			socket.get('Pnum', function(err, Pnum) {
+				self.ais[Pnum].codeUploading = false;
+				console.log(self.ais[Pnum].codeUploading);
+			});
+		});
 	},
 
 	/**

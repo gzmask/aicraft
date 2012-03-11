@@ -211,7 +211,7 @@ AICRAFT.Ai.lookRotate = function(self, degree, cb, IsLeft) {
  */
 AICRAFT.Ai.rotate = function(self, degree, cb, IsLeft, IsBody, IsSight, delay) {
 	if (degree < 1 || self.hp < 1 || self.codeUploading) {
-		if (cb !== undefined) {
+		if (cb !== undefined && self.codeUploading !== true) {
 			cb();}
 		return false;
 	}
@@ -257,7 +257,7 @@ AICRAFT.Ai.rotate = function(self, degree, cb, IsLeft, IsBody, IsSight, delay) {
 
 AICRAFT.Ai.move = function(self, units, cb, IsAhead, delay) {
 	if (units < 1 || self.hp < 1 || self.codeUploading) {
-		if (cb !== undefined) {
+		if (cb !== undefined && self.codeUploading !== true) {
 			cb();}
 		return false;
 	}

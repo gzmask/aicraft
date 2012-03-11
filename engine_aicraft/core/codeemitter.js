@@ -1,5 +1,6 @@
-AICRAFT.CodeEmitter = function(cameraControls, player, ai, domElement) {
+AICRAFT.CodeEmitter = function(cameraControls, player, ai, socket, domElement) {
 	this.cameraControls = cameraControls;
+	this.socket = socket;
 	this.player = player;
 	this.ai = ai;
 	if (domElement === undefined || domElement === null) {
@@ -42,10 +43,14 @@ AICRAFT.CodeEmitter.prototype.enable = function() {
 	this.editor.style.left = this.cameraControls.mouseX.toString()+'px';
 	this.editor.style.top = this.cameraControls.mouseY.toString()+'px';
 	//here I need to tell server the code uploading is begun using websocket
+	this.ai.codeUploading = true;
+	this.socket.emit('coding');
 };
 
 AICRAFT.CodeEmitter.prototype.disable = function() {
 	if (this.IsEnable === false) {return;}
 	this.IsEnable = false;
 	this.editor.style.visibility = 'hidden';
+	this.ai.codeUploading = false;
+	this.socket.emit('coded');
 };

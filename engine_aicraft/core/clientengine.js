@@ -19,6 +19,7 @@ AICRAFT.ClientEngine = function () {
 	this.ground = undefined;
 	this.dynamicsWorld = undefined;
 	this.totalPlayers = undefined;
+	this.socket = undefined;
 	//number represents my player in player array
 	this.myPnum = undefined;
 	this.players = new Array();
@@ -218,7 +219,7 @@ AICRAFT.ClientEngine.prototype = {
 		this.cameraControls	= new AICRAFT.CameraControl(this.camera, this.players[this.myPnum], this.renderer.domElemen);
 		
 		// create a code emitter
-		this.codeEmitter = new AICRAFT.CodeEmitter(this.cameraControls, this.players[this.myPnum], this.ais[this.myPnum]);
+		this.codeEmitter = new AICRAFT.CodeEmitter(this.cameraControls, this.players[this.myPnum], this.ais[this.myPnum], self.socket);
 
 		//start tracking keyboards
 		//document.onkeydown = self.players[self.myPnum].handleKeyDown;
@@ -235,27 +236,29 @@ AICRAFT.ClientEngine.prototype = {
 
 	},
 
-	networkReady: function(init_cb, animate_cb) {
+	networkReady: function(init_cb, animate_cb, syncPos_cb, syncKey_cb) {
 		var self = this;
-		var socket = io.connect('/');
-		socket.on('totalPlayers', function(data) {
+		self.socket = io.connect('/');
+		self.socket.on('totalPlayers', function(data) {
 			self.totalPlayers = data;
 		});
-		socket.on('connect', function(data) {
+		self.socket.on('connect', function(data) {
 			self.myPnum = data;
 		});
 		//read player status from server
-		socket.on('pi', function(data) {
-			socket.players = AICRAFT.Engine.extractPacket(data);
+		self.socket.on('pi', function(data) {
+			self.socket.players = AICRAFT.Engine.extractPacket(data);
 			//read ai status from server
-			socket.on('ai', function(data) {
-				socket.ais = AICRAFT.Engine.extractPacket(data);
+			self.socket.on('ai', function(data) {
+				self.socket.ais = AICRAFT.Engine.extractPacket(data);
 				if (self.myPnum != -1) {
-					init_cb(socket);
+					init_cb(self.socket);
 					self.players[self.myPnum].connected = true;
 					//finished reading and reported connected
-					socket.emit('connected', self.myPnum);
+					self.socket.emit('connected', self.myPnum);
 					animate_cb();
+					syncPos_cb();
+					syncKey_cb();
 				} else {
 					alert('game is full');
 				}
@@ -265,8 +268,7 @@ AICRAFT.ClientEngine.prototype = {
 
 	syncPos: function(){
 		var self = this;
-		var socket = io.connect('/');
-		socket.on('p', function(data) {
+		self.socket.on('p', function(data) {
 			var players = AICRAFT.Engine.extractPacket(data).bindings;
 			for (var i = 0; i<self.totalPlayers; i++) {
 				self.players[i].setPos(Ammo,
@@ -282,7 +284,7 @@ AICRAFT.ClientEngine.prototype = {
 					players[i].velocity[2]);
 			};
 		});
-		socket.on('a', function(data) {
+		self.socket.on('a', function(data) {
 			var ais = AICRAFT.Engine.extractPacket(data).bindings;
 			for (var i = 0; i<self.totalPlayers; i++) {
 				self.ais[i].setPos(Ammo,
@@ -306,21 +308,19 @@ AICRAFT.ClientEngine.prototype = {
 
 	syncKey: function() {
 		var self = this;
-		//requestAnimationFrame(self.syncKey.bind(self));
 		AICRAFT.requestKeyFrame(self.syncKey.bind(self), self.keyFPS);
 		if (self.players[self.myPnum] === undefined || self.myPnum === undefined) {
 			return;}
-		var socket = io.connect('/');
 		if (self.players[self.myPnum].keycode != 0) {
-			socket.emit("k", self.players[self.myPnum].keycode);
+			self.socket.emit("k", self.players[self.myPnum].keycode);
 			self.players[self.myPnum].updateInput(Ammo, self.codeEmitter);
 		} else if((self.players[self.myPnum].keycode == 0) && (self.lastKeycode != 0)) {
-			socket.emit("k", 0);
+			self.socket.emit("k", 0);
 		};
 		self.lastKeycode = self.players[self.myPnum].keycode;
 		if (self.cameraControls.mouseDragOn === true) {
 			var deltaX = self.cameraControls.deltaX * self.cameraControls.speed;
-			socket.emit("m", deltaX);
+			self.socket.emit("m", deltaX);
 			self.players[self.myPnum].rotate(deltaX);}
 	},
 
