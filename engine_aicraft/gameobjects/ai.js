@@ -30,6 +30,7 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.lookAtLock = false;
 	this.hp = 100;
 	this.walkMesh = undefined;
+	this.name = undefined;
 };
 
 AICRAFT.Ai.prototype = new AICRAFT.GameObject();

@@ -99,7 +99,7 @@ AICRAFT.Ai = function(a, b, c, d, e, f, g, h) {
   this.acceleration = 28;
   this.lookAtLock = this.turnLock = this.aheadLock = this.codeUploading = !1;
   this.hp = 100;
-  this.walkMesh = void 0
+  this.name = this.walkMesh = void 0
 };
 AICRAFT.Ai.prototype = new AICRAFT.GameObject;
 AICRAFT.Ai.prototype.constructor = AICRAFT.Ai;
@@ -426,6 +426,7 @@ AICRAFT.CodeEmitter = function(a, b, c, d, e) {
   this.editorAce.setReadOnly(!0);
   this.editorAceDom = document.getElementById("editor");
   d.on("emitterInit", function(b) {
+    b = b.replace(/ai_name_to_replace/g, "AI_" + f.ai.name.toString());
     f.editorAce.getSession().setValue(b)
   })
 };
@@ -562,14 +563,15 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(a, b, c) {
   a.emit("totalPlayers", this.totalPlayers);
   a.emit("connect", AICRAFT.Engine.getNextAvailablePnum(this.players));
   a.on("connected", function(c) {
-    if(b.players[c].connected || void 0 === b.players[c]) {
+    var d = c[0];
+    b.ais[d].name = c[1];
+    if(b.players[d].connected || void 0 === b.players[d]) {
       return!1
     }
-    console.log("Conected players:" + c);
-    b.players[c].connected = !0;
-    console.log("his AI is:" + b.ais[c]);
-    b.aiEngine.initAI(b.ais[c], "tester" + c);
-    a.set("Pnum", c)
+    console.log("Conected players:" + d);
+    b.players[d].connected = !0;
+    b.aiEngine.initAI(b.ais[d], b.ais[d].name);
+    a.set("Pnum", d)
   });
   a.emit("pi", AICRAFT.Engine.encryptedPacket(this.players));
   a.emit("ai", AICRAFT.Engine.encryptedPacket(this.ais));
@@ -589,8 +591,7 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(a, b, c) {
     a.get("Pnum", function(a, e) {
       b.ais[e].codeUploading = !1;
       b.players[e].codeUploading = !1;
-      console.log(c);
-      b.aiEngine.loadAI(c, "tester" + e)
+      b.aiEngine.loadAI(c, b.ais[e].name)
     })
   })
 }, syncPos:function(a) {
@@ -688,12 +689,19 @@ AICRAFT.AIEngine = function() {
   this.ais = []
 };
 AICRAFT.AIEngine.prototype = {constructor:AICRAFT.AIEngine, loadAI:function(a, b) {
-  a = a.replace(/ai_name_to_replace/g, "AI_" + b.toString());
-  eval(a)
+  var c = a.replace(/ai_name_to_replace/g, "AI_" + b.toString());
+  console.log(c);
+  eval(c);
+  this.ais.forEach(function(a) {
+    a.body.name === b && a.run()
+  })
 }, initAI:function(a, b) {
-  eval("AICRAFT.AI_" + b.toString() + "= function(body){this.body=body;};");
-  eval("var AI = AICRAFT.AI_" + b.toString() + ";");
-  this.ais.push(new AI(a))
+  var c = "AICRAFT.AI_" + b.toString() + "= function(aibody){this.body=aibody;};", c = c + ("AICRAFT.AI_" + b.toString() + ".prototype = new AICRAFT.AI_" + b.toString() + "();"), c = c + ("AICRAFT.AI_" + b.toString() + ".prototype.constructor = AICRAFT." + b.toString() + ";"), c = c + ("AICRAFT.AI_" + b.toString() + ".prototype.run = function(){};");
+  console.log(c);
+  eval(c);
+  c = new (AICRAFT["AI_" + b.toString()])(a);
+  c.run();
+  this.ais.push(c)
 }, stepSimulation:function() {
   this.ais.forEach(function(a) {
     a.run()
@@ -819,7 +827,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   }, !1);
   AICRAFT.ClientEngine.coordHelper(this.scene)
 }, networkReady:function(a, b, c, d) {
-  var e = this;
+  var e = this, f = prompt("what is the ai name?", "tester");
   e.socket = io.connect("/");
   e.socket.on("totalPlayers", function(a) {
     e.totalPlayers = a
@@ -827,11 +835,11 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   e.socket.on("connect", function(a) {
     e.myPnum = a
   });
-  e.socket.on("pi", function(f) {
-    e.socket.players = AICRAFT.Engine.extractPacket(f);
-    e.socket.on("ai", function(f) {
-      e.socket.ais = AICRAFT.Engine.extractPacket(f);
-      -1 != e.myPnum ? (a(e.socket), e.players[e.myPnum].connected = !0, e.socket.emit("connected", e.myPnum), b(), c(), d()) : alert("game is full")
+  e.socket.on("pi", function(g) {
+    e.socket.players = AICRAFT.Engine.extractPacket(g);
+    e.socket.on("ai", function(g) {
+      e.socket.ais = AICRAFT.Engine.extractPacket(g);
+      -1 != e.myPnum ? (a(e.socket), e.players[e.myPnum].connected = !0, e.ais[e.myPnum].name = f, e.socket.emit("connected", [e.myPnum, e.ais[e.myPnum].name]), b(), c(), d()) : alert("game is full")
     })
   })
 }, syncPos:function() {

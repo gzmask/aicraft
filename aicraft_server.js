@@ -41,9 +41,5 @@
 	engine.syncPos(io.sockets);//async
 	engine.animate();//async
 
-	aiengine.loadAI('', engine.ais[0], "killer");
-	aiengine.loadAI('', engine.ais[1], "saver");
-	aiengine.stepSimulation();
-
 }).call(this);
 

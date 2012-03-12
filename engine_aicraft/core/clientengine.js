@@ -232,6 +232,7 @@ AICRAFT.ClientEngine.prototype = {
 
 	networkReady: function(init_cb, animate_cb, syncPos_cb, syncKey_cb) {
 		var self = this;
+		var ai_name = prompt("what is the ai name?", "tester");
 		self.socket = io.connect('/');
 		self.socket.on('totalPlayers', function(data) {
 			self.totalPlayers = data;
@@ -248,8 +249,9 @@ AICRAFT.ClientEngine.prototype = {
 				if (self.myPnum != -1) {
 					init_cb(self.socket);
 					self.players[self.myPnum].connected = true;
+					self.ais[self.myPnum].name = ai_name;
 					//finished reading and reported connected
-					self.socket.emit('connected', self.myPnum);
+					self.socket.emit('connected', [self.myPnum, self.ais[self.myPnum].name]);
 					animate_cb();
 					syncPos_cb();
 					syncKey_cb();

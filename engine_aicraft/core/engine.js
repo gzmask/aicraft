@@ -165,14 +165,15 @@ AICRAFT.Engine.prototype = {
 		socket.emit('totalPlayers', this.totalPlayers);
 		//tell client connected players
 		socket.emit('connect', AICRAFT.Engine.getNextAvailablePnum(this.players));
-		socket.on('connected', function(Pnum) {
+		socket.on('connected', function(data) {
+			var Pnum = data[0];
+			self.ais[Pnum].name = data[1];
 			if (self.players[Pnum].connected || self.players[Pnum] === undefined) {
 				return false;
 			};
 			console.log("Conected players:" + Pnum);
 			self.players[Pnum].connected = true;
-			console.log("his AI is:"+self.ais[Pnum]);
-			self.aiEngine.initAI(self.ais[Pnum], 'tester'+Pnum);
+			self.aiEngine.initAI(self.ais[Pnum], self.ais[Pnum].name);
 			socket.set("Pnum", Pnum);
 		});
 		//tell client player states
@@ -195,13 +196,12 @@ AICRAFT.Engine.prototype = {
 				self.players[Pnum].codeUploading = true;
 			});
 		});
-		//code emitter closed by player
+		//code emitter sent in new code by player
 		socket.on('coded', function(data){
 			socket.get('Pnum', function(err, Pnum) {
 				self.ais[Pnum].codeUploading = false;
 				self.players[Pnum].codeUploading = false;
-				console.log(data);
-				self.aiEngine.loadAI(data, 'tester'+Pnum);
+				self.aiEngine.loadAI(data, self.ais[Pnum].name);
 			});
 		});
 	},

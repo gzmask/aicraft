@@ -25,6 +25,7 @@ AICRAFT.CodeEmitter = function(cameraControls, player, ai, socket, domElement) {
 	this.editorAce.setReadOnly(true);
 	this.editorAceDom = document.getElementById('editor');
 	socket.on('emitterInit', function(data){
+		data = data.replace(/ai_name_to_replace/g, 'AI_'+self.ai.name.toString());
 		self.editorAce.getSession().setValue(data);
 	});
 };
