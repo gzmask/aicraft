@@ -16,19 +16,27 @@ AICRAFT.AIEngine.prototype = {
 
 	/** load or reload the AI
 	 * @param aiStr code string 
+	 * @param AIname {string} name
+	 * Should be called on changed of the code string
+	 */
+	loadAI: function(aiStr, AIname) {
+		aiStr = aiStr.replace(/ai_name_to_replace/g, 'AI_'+AIname.toString());
+		eval(aiStr);
+		//eval("var AI = AICRAFT.AI_"+AIname.toString());
+	},
+	
+	/** initialize the AI
 	 * @param AIbody physical part 
 	 * @param AIname {string} name
 	 * Should be called on changed of the code string
 	 */
-	loadAI: function(aiStr, AIbody, AIname) {
-		var templateStr = this.templateStr.replace(/ai_name_to_replace/g, "AI_"+AIname.toString());
-		eval(templateStr);
-		eval(aiStr);
-		eval("var AI = AICRAFT.AI_"+AIname.toString());
+	initAI: function(AIbody, AIname) {
+		eval('AICRAFT.AI_'+AIname.toString()+'= function(body){this.body=body;};');
+		eval('var AI = AICRAFT.AI_'+AIname.toString()+';');
 		var ai = new AI(AIbody);
 		this.ais.push(ai);
 	},
-
+	
 	stepSimulation: function() {
 		this.ais.forEach( function(ai) {
 			ai.run();

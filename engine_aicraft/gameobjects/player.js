@@ -17,6 +17,7 @@ AICRAFT.Player = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.acceleration = 4;
 	this.connected = false;
 	this.keycode = 0;
+	this.codeUploading = false;
 };
 
 AICRAFT.Player.prototype = new AICRAFT.GameObject();
@@ -54,7 +55,7 @@ AICRAFT.Player.prototype.handleKeyDown = function(event, self) {
 		self.keycode = self.keycode | 16;
 	} else if (String.fromCharCode(event.keyCode) == "Q") {
 		self.keycode = self.keycode | 32;
-	} else if (String.fromCharCode(event.keyCode) == "C") {
+	} else if (event.keyCode == 17/*control key*/) {
 		self.keycode = self.keycode | 64;
 	};
 };
@@ -72,7 +73,7 @@ AICRAFT.Player.prototype.handleKeyUp = function(event, self) {
 		self.keycode = self.keycode ^ 16;
 	} else if (String.fromCharCode(event.keyCode) == "Q") {
 		self.keycode = self.keycode ^ 32;
-	} else if (String.fromCharCode(event.keyCode) == "C") {
+	} else if (event.keyCode == 17/*control key*/) {
 		self.keycode = self.keycode ^ 64;
 	};
 };
@@ -81,38 +82,32 @@ AICRAFT.Player.prototype.handleKeyUp = function(event, self) {
  * This function got called by server and client
  */
 AICRAFT.Player.prototype.updateInput = function(AmmoIn, codeEmitter) {
+	if (AICRAFT.ClientEngine.key(this.keycode,"ctl") && this.IsClient === true) {
+			codeEmitter.fire();}
+	if (this.codeUploading === true) {
+		return;}
 	if (AmmoIn !== undefined) {
-		Ammo = AmmoIn;
-	};
+		Ammo = AmmoIn;};
 	var self = this;
-
 	var velocity = this.phybody.getLinearVelocity();
 	var absVelocity = Math.sqrt(velocity.getX()*velocity.getX() + velocity.getY()*velocity.getY() + velocity.getZ()*velocity.getZ()); 
 	if (AICRAFT.ClientEngine.key(this.keycode,"w") && absVelocity < this.maxSpeed && this.position.y < 1) {
-		AICRAFT.Player.ahead(this, true);
-	}
+		AICRAFT.Player.ahead(this, true);}
 	if (AICRAFT.ClientEngine.key(this.keycode,"a") && absVelocity < this.maxSpeed && this.position.y < 1) {
-		AICRAFT.Player.side(this, true);
-	}
+		AICRAFT.Player.side(this, true);}
 	if (AICRAFT.ClientEngine.key(this.keycode,"s") &&  absVelocity < this.maxSpeed && this.position.y < 1) {
-		AICRAFT.Player.ahead(this, false);
-	}
+		AICRAFT.Player.ahead(this, false);}
 	if (AICRAFT.ClientEngine.key(this.keycode,"d") &&  absVelocity < this.maxSpeed && this.position.y < 1) {
-		AICRAFT.Player.side(this, false);
-	}
+		AICRAFT.Player.side(this, false);}
 	if (AICRAFT.ClientEngine.key(this.keycode,"e") && this.position.y < 0.1) {
-		this.rotate(2);
-	}
+		this.rotate(2);}
 	if (AICRAFT.ClientEngine.key(this.keycode,"q") && this.position.y < 0.1) {
-		this.rotate(2, true);
-	}
-	if (AICRAFT.ClientEngine.key(this.keycode,"c")) {
-		if (this.IsClient === true) {
-			codeEmitter.switcher();} 
-	}
+		this.rotate(2, true);}
 };
 
 AICRAFT.Player.prototype.rotate = function(degree,IsInverted) {
+	if (this.codeUploading === true) {
+		return;}
 	var self = this;
 	if (IsInverted === undefined) {
 		IsInverted = false;}
@@ -159,6 +154,8 @@ AICRAFT.Player.ahead = function(self, IsAhead) {
 };
 
 AICRAFT.Player.move = function(self, frontVector) {
+	if (this.codeUploading === true) {
+		return;}
 	self.phybody.activate();
 	var quat = self.phybody.getOrientation();
 	var transform = new self.Ammo.btTransform();

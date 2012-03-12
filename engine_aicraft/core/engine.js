@@ -15,6 +15,7 @@ AICRAFT.Engine = function () {
 	this.animateFPS = 60;
 	this.posFPS = 20;
 	this.phyFPS = 30;
+	this.aiEngine = undefined;
 
 };
 
@@ -32,10 +33,12 @@ AICRAFT.Engine.prototype = {
 	 * @param Ammo require BulletPhysics module
 	 * @requires express.js ammo.js
 	 */
-	init: function(expressApp, Ammo) {
+	init: function(expressApp, Ammo, aiEngine) {
 
 		var self = this;
 
+		self.aiEngine = aiEngine;
+		
 		//start physics
 		var collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
 		var dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration);
@@ -168,6 +171,8 @@ AICRAFT.Engine.prototype = {
 			};
 			console.log("Conected players:" + Pnum);
 			self.players[Pnum].connected = true;
+			console.log("his AI is:"+self.ais[Pnum]);
+			self.aiEngine.initAI(self.ais[Pnum], 'tester'+Pnum);
 			socket.set("Pnum", Pnum);
 		});
 		//tell client player states
@@ -181,16 +186,22 @@ AICRAFT.Engine.prototype = {
 					self.players[Pnum].connected = false;}
 			});
 		});
-		socket.on('coding', function(){
+		//code emitter init
+		socket.emit('emitterInit', self.aiEngine.templateStr);
+		//code emitter opened by player
+		socket.on('code', function(){
 			socket.get('Pnum', function(err, Pnum) {
 				self.ais[Pnum].codeUploading = true;
-				console.log(self.ais[Pnum].codeUploading);
+				self.players[Pnum].codeUploading = true;
 			});
 		});
-		socket.on('coded', function(){
+		//code emitter closed by player
+		socket.on('coded', function(data){
 			socket.get('Pnum', function(err, Pnum) {
 				self.ais[Pnum].codeUploading = false;
-				console.log(self.ais[Pnum].codeUploading);
+				self.players[Pnum].codeUploading = false;
+				console.log(data);
+				self.aiEngine.loadAI(data, 'tester'+Pnum);
 			});
 		});
 	},

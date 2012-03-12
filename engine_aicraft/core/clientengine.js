@@ -77,12 +77,6 @@ AICRAFT.ClientEngine.prototype = {
 
 		// transparently support window resize
 		THREEx.WindowResize.bind(this.renderer, this.camera);
-		// allow 'p' to make screenshot
-		THREEx.Screenshot.bindKey(this.renderer);
-		// allow 'f' to go fullscreen where this feature is supported
-		if( THREEx.FullScreen.available() ){
-			THREEx.FullScreen.bindKey();
-			document.getElementById('inlineDoc').innerHTML	+= "- <i>f</i> for fullscreen";}
 
 		//construct a light
 		var light = new THREE.SpotLight();
@@ -430,7 +424,7 @@ AICRAFT.ClientEngine.key = function(keycode, key) {
 		} else {
 			return false;
 		};	
-	} else if (key == "c") {
+	} else if (key == "ctl") {
 		if (keycode & 64) {
 			return true;
 		} else {

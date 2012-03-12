@@ -15,14 +15,15 @@
 
 		<!--game engine-->
 		<script src="js/aicraft.js"></script>
+		
+		<!--ace editor-->
+		<script src="vendor/ace/ace-uncompressed.js"></script>
 
 		<!--wrapper for plugins-->
 		<script src="vendor/three.js/Detector.js"></script>
 		<script src="vendor/three.js/Stats.js"></script>
-		<script src="vendor/threex/THREEx.screenshot.js"></script>
-		<script src="vendor/threex/THREEx.FullScreen.js"></script>
 		<script src="vendor/threex/THREEx.WindowResize.js"></script>
-		<script src="vendor/threex.dragpancontrols.js"></script>
+		
 
 
 	</head>
@@ -30,11 +31,6 @@
 	<!-- three.js container -->
     	<div id="container"></div>
 	<!-- info on screen display -->
-	<div id="info">
-		<div class="bottom" id="inlineDoc" >
-			- <i>p</i> for screenshot
-		</div> 
-	</div> 
 		<%- body %>
 </body>
 </html>

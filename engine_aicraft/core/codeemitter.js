@@ -1,4 +1,5 @@
 AICRAFT.CodeEmitter = function(cameraControls, player, ai, socket, domElement) {
+	var self = this;
 	this.cameraControls = cameraControls;
 	this.socket = socket;
 	this.player = player;
@@ -9,20 +10,28 @@ AICRAFT.CodeEmitter = function(cameraControls, player, ai, socket, domElement) {
 	this.IsEnable = false;
 	this.switching = false;
 	this.editor = document.createElement('div');
+	this.editor.id = "editor";
 	this.editor.style.background = '#333';
-	this.editor.style.width = '100px';
-	this.editor.style.height = '100px';
-	this.editor.style.zIndex = '3';
+	this.editor.style.width = '500px';
+	this.editor.style.height = '400px';
+	this.editor.style.zIndex = '-3';
 	this.editor.style.position = 'absolute';
 	this.editor.style.visibility = 'hidden';
 	this.editor.style.left =this.cameraControls.viewHalfX;
 	this.editor.style.top =this.cameraControls.viewHalfY;
+	//set up code emitter form
 	domElement.appendChild(this.editor);
+	this.editorAce = ace.edit('editor');
+	this.editorAce.setReadOnly(true);
+	this.editorAceDom = document.getElementById('editor');
+	socket.on('emitterInit', function(data){
+		self.editorAce.getSession().setValue(data);
+	});
 };
 
 AICRAFT.CodeEmitter.prototype.constructor = AICRAFT.CodeEmitter;
 
-AICRAFT.CodeEmitter.prototype.switcher = function() {
+AICRAFT.CodeEmitter.prototype.fire = function() {
 	if (this.switching === true) {return;}
 	this.switching = true;
 	if (this.IsEnable === true) {
@@ -42,15 +51,23 @@ AICRAFT.CodeEmitter.prototype.enable = function() {
 	this.editor.style.visibility = 'visible';
 	this.editor.style.left = this.cameraControls.mouseX.toString()+'px';
 	this.editor.style.top = this.cameraControls.mouseY.toString()+'px';
+	this.editorAceDom.style.visibility = 'visible';
+	this.editor.style.zIndex = '3';
+	this.editorAce.setReadOnly(false);
 	//here I need to tell server the code uploading is begun using websocket
 	this.ai.codeUploading = true;
-	this.socket.emit('coding');
+	this.player.codeUploading = true;
+	this.socket.emit('code');
 };
 
 AICRAFT.CodeEmitter.prototype.disable = function() {
 	if (this.IsEnable === false) {return;}
 	this.IsEnable = false;
 	this.editor.style.visibility = 'hidden';
+	this.editorAceDom.style.visibility = 'hidden';
+	this.editor.style.zIndex = '-3';
+	this.editorAce.setReadOnly(true);
 	this.ai.codeUploading = false;
-	this.socket.emit('coded');
+	this.player.codeUploading = false;
+	this.socket.emit('coded', this.editorAce.getSession().getValue());
 };
