@@ -22,9 +22,10 @@ AICRAFT.CameraControl = function(camera, gameObj, domElement) {
 		this.viewHalfX = this.domElement.offsetWidth / 2;
 		this.viewHalfY = this.domElement.offsetHeight / 2;
 		this.domElement.setAttribute( 'tabindex', -1 );}
-	this.domElement.addEventListener( 'mousemove', AICRAFT.bind( this, this.onMouseMove ), false );
-	this.domElement.addEventListener( 'mousedown', AICRAFT.bind( this, this.onMouseDown ), false );
-	this.domElement.addEventListener( 'mouseup', AICRAFT.bind( this, this.onMouseUp ), false );
+	/* tempalary disable mouse until mouse lock api enable in chrome*/
+	//this.domElement.addEventListener( 'mousemove', AICRAFT.bind( this, this.onMouseMove ), false );
+	//this.domElement.addEventListener( 'mousedown', AICRAFT.bind( this, this.onMouseDown ), false );
+	//this.domElement.addEventListener( 'mouseup', AICRAFT.bind( this, this.onMouseUp ), false );
 };
 
 AICRAFT.CameraControl.prototype.constructor = AICRAFT.CameraControl;

@@ -20,7 +20,8 @@ java -jar jsdoc/jsrun.jar jsdoc/app/run.js -a -t=jsdoc/templates/aicraft \
 	./engine_aicraft/core/gameobject.js\
 	./engine_aicraft/gameobjects/ai.js\
 	./engine_aicraft/gameobjects/player.js\
-	./engine_aicraft/helpers/cameracontrol.js\
+	./engine_aicraft/core/cameracontrol.js\
+	./engine_aicraft/core/codeemitter.js\
 	./engine_aicraft/helpers/timers.js\
 	./engine_aicraft/helpers/helpers.js\
 	./engine_aicraft/core/engine.js\

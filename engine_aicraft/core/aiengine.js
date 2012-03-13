@@ -24,7 +24,9 @@ AICRAFT.AIEngine.prototype = {
 		console.log(code_str);
 		eval(code_str);
 		this.ais.forEach( function(ai) {
-			if (ai.body.name === AIname) {ai.run();}
+			if (ai.body.name === AIname) {
+				ai.run();
+				return;}
 		});
 		//eval("var AI = AICRAFT.AI_"+AIname.toString());
 	},
@@ -35,12 +37,20 @@ AICRAFT.AIEngine.prototype = {
 	 * Should be called on changed of the code string
 	 */
 	initAI: function(AIbody, AIname) {
+		//AIbody and AIname can not be used in eval string
+		/*
 		var code_str = 'AICRAFT.AI_'+AIname.toString()+'= function(aibody){this.body=aibody;};';
 		code_str += "AICRAFT.AI_"+AIname.toString()+".prototype = new AICRAFT.AI_"+AIname.toString()+"();";
 		code_str += "AICRAFT.AI_"+AIname.toString()+".prototype.constructor = AICRAFT."+AIname.toString()+";";
 		code_str += "AICRAFT.AI_"+AIname.toString()+".prototype.run = function(){};";
 		console.log(code_str);
 		eval(code_str);
+		*/
+		AICRAFT['AI_'+AIname.toString()] = function(aibody) {
+			this.body = aibody;};
+		AICRAFT['AI_'+AIname.toString()].prototype = new AICRAFT['AI_'+AIname.toString()]();
+		AICRAFT['AI_'+AIname.toString()].prototype.constructor = AICRAFT['AI_'+AIname.toString()];
+		AICRAFT['AI_'+AIname.toString()].prototype.run = function(){};
 		var ai = new AICRAFT['AI_'+AIname.toString()](AIbody);
 		ai.run();
 		this.ais.push(ai);

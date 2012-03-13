@@ -36,7 +36,7 @@ AICRAFT.CodeEmitter.prototype.fire = function() {
 	if (this.switching === true) {return;}
 	this.switching = true;
 	if (this.IsEnable === true) {
-		this.disable();
+		this.send();
 	} else {
 		this.enable();
 	}
@@ -61,7 +61,7 @@ AICRAFT.CodeEmitter.prototype.enable = function() {
 	this.socket.emit('code');
 };
 
-AICRAFT.CodeEmitter.prototype.disable = function() {
+AICRAFT.CodeEmitter.prototype.send = function() {
 	if (this.IsEnable === false) {return;}
 	this.IsEnable = false;
 	this.editor.style.visibility = 'hidden';

@@ -229,10 +229,17 @@ AICRAFT.ClientEngine.prototype = {
 		AICRAFT.ClientEngine.coordHelper(this.scene);
 
 	},
+	
+	aiNameExist: function(ai_name) {
+		this.ais.forEach(function(ai){
+			if (ai.name === ai_name) {
+				return true;}
+		});
+		return false;
+	},
 
 	networkReady: function(init_cb, animate_cb, syncPos_cb, syncKey_cb) {
 		var self = this;
-		var ai_name = prompt("what is the ai name?", "tester");
 		self.socket = io.connect('/');
 		self.socket.on('totalPlayers', function(data) {
 			self.totalPlayers = data;
@@ -249,6 +256,10 @@ AICRAFT.ClientEngine.prototype = {
 				if (self.myPnum != -1) {
 					init_cb(self.socket);
 					self.players[self.myPnum].connected = true;
+					var ai_name = "aicraft"+self.myPnum.toString();
+					do {
+						prompt("what is the name of your AI?", ai_name);} 
+					while (self.aiNameExist(ai_name) === true );
 					self.ais[self.myPnum].name = ai_name;
 					//finished reading and reported connected
 					self.socket.emit('connected', [self.myPnum, self.ais[self.myPnum].name]);
@@ -314,10 +325,12 @@ AICRAFT.ClientEngine.prototype = {
 			self.socket.emit("k", 0);
 		};
 		self.lastKeycode = self.players[self.myPnum].keycode;
+		/*mouse disabled
 		if (self.cameraControls.mouseDragOn === true) {
 			var deltaX = self.cameraControls.deltaX * self.cameraControls.speed;
 			self.socket.emit("m", deltaX);
 			self.players[self.myPnum].rotate(deltaX);}
+			*/
 	},
 
 	animate: function() {

@@ -275,7 +275,16 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/AICRAFT.AIEngine.html#loadAI">loadAI</a></b>(aiStr, AIbody, AIname)
+								<div class="fixedFont"><b><a href="../symbols/AICRAFT.AIEngine.html#initAI">initAI</a></b>(AIbody, AIname)
+								</div>
+								<div class="description">initialize the AI</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/AICRAFT.AIEngine.html#loadAI">loadAI</a></b>(aiStr, AIname)
 								</div>
 								<div class="description">load or reload the AI</div>
 							</td>
@@ -338,11 +347,53 @@ ul.inheritsList
 					Method Detail
 				</div>
 				
+					<a name="initAI"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>initAI</b>(AIbody, AIname)
+					
+					</div>
+					<div class="description">
+						initialize the AI
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>AIbody</b>
+									
+								</dt>
+								<dd>physical part</dd>
+							
+								<dt>
+									<b>AIname</b>
+									
+								</dt>
+								<dd>{string} nameShould be called on changed of the code string</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="loadAI"> </a>
 					<div class="fixedFont">
 					
 					
-					<b>loadAI</b>(aiStr, AIbody, AIname)
+					<b>loadAI</b>(aiStr, AIname)
 					
 					</div>
 					<div class="description">
@@ -362,12 +413,6 @@ ul.inheritsList
 									
 								</dt>
 								<dd>code string</dd>
-							
-								<dt>
-									<b>AIbody</b>
-									
-								</dt>
-								<dd>physical part</dd>
 							
 								<dt>
 									<b>AIname</b>
@@ -422,7 +467,7 @@ ul.inheritsList
 		
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
-			Documentation generated on Sat Mar 10 2012 11:50:22 GMT-0600 (CST)
+			Documentation generated on Tue Mar 13 2012 12:00:07 GMT-0600 (CST)
 		</div>
 	</body>
 </html>
