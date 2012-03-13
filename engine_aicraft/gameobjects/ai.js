@@ -36,7 +36,8 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 AICRAFT.Ai.prototype = new AICRAFT.GameObject();
 AICRAFT.Ai.prototype.constructor = AICRAFT.Ai;
 
-//override buildMesh method
+/**Overriding buildMesh method, called by client only
+ */
 AICRAFT.Ai.prototype.buildMesh = function(THREE, scene) {
 	var self = this;
 	//calls super method
@@ -45,13 +46,16 @@ AICRAFT.Ai.prototype.buildMesh = function(THREE, scene) {
 
 	//build clientSight ray
 	var clientSightGeo = new THREE.Geometry();
+	clientSightGeo.vertices = AICRAFT.Ai.getSight(0,0,0, 0,0,-1, 200, 60, 5, this.Ammo, false);
+	/*
 	clientSightGeo.vertices.push (
-		AICRAFT.v(0,0,0), AICRAFT.v(-84.5,0,-260),
-		AICRAFT.v(0,0,0), AICRAFT.v(-47.6,0,-267.8),
-		AICRAFT.v(0,0,0), AICRAFT.v(0,0,-273),
-		AICRAFT.v(0,0,0), AICRAFT.v(47.6,0,-267.8),
-		AICRAFT.v(0,0,0), AICRAFT.v(84.5,0,-260)
+		AICRAFT.v(0,0,0, false), AICRAFT.v(-84.5,0,-260, false),
+		AICRAFT.v(0,0,0, false), AICRAFT.v(-47.6,0,-267.8, false),
+		AICRAFT.v(0,0,0, false), AICRAFT.v(0,0,-273, false),
+		AICRAFT.v(0,0,0, false), AICRAFT.v(47.6,0,-267.8, false),
+		AICRAFT.v(0,0,0, false), AICRAFT.v(84.5,0,-260, false)
 	);
+	*/
 	var clientSightMat = new THREE.LineBasicMaterial({color: 0x33ff33, lineWidth:1});
 	this.clientSight = new THREE.Line(clientSightGeo, clientSightMat);
 	this.clientSight.type = THREE.Lines;
@@ -66,17 +70,23 @@ AICRAFT.Ai.prototype.buildMesh = function(THREE, scene) {
 	scene.add(this.clientSight);
 };
 
+
+
 AICRAFT.Ai.prototype.buildPhysic = function(AmmoIn) {
+	//calls super method to build a basic collision shape, such as a sphere
 	AICRAFT.GameObject.prototype.buildPhysic.call(this,AmmoIn);
 	this.sight.quaternion.x = this.quaternion.x;
 	this.sight.quaternion.y = this.quaternion.y;
 	this.sight.quaternion.z = this.quaternion.z;
 	this.sight.quaternion.w = this.quaternion.w;
-	this.sight.lines.push( [AICRAFT.bv(0,0,0), AICRAFT.bv(-84.5,0,-260)],
-		[AICRAFT.bv(0,0,0), AICRAFT.bv(-47.6,0,-267.8)],
-		[AICRAFT.bv(0,0,0), AICRAFT.bv(0,0,-273)],
-		[AICRAFT.bv(0,0,0), AICRAFT.bv(47.6,0,-267.8)],
-		[AICRAFT.bv(0,0,0), AICRAFT.bv(84.5,0,-260)]);
+	this.sight.lines = AICRAFT.Ai.getSight(0,0,0, 0,0,-1, 200, 60, 5, this.Ammo, true);
+	/*
+	this.sight.lines.push( [AICRAFT.v(0,0,0, true), AICRAFT.v(-84.5,0,-260, true)],
+		[AICRAFT.v(0,0,0, true), AICRAFT.v(-47.6,0,-267.8, true)],
+		[AICRAFT.v(0,0,0, true), AICRAFT.v(0,0,-273, true)],
+		[AICRAFT.v(0,0,0, true), AICRAFT.v(47.6,0,-267.8, true)],
+		[AICRAFT.v(0,0,0, true), AICRAFT.v(84.5,0,-260, true)]);
+		*/
 };
 
 AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,vx,vy,vz) {
@@ -319,4 +329,50 @@ AICRAFT.Ai.JSONloader = function(self, url, mesh, scene, THREE) {
 		self.mesh = mesh;
 		scene.add( mesh );
 	}); 
+};
+
+/** returns the array of sight lines
+ * @param x position x
+ * @param y position y
+ * @param z position z
+ * @param tx target position x
+ * @param ty target position y
+ * @param tz target position z
+ * @param length length of the line
+ * @param fov fov in degrees
+ * @param degreePerLine determines the density of the lines
+ * @param Ammo
+ * @param IsAmmo If the return array are Ammo vertices or ThreeJS vertices
+ */
+AICRAFT.Ai.getSight = function(x,y,z, tx,ty,tz, length, fov, degreePerLine, Ammo, IsAmmo) {
+	//console.log('==========');
+	var resultAr = new Array();
+	//make local coords
+	tx -= x;
+	ty -= y;
+	tz -= z;
+	
+	//calculate first target vector from the left
+	var frontV = new Ammo.btVector3(tx,ty,tz);
+	var quatRot = AICRAFT.quatFromEuler(fov/2, 0, 0, Ammo);
+	var transRot = new Ammo.btTransform();
+	transRot.setRotation(quatRot);
+	frontV = transRot.op_mul(frontV);
+	frontV.normalize();
+	frontV.op_mul(length);
+	
+	do {
+		//console.log('x:'+frontV.getX(), 'y:'+frontV.getY(), 'z:'+frontV.getZ());
+		resultAr.push(
+				AICRAFT.v( x,y,z, IsAmmo),
+				AICRAFT.v( frontV.getX()+x, frontV.getY()+y, frontV.getZ()+z, IsAmmo));
+		quatRot = AICRAFT.quatFromEuler(-1*degreePerLine, 0, 0, Ammo);
+		transRot.setRotation(quatRot);
+		frontV = transRot.op_mul(frontV);
+		frontV.normalize();
+		frontV.op_mul(length);
+		fov -= degreePerLine;
+	} while (fov >= 0);
+	
+	return resultAr;
 };

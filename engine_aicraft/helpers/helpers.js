@@ -1,8 +1,12 @@
 /** @fileoverview helper functions for computing vectors/quaternions/rotations etc.
  */
 
-AICRAFT.v = function(x,y,z) {
-	return new THREE.Vertex(new THREE.Vector3(x,y,z));
+AICRAFT.v = function(x,y,z, IsAmmo) {
+	if (IsAmmo === true) {
+		return AICRAFT.bv(x,y,z);
+	} else {
+		return new THREE.Vertex(new THREE.Vector3(x,y,z));
+	}
 };
 
 AICRAFT.bv = function(x,y,z) {
