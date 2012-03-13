@@ -1,0 +1,22 @@
+Dijasta
+	choose the item that has the lowest combined cost to get from current position to the goal
+		g: exact cost
+		h: heuristic cost
+	use Manhantten distance
+	choose min (g+h)
+		weighted: (g+wh)
+			w < 1 h is overestimated
+			w = 1 we have confidence in our guess
+			w > 1 h is underestimated
+	choose your heuristic function >= actual cost function
+
+	if the heuristic cost does not overestimate the cost, then A* is guaranteed to find the opitimal path
+
+Hidden arrows(vector field)
+
+
+Finite State Machine
+	moore machine - produce output each time it reaches a state
+		animation state: digging state to lifting box state, where transition can be morph animation
+	mealy machine - produce output each time we follow a transition
+
