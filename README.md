@@ -2,13 +2,10 @@ Tasks:
 
 =========== To-Do:  ==============
 	
-	implement code emitter using bullet constraints, such that when uploaidng code, player is freezed and dragged by the A.I.
+	design fault by having user submitted ai code running in server process. Using seperated node process can save massive security checking and prevents server crash.
 	can anyone explain to me the rough idea of how to combine character animations of walking and headbobing ? chandlerp: gzmask: if you have the two morph targets setup you can animate them separately: material.morphTargetInfluences[0] = .5 // walking chandlerp: material.morphTargetInfluences[1] = .2 // head bobbing chandlerp: animate the influence values between 0 and 1 at whatever pace fits
-	reduce network load for area where player and ai can not see
 	sighting onScanned event can make use of rayCastTest only client side
 	raycast with delay can be used for bullets: http://bulletphysics.org/mediawiki-1.5.8/index.php/Using_RayTest
-	implement ai interface on client side
-	eval of user ai code can not crash the core engines. First insigh is try...catch..., but this may need web workers.
 	ai event loops need to be terminated once newer version of user code is commited. Probably use class variables
 	code emittor options: gpl.internetconnection.net/vi/ or ssh or GateOne
 	Submit first level by Feb 28th at http://www.indiecade.com/submissions 
@@ -16,6 +13,9 @@ Tasks:
 
 ============== done ===============
 
+	eval of user ai code can not crash the core engines. First insigh is try...catch..., but this may need web workers.
+	implement ai code interface on client side
+	implement code emitter using bullet constraints, such that when uploaidng code, player is freezed and dragged by the A.I.
 	make player view first personal 
 	Implement lookAt AI call
 	AI needs another mesh, thus need to override the buildMesh and graphic update method in AI class
@@ -39,6 +39,7 @@ Tasks:
 
 ============ backlog ==============
 
+	reduce network load for area where player and ai can not see
 	narrow the field of view to be about the same as what AI sees using fogs
 	make THREE.js works in node.js
 	Use Dnode to reconstruct and server/client communication

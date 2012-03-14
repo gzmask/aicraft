@@ -97,7 +97,7 @@ AICRAFT.Ai = function(a, b, c, d, e, f, g, h) {
   this.clientSight = void 0;
   this.maxSpeed = 10;
   this.acceleration = 28;
-  this.lookAtLock = this.turnLock = this.aheadLock = this.codeUploading = !1;
+  this.lookAtLock = this.rotateLock = this.moveLock = this.codeUploading = !1;
   this.hp = 100;
   this.name = this.walkMesh = void 0
 };
@@ -106,7 +106,7 @@ AICRAFT.Ai.prototype.constructor = AICRAFT.Ai;
 AICRAFT.Ai.prototype.buildMesh = function(a, b) {
   AICRAFT.Ai.JSONloader(this, "asset/rat_walk.js", this.walkMesh, b, a);
   var c = new a.Geometry;
-  c.vertices = AICRAFT.Ai.getSight(0, 0, 0, 0, 0, -1, 100, 60, 5, this.Ammo, !1);
+  c.vertices = AICRAFT.Ai.getSight(0, 0, 0, 0, 0, -1, 200, 60, 5, this.Ammo, !1);
   var d = new a.LineBasicMaterial({color:3407667, lineWidth:1});
   this.clientSight = new a.Line(c, d);
   this.clientSight.type = a.Lines;
@@ -126,7 +126,7 @@ AICRAFT.Ai.prototype.buildPhysic = function(a) {
   this.sight.quaternion.y = this.quaternion.y;
   this.sight.quaternion.z = this.quaternion.z;
   this.sight.quaternion.w = this.quaternion.w;
-  this.sight.lines = AICRAFT.Ai.getSight(0, 0, 0, 0, 0, -1, 100, 60, 5, this.Ammo, !0)
+  this.sight.lines = AICRAFT.Ai.getSight(0, 0, 0, 0, 0, -1, 200, 60, 5, this.Ammo, !0)
 };
 AICRAFT.Ai.prototype.setPos = function(a, b, c, d, e, f, g, h, k, i, j, l, m, n, o) {
   b = parseFloat(b);
@@ -200,9 +200,10 @@ AICRAFT.Ai.lookRotate = function(a, b, c, d) {
   AICRAFT.Ai.rotate(a, b, c, d, !1, !0, 30)
 };
 AICRAFT.Ai.rotate = function(a, b, c, d, e, f, g) {
-  if(1 > b || 1 > a.hp || a.codeUploading) {
-    return void 0 !== c && !0 !== a.codeUploading && c(), !1
+  if(1 > b || 1 > a.hp || a.codeUploading || !0 === a.rotateLock) {
+    return void 0 !== c && !0 !== a.codeUploading && c(), console.log("quiting rotate"), !1
   }
+  a.rotateLock = !0;
   360 < b && (b %= 360);
   var h = a.phybody.getOrientation(), k = new a.Ammo.btQuaternion(a.sight.quaternion.x, a.sight.quaternion.y, a.sight.quaternion.z, a.sight.quaternion.w), i = new a.Ammo.btQuaternion, i = !0 === d ? AICRAFT.quatFromEuler(1, 0, 0) : AICRAFT.quatFromEuler(-1, 0, 0);
   if(!0 === e) {
@@ -221,13 +222,15 @@ AICRAFT.Ai.rotate = function(a, b, c, d, e, f, g) {
   }
   !0 === f && (h = AICRAFT.quatMul(k, i), a.sight.quaternion.x = h.getX(), a.sight.quaternion.y = h.getY(), a.sight.quaternion.z = h.getZ(), a.sight.quaternion.w = h.getW());
   setTimeout(function() {
+    a.rotateLock = !1;
     AICRAFT.Ai.rotate(a, b - 1, c, d, e, f, g)
   }, g)
 };
 AICRAFT.Ai.move = function(a, b, c, d, e) {
-  if(1 > b || 1 > a.hp || a.codeUploading) {
-    return void 0 !== c && !0 !== a.codeUploading && c(), !1
+  if(1 > b || 1 > a.hp || a.codeUploading || !0 === a.moveLock) {
+    return void 0 !== c && !0 !== a.codeUploading && c(), console.log("quiting move"), !1
   }
+  a.moveLock = !0;
   var f = a.phybody.getLinearVelocity(), f = Math.sqrt(f.getX() * f.getX() + f.getY() * f.getY() + f.getZ() * f.getZ());
   a.phybody.activate();
   var g = a.phybody.getOrientation(), h = new a.Ammo.btTransform;
@@ -239,8 +242,9 @@ AICRAFT.Ai.move = function(a, b, c, d, e) {
     g.setX(1.1 * g.getX()), g.setY(1.1 * g.getY()), g.setZ(1.1 * g.getZ())
   }
   d || (g.setX(-1 * g.getX()), g.setY(-1 * g.getY()), g.setZ(-1 * g.getZ()));
-  f < a.maxSpeed && !a.aheadLock && a.phybody.applyCentralImpulse(g);
+  f < a.maxSpeed && a.phybody.applyCentralImpulse(g);
   setTimeout(function() {
+    a.moveLock = !1;
     AICRAFT.Ai.move(a, b - 1, c, d, e)
   }, e)
 };
@@ -422,8 +426,8 @@ AICRAFT.CodeEmitter = function(a, b, c, d, e) {
   this.editor = document.createElement("div");
   this.editor.id = "editor";
   this.editor.style.background = "#999";
-  this.editor.style.width = "500px";
-  this.editor.style.height = "400px";
+  this.editor.style.width = "80%";
+  this.editor.style.height = "80%";
   this.editor.style.zIndex = "-3";
   this.editor.style.position = "absolute";
   this.editor.style.visibility = "hidden";
@@ -431,10 +435,11 @@ AICRAFT.CodeEmitter = function(a, b, c, d, e) {
   this.editor.style.top = this.cameraControls.viewHalfY;
   e.appendChild(this.editor);
   this.editorAce = ace.edit("editor");
-  this.editorAce.setReadOnly(!0);
+  this.editorAce.setReadOnly(!1);
   this.editorAceDom = document.getElementById("editor");
   d.on("emitterInit", function(b) {
     b = b.replace(/ai_name_to_replace/g, "AI_" + f.ai.name.toString());
+    f.editorAce.focus();
     f.editorAce.getSession().setValue(b)
   })
 };
@@ -446,11 +451,11 @@ AICRAFT.CodeEmitter.prototype.fire = function() {
     var a = this;
     setTimeout(function() {
       a.switching = !1
-    }, 500)
+    }, 1500)
   }
 };
 AICRAFT.CodeEmitter.prototype.enable = function() {
-  !0 !== this.IsEnable && (this.IsEnable = !0, this.editor.style.visibility = "visible", this.editor.style.left = this.cameraControls.mouseX.toString() + "px", this.editor.style.top = this.cameraControls.mouseY.toString() + "px", this.editorAceDom.style.visibility = "visible", this.editor.style.zIndex = "3", this.editorAce.setReadOnly(!1), this.ai.codeUploading = !0, this.player.codeUploading = !0, this.socket.emit("code"))
+  !0 !== this.IsEnable && (this.IsEnable = !0, this.editor.style.visibility = "visible", this.editor.style.left = "20%", this.editor.style.top = "20%", this.editorAceDom.style.visibility = "visible", this.editor.style.zIndex = "3", this.editorAce.setReadOnly(!1), this.ai.codeUploading = !0, this.player.codeUploading = !0, this.socket.emit("code"))
 };
 AICRAFT.CodeEmitter.prototype.send = function() {
   !1 !== this.IsEnable && (this.IsEnable = !1, this.editor.style.visibility = "hidden", this.editorAceDom.style.visibility = "hidden", this.editor.style.zIndex = "-3", this.editorAce.setReadOnly(!0), this.ai.codeUploading = !1, this.player.codeUploading = !1, this.socket.emit("coded", this.editorAce.getSession().getValue()))
@@ -694,9 +699,19 @@ AICRAFT.AIEngine = function() {
 AICRAFT.AIEngine.prototype = {constructor:AICRAFT.AIEngine, loadAI:function(a, b) {
   var c = a.replace(/ai_name_to_replace/g, "AI_" + b.toString());
   console.log(c);
-  eval(c);
+  try {
+    eval(c)
+  }catch(d) {
+    console.log(d.message)
+  }
   this.ais.forEach(function(a) {
-    a.body.name === b && a.run()
+    if(a.body.name === b) {
+      try {
+        a.run()
+      }catch(c) {
+        console.log(c.message)
+      }
+    }
   })
 }, initAI:function(a, b) {
   AICRAFT["AI_" + b.toString()] = function(b) {
@@ -825,7 +840,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
     }
   })();
   this.cameraControls = new AICRAFT.CameraControl(this.camera, this.players[this.myPnum], this.renderer.domElemen);
-  this.codeEmitter = new AICRAFT.CodeEmitter(this.cameraControls, this.players[this.myPnum], this.ais[this.myPnum], b.socket);
+  this.codeEmitter = new AICRAFT.CodeEmitter(this.cameraControls, this.players[this.myPnum], this.ais[this.myPnum], a);
   document.addEventListener("keydown", function(a) {
     b.players[b.myPnum].handleKeyDown(a, b.players[b.myPnum])
   }, !1);

@@ -22,10 +22,17 @@ AICRAFT.AIEngine.prototype = {
 	loadAI: function(aiStr, AIname) {
 		var code_str = aiStr.replace(/ai_name_to_replace/g, 'AI_'+AIname.toString());
 		console.log(code_str);
-		eval(code_str);
+		try {
+			eval(code_str);
+		} catch (err) {
+			console.log(err.message);}
 		this.ais.forEach( function(ai) {
 			if (ai.body.name === AIname) {
-				ai.run();
+				try {
+					ai.run();
+				} catch(err) {
+					console.log(err.message);
+				}
 				return;}
 		});
 		//eval("var AI = AICRAFT.AI_"+AIname.toString());

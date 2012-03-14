@@ -25,8 +25,8 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.maxSpeed = 10;
 	this.acceleration = 28;
 	this.codeUploading = false;
-	this.aheadLock = false;
-	this.turnLock = false;
+	this.moveLock = false;
+	this.rotateLock = false;
 	this.lookAtLock = false;
 	this.hp = 100;
 	this.walkMesh = undefined;
@@ -221,11 +221,13 @@ AICRAFT.Ai.lookRotate = function(self, degree, cb, IsLeft) {
  * @param degree degrees that needs to be rotated.
  */
 AICRAFT.Ai.rotate = function(self, degree, cb, IsLeft, IsBody, IsSight, delay) {
-	if (degree < 1 || self.hp < 1 || self.codeUploading) {
+	if (degree < 1 || self.hp < 1 || self.codeUploading || self.rotateLock === true) {
 		if (cb !== undefined && self.codeUploading !== true) {
 			cb();}
+		console.log('quiting rotate');
 		return false;
 	}
+	self.rotateLock = true;
 	if (degree > 360) {
 		degree = degree % 360;}
 	var ori_quat = self.phybody.getOrientation();
@@ -262,16 +264,19 @@ AICRAFT.Ai.rotate = function(self, degree, cb, IsLeft, IsBody, IsSight, delay) {
 		self.sight.quaternion.w = result_quat.getW();
 	} 
 	setTimeout(function(){
+		self.rotateLock = false;
 		AICRAFT.Ai.rotate(self, degree-1, cb, IsLeft, IsBody, IsSight, delay);
 	}, delay);
 };
 
 AICRAFT.Ai.move = function(self, units, cb, IsAhead, delay) {
-	if (units < 1 || self.hp < 1 || self.codeUploading) {
+	if (units < 1 || self.hp < 1 || self.codeUploading || self.moveLock === true) {
 		if (cb !== undefined && self.codeUploading !== true) {
 			cb();}
+		console.log('quiting move');
 		return false;
 	}
+	self.moveLock = true;
 	var velocity = self.phybody.getLinearVelocity();
 	var absVelocity = Math.sqrt(velocity.getX()*velocity.getX() + velocity.getY()*velocity.getY() + velocity.getZ()*velocity.getZ()); 
 
@@ -297,10 +302,11 @@ AICRAFT.Ai.move = function(self, units, cb, IsAhead, delay) {
 		frontVector.setZ(frontVector.getZ()*-1);
 	};
 
-	if (absVelocity < self.maxSpeed && !self.aheadLock) {
+	if (absVelocity < self.maxSpeed) {
 		self.phybody.applyCentralImpulse(frontVector);};
 
 	setTimeout( function(){
+		self.moveLock = false;
 		AICRAFT.Ai.move(self, units-1, cb, IsAhead, delay);
 	}, delay);
 };

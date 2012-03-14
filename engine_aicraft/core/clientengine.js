@@ -213,7 +213,7 @@ AICRAFT.ClientEngine.prototype = {
 		this.cameraControls	= new AICRAFT.CameraControl(this.camera, this.players[this.myPnum], this.renderer.domElemen);
 		
 		// create a code emitter
-		this.codeEmitter = new AICRAFT.CodeEmitter(this.cameraControls, this.players[this.myPnum], this.ais[this.myPnum], self.socket);
+		this.codeEmitter = new AICRAFT.CodeEmitter(this.cameraControls, this.players[this.myPnum], this.ais[this.myPnum], socket);
 
 		//start tracking keyboards
 		//document.onkeydown = self.players[self.myPnum].handleKeyDown;

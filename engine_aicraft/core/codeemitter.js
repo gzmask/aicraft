@@ -12,8 +12,8 @@ AICRAFT.CodeEmitter = function(cameraControls, player, ai, socket, domElement) {
 	this.editor = document.createElement('div');
 	this.editor.id = "editor";
 	this.editor.style.background = '#999';
-	this.editor.style.width = '500px';
-	this.editor.style.height = '400px';
+	this.editor.style.width = '80%';
+	this.editor.style.height = '80%';
 	this.editor.style.zIndex = '-3';
 	this.editor.style.position = 'absolute';
 	this.editor.style.visibility = 'hidden';
@@ -22,10 +22,11 @@ AICRAFT.CodeEmitter = function(cameraControls, player, ai, socket, domElement) {
 	//set up code emitter form
 	domElement.appendChild(this.editor);
 	this.editorAce = ace.edit('editor');
-	this.editorAce.setReadOnly(true);
+	this.editorAce.setReadOnly(false);
 	this.editorAceDom = document.getElementById('editor');
 	socket.on('emitterInit', function(data){
 		data = data.replace(/ai_name_to_replace/g, 'AI_'+self.ai.name.toString());
+		self.editorAce.focus();
 		self.editorAce.getSession().setValue(data);
 	});
 };
@@ -43,15 +44,17 @@ AICRAFT.CodeEmitter.prototype.fire = function() {
 	var self = this;
 	setTimeout(function(){
 		self.switching = false;
-	},500);
+	},1500);
 };
 
 AICRAFT.CodeEmitter.prototype.enable = function() {
 	if (this.IsEnable === true) {return;}
 	this.IsEnable = true;
 	this.editor.style.visibility = 'visible';
-	this.editor.style.left = this.cameraControls.mouseX.toString()+'px';
-	this.editor.style.top = this.cameraControls.mouseY.toString()+'px';
+	//this.editor.style.left = this.cameraControls.mouseX.toString()+'px';
+	this.editor.style.left = '20%';
+	//this.editor.style.top = this.cameraControls.mouseY.toString()+'px';
+	this.editor.style.top = '20%';
 	this.editorAceDom.style.visibility = 'visible';
 	this.editor.style.zIndex = '3';
 	this.editorAce.setReadOnly(false);
