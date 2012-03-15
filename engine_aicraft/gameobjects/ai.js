@@ -28,9 +28,11 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.moveLock = false;
 	this.rotateLock = false;
 	this.lookAtLock = false;
+	this.raycastLock = false;
 	this.hp = 100;
 	this.walkMesh = undefined;
 	this.name = undefined;
+	this.owner = undefined;
 	this.onSightFound = undefined;
 };
 
@@ -118,20 +120,44 @@ AICRAFT.Ai.prototype.physicUpdate = function(dynamicsWorld) {
 			targetV3.getX()+self.position.x,targetV3.getY()+self.position.y,targetV3.getZ()+self.position.z, 
 			80, 60, 10, self.Ammo, true);
 	
-	//raycast
+	self.raycast(dynamicsWorld, 1000);
+};
+
+/**
+ * using raycast to check if enemy is insight. if enemy is found, stop checking for delay value in ms
+ */
+AICRAFT.Ai.prototype.raycast = function(dynamicsWorld, delay) {
+	if (this.raycastLock === true) {return;}
+	var self = this;
 	for (var i=0; i < self.sight.lines.length; i=i+2) {
 		var start = self.sight.lines[i];
 		var end = self.sight.lines[i+1];
 		var cb = new self.Ammo.ClosestRayResultCallback(start, end);
 		dynamicsWorld.rayTest(start, end, cb);
 		if (cb.hasHit()) {
+			self.raycastLock = true;
 			self.found(cb.get_m_hitPointWorld(), cb.get_m_collisionObject().getIslandTag());
+			setTimeout(function(){
+				self.raycastLock = false;
+			}, delay);
 		}
 	}
 };
 
+
+/**
+ * fire at target, while turns the A.I facing the target at the same time
+ */
+AICRAFT.Ai.prototype.fireAt = function(x,y,z, delay) {
+	
+};
+
+/**
+ * binds the user found function to this instance
+ */
 AICRAFT.Ai.prototype.found = function(position, tag) {
 	if (tag===-1){return;}
+	if (tag===this.owner.phybody.getIslandTag()) {return;}
 	event = new Object();
 	event.position = [position.x, position.y, position.z];
 	event.tag = tag;
@@ -139,13 +165,6 @@ AICRAFT.Ai.prototype.found = function(position, tag) {
 		this.onSightFound(event);
 	} catch(err) {
 		return;
-	}
-};
-
-AICRAFT.Ai.searchByTag = function(gameObjs, tag) {
-	for (var i=0; i<gameObjs.length; i++) {
-		if (gameObjs[i].phybody.getIslandTag() === tag) {
-			return gameObjs[i];}
 	}
 };
 

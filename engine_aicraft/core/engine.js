@@ -148,6 +148,7 @@ AICRAFT.Engine.prototype = {
 				0,
 				self.players[i].position.z - 15,
 				quat.getX(),quat.getY(),quat.getZ(),quat.getW(), Ammo);
+			self.ais[i].owner = self.players[i];
 			self.ais[i].buildPhysic(Ammo);
 			self.dynamicsWorld.addRigidBody(self.ais[i].phybody);
 		}})();

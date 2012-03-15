@@ -205,6 +205,7 @@ AICRAFT.ClientEngine.prototype = {
 			self.ais[i].IsClient = true;
 			self.ais[i].buildMesh(THREE, self.scene);
 			self.ais[i].buildPhysic(Ammo);
+			self.ais[i].owner = self.players[i];
 			self.dynamicsWorld.addRigidBody(self.ais[i].phybody);
 		}})();
 

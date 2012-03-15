@@ -97,9 +97,9 @@ AICRAFT.Ai = function(a, b, c, d, e, f, g, h) {
   this.sightMesh = void 0;
   this.maxSpeed = 10;
   this.acceleration = 28;
-  this.lookAtLock = this.rotateLock = this.moveLock = this.codeUploading = !1;
+  this.raycastLock = this.lookAtLock = this.rotateLock = this.moveLock = this.codeUploading = !1;
   this.hp = 100;
-  this.onSightFound = this.name = this.walkMesh = void 0
+  this.onSightFound = this.owner = this.name = this.walkMesh = void 0
 };
 AICRAFT.Ai.prototype = new AICRAFT.GameObject;
 AICRAFT.Ai.prototype.constructor = AICRAFT.Ai;
@@ -140,14 +140,21 @@ AICRAFT.Ai.prototype.physicUpdate = function(a) {
   b = new this.Ammo.btVector3(0, 0, -1);
   b = c.op_mul(b);
   this.sight.lines = AICRAFT.Ai.getSight(this.position.x, this.position.y, this.position.z, b.getX() + this.position.x, b.getY() + this.position.y, b.getZ() + this.position.z, 80, 60, 10, this.Ammo, !0);
-  for(c = 0;c < this.sight.lines.length;c += 2) {
-    var b = this.sight.lines[c], d = this.sight.lines[c + 1], e = new this.Ammo.ClosestRayResultCallback(b, d);
-    a.rayTest(b, d, e);
-    e.hasHit() && this.found(e.get_m_hitPointWorld(), e.get_m_collisionObject().getIslandTag())
+  this.raycast(a)
+};
+AICRAFT.Ai.prototype.raycast = function(a) {
+  if(!0 !== this.raycastLock) {
+    for(var b = this, c = 0;c < b.sight.lines.length;c += 2) {
+      var d = b.sight.lines[c], e = b.sight.lines[c + 1], f = new b.Ammo.ClosestRayResultCallback(d, e);
+      a.rayTest(d, e, f);
+      f.hasHit() && (b.raycastLock = !0, b.found(f.get_m_hitPointWorld(), f.get_m_collisionObject().getIslandTag()), setTimeout(function() {
+        b.raycastLock = !1
+      }, 1E3))
+    }
   }
 };
 AICRAFT.Ai.prototype.found = function(a, b) {
-  if(-1 !== b) {
+  if(!(-1 === b || b === this.owner.phybody.getIslandTag())) {
     event = {};
     event.position = [a.x, a.y, a.z];
     event.tag = b;
@@ -596,8 +603,8 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(a, b, c) {
   })();
   (function() {
     for(var a = 0;a < d.totalPlayers;a++) {
-      quat = AICRAFT.quatFromEuler(0, 0, 0, b), d.players[a] = new AICRAFT.Player(-150 + 301 * Math.random(), 0, -150 + 301 * Math.random(), quat.getX(), quat.getY(), quat.getZ(), quat.getW(), b), d.players[a].buildPhysic(b), d.dynamicsWorld.addRigidBody(d.players[a].phybody), quat = AICRAFT.quatFromEuler(360 * Math.random(), 0, 0, b), d.ais[a] = new AICRAFT.Ai(d.players[a].position.x, 0, d.players[a].position.z - 15, quat.getX(), quat.getY(), quat.getZ(), quat.getW(), b), d.ais[a].buildPhysic(b), 
-      d.dynamicsWorld.addRigidBody(d.ais[a].phybody)
+      quat = AICRAFT.quatFromEuler(0, 0, 0, b), d.players[a] = new AICRAFT.Player(-150 + 301 * Math.random(), 0, -150 + 301 * Math.random(), quat.getX(), quat.getY(), quat.getZ(), quat.getW(), b), d.players[a].buildPhysic(b), d.dynamicsWorld.addRigidBody(d.players[a].phybody), quat = AICRAFT.quatFromEuler(360 * Math.random(), 0, 0, b), d.ais[a] = new AICRAFT.Ai(d.players[a].position.x, 0, d.players[a].position.z - 15, quat.getX(), quat.getY(), quat.getZ(), quat.getW(), b), d.ais[a].owner = d.players[a], 
+      d.ais[a].buildPhysic(b), d.dynamicsWorld.addRigidBody(d.ais[a].phybody)
     }
   })()
 }, networkInit:function(a) {
@@ -868,7 +875,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   (function() {
     for(var c = 0;c < b.totalPlayers;c++) {
       e.setFromEuler(new THREE.Vector3(-30, -20, 0)), b.players[c] = new AICRAFT.Player(a.players.bindings[c].position[0], a.players.bindings[c].position[1], a.players.bindings[c].position[2], a.players.bindings[c].quaternion[0], a.players.bindings[c].quaternion[1], a.players.bindings[c].quaternion[2], a.players.bindings[c].quaternion[3]), b.players[c].IsClient = !0, b.players[c].buildMesh(THREE, b.scene), b.players[c].buildPhysic(Ammo), b.dynamicsWorld.addRigidBody(b.players[c].phybody), e.setFromEuler(new THREE.Vector3(30, 
-      -20, 0)), b.ais[c] = new AICRAFT.Ai(a.ais.bindings[c].position[0], a.ais.bindings[c].position[1], a.ais.bindings[c].position[2], a.ais.bindings[c].quaternion[0], a.ais.bindings[c].quaternion[1], a.ais.bindings[c].quaternion[2], a.ais.bindings[c].quaternion[3]), b.ais[c].IsClient = !0, b.ais[c].buildMesh(THREE, b.scene), b.ais[c].buildPhysic(Ammo), b.dynamicsWorld.addRigidBody(b.ais[c].phybody)
+      -20, 0)), b.ais[c] = new AICRAFT.Ai(a.ais.bindings[c].position[0], a.ais.bindings[c].position[1], a.ais.bindings[c].position[2], a.ais.bindings[c].quaternion[0], a.ais.bindings[c].quaternion[1], a.ais.bindings[c].quaternion[2], a.ais.bindings[c].quaternion[3]), b.ais[c].IsClient = !0, b.ais[c].buildMesh(THREE, b.scene), b.ais[c].buildPhysic(Ammo), b.ais[c].owner = b.players[c], b.dynamicsWorld.addRigidBody(b.ais[c].phybody)
     }
   })();
   this.cameraControls = new AICRAFT.CameraControl(this.camera, this.players[this.myPnum], this.renderer.domElemen);
