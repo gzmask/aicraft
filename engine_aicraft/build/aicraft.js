@@ -94,7 +94,7 @@ AICRAFT.Ai = function(a, b, c, d, e, f, g, h) {
   this.sight.quaternion.y = 0;
   this.sight.quaternion.z = 0;
   this.sight.quaternion.w = 1;
-  this.clientSight = void 0;
+  this.sightMesh = void 0;
   this.maxSpeed = 10;
   this.acceleration = 28;
   this.lookAtLock = this.rotateLock = this.moveLock = this.codeUploading = !1;
@@ -106,19 +106,19 @@ AICRAFT.Ai.prototype.constructor = AICRAFT.Ai;
 AICRAFT.Ai.prototype.buildMesh = function(a, b) {
   AICRAFT.Ai.JSONloader(this, "asset/rat_walk.js", this.walkMesh, b, a);
   var c = new a.Geometry;
-  c.vertices = AICRAFT.Ai.getSight(0, 0, 0, 0, 0, -1, 200, 60, 5, this.Ammo, !1);
+  c.vertices = AICRAFT.Ai.getSight(0, 0, 0, 0, 0, -1, 80, 60, 10, this.Ammo, !1);
   var d = new a.LineBasicMaterial({color:3407667, lineWidth:1});
-  this.clientSight = new a.Line(c, d);
-  this.clientSight.type = a.Lines;
-  this.clientSight.useQuaternion = !0;
-  this.clientSight.position.x = this.position.x;
-  this.clientSight.position.y = this.position.y;
-  this.clientSight.position.z = this.position.z;
-  this.clientSight.quaternion.x = this.quaternion.x;
-  this.clientSight.quaternion.y = this.quaternion.y;
-  this.clientSight.quaternion.z = this.quaternion.z;
-  this.clientSight.quaternion.w = this.quaternion.w;
-  b.add(this.clientSight)
+  this.sightMesh = new a.Line(c, d);
+  this.sightMesh.type = a.Lines;
+  this.sightMesh.useQuaternion = !0;
+  this.sightMesh.position.x = this.position.x;
+  this.sightMesh.position.y = this.position.y;
+  this.sightMesh.position.z = this.position.z;
+  this.sightMesh.quaternion.x = this.quaternion.x;
+  this.sightMesh.quaternion.y = this.quaternion.y;
+  this.sightMesh.quaternion.z = this.quaternion.z;
+  this.sightMesh.quaternion.w = this.quaternion.w;
+  b.add(this.sightMesh)
 };
 AICRAFT.Ai.prototype.buildPhysic = function(a) {
   AICRAFT.GameObject.prototype.buildPhysic.call(this, a);
@@ -126,39 +126,25 @@ AICRAFT.Ai.prototype.buildPhysic = function(a) {
   this.sight.quaternion.y = this.quaternion.y;
   this.sight.quaternion.z = this.quaternion.z;
   this.sight.quaternion.w = this.quaternion.w;
-  this.sight.lines = AICRAFT.Ai.getSight(0, 0, 0, 0, 0, -1, 200, 60, 5, this.Ammo, !0)
-};
-AICRAFT.Ai.prototype.setPos = function(a, b, c, d, e, f, g, h, k, i, j, l, m, n, o) {
-  b = parseFloat(b);
-  c = parseFloat(c);
-  d = parseFloat(d);
-  e = parseFloat(e);
-  f = parseFloat(f);
-  g = parseFloat(g);
-  h = parseFloat(h);
-  k = parseFloat(k);
-  i = parseFloat(i);
-  j = parseFloat(j);
-  l = parseFloat(l);
-  m = parseFloat(m);
-  n = parseFloat(n);
-  o = parseFloat(o);
-  AICRAFT.GameObject.prototype.setPos.call(this, a, b, c, d, e, f, g, h, m, n, o);
-  this.sight.quaternion.x = k;
-  this.sight.quaternion.y = i;
-  this.sight.quaternion.z = j;
-  this.sight.quaternion.w = l;
-  this.clientSight.quaternion.x = this.sight.quaternion.x;
-  this.clientSight.quaternion.y = this.sight.quaternion.y;
-  this.clientSight.quaternion.z = this.sight.quaternion.z;
-  this.clientSight.quaternion.w = this.sight.quaternion.w
+  this.sight.lines = AICRAFT.Ai.getSight(0, 0, 0, 0, 0, -1, 80, 60, 10, this.Ammo, !0)
 };
 AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(a, b) {
-  void 0 !== this.mesh && (this.physicUpdate.call(this, a), this.clientSight.position.x = this.mesh.position.x = this.position.x, this.clientSight.position.y = this.mesh.position.y = this.position.y, this.clientSight.position.z = this.mesh.position.z = this.position.z, this.mesh.quaternion.x = this.quaternion.x, this.mesh.quaternion.y = this.quaternion.y, this.mesh.quaternion.z = this.quaternion.z, this.mesh.quaternion.w = this.quaternion.w, this.clientSight.quaternion.x = this.sight.quaternion.x, 
-  this.clientSight.quaternion.y = this.sight.quaternion.y, this.clientSight.quaternion.z = this.sight.quaternion.z, this.clientSight.quaternion.w = this.sight.quaternion.w, this.mesh.updateAnimation(1E3 * b))
+  void 0 !== this.mesh && (this.physicUpdate.call(this, a), this.sightMesh.position.x = this.mesh.position.x = this.position.x, this.sightMesh.position.y = this.mesh.position.y = this.position.y, this.sightMesh.position.z = this.mesh.position.z = this.position.z, this.mesh.quaternion.x = this.quaternion.x, this.mesh.quaternion.y = this.quaternion.y, this.mesh.quaternion.z = this.quaternion.z, this.mesh.quaternion.w = this.quaternion.w, this.sightMesh.quaternion.x = this.sight.quaternion.x, this.sightMesh.quaternion.y = 
+  this.sight.quaternion.y, this.sightMesh.quaternion.z = this.sight.quaternion.z, this.sightMesh.quaternion.w = this.sight.quaternion.w, this.mesh.updateAnimation(1E3 * b))
 };
 AICRAFT.Ai.prototype.physicUpdate = function(a) {
-  AICRAFT.GameObject.prototype.physicUpdate.call(this, a)
+  AICRAFT.GameObject.prototype.physicUpdate.call(this, a);
+  var b = new this.Ammo.btQuaternion(this.sight.quaternion.x, this.sight.quaternion.y, this.sight.quaternion.z, this.sight.quaternion.w), c = new this.Ammo.btTransform;
+  c.setIdentity();
+  c.setRotation(b);
+  b = new this.Ammo.btVector3(0, 0, -1);
+  b = c.op_mul(b);
+  this.sight.lines = AICRAFT.Ai.getSight(this.position.x, this.position.y, this.position.z, b.getX() + this.position.x, b.getY() + this.position.y, b.getZ() + this.position.z, 80, 60, 10, this.Ammo, !0);
+  for(c = 0;c < this.sight.lines.length;c += 2) {
+    var b = this.sight.lines[c], d = this.sight.lines[c + 1], e = new this.Ammo.ClosestRayResultCallback(b, d);
+    a.rayTest(b, d, e);
+    e.hasHit() && console.log(e.get_m_collisionObject().getIslandTag())
+  }
 };
 AICRAFT.Ai.prototype.ahead = function(a, b) {
   a = Math.abs(a);
@@ -195,6 +181,31 @@ AICRAFT.Ai.prototype.turnRight = function(a, b) {
 };
 AICRAFT.Ai.prototype.turnLeft = function(a, b) {
   AICRAFT.Ai.rotate(this, a, b, !0, !0, !1, 40)
+};
+AICRAFT.Ai.prototype.setPos = function(a, b, c, d, e, f, g, h, k, i, j, l, m, n, o) {
+  b = parseFloat(b);
+  c = parseFloat(c);
+  d = parseFloat(d);
+  e = parseFloat(e);
+  f = parseFloat(f);
+  g = parseFloat(g);
+  h = parseFloat(h);
+  k = parseFloat(k);
+  i = parseFloat(i);
+  j = parseFloat(j);
+  l = parseFloat(l);
+  m = parseFloat(m);
+  n = parseFloat(n);
+  o = parseFloat(o);
+  AICRAFT.GameObject.prototype.setPos.call(this, a, b, c, d, e, f, g, h, m, n, o);
+  this.sight.quaternion.x = k;
+  this.sight.quaternion.y = i;
+  this.sight.quaternion.z = j;
+  this.sight.quaternion.w = l;
+  this.sightMesh.quaternion.x = this.sight.quaternion.x;
+  this.sightMesh.quaternion.y = this.sight.quaternion.y;
+  this.sightMesh.quaternion.z = this.sight.quaternion.z;
+  this.sightMesh.quaternion.w = this.sight.quaternion.w
 };
 AICRAFT.Ai.lookRotate = function(a, b, c, d) {
   AICRAFT.Ai.rotate(a, b, c, d, !1, !0, 30)
@@ -567,8 +578,8 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(a, b, c) {
   })();
   (function() {
     for(var a = 0;a < d.totalPlayers;a++) {
-      quat = AICRAFT.quatFromEuler(0, 0, 0, b), d.players[a] = new AICRAFT.Player(-150 + 301 * Math.random(), 0, -150 + 301 * Math.random(), quat.getX(), quat.getY(), quat.getZ(), quat.getW(), b), d.players[a].buildPhysic(b), d.dynamicsWorld.addRigidBody(d.players[a].phybody), quat = AICRAFT.quatFromEuler(360 * Math.random(), 0, 0, b), d.ais[a] = new AICRAFT.Ai(d.players[a].position.x, 0, d.players[a].position.z - 15, quat.getX(), quat.getY(), quat.getZ(), quat.getW(), b), d.ais[a].buildPhysic(b), 
-      d.dynamicsWorld.addRigidBody(d.ais[a].phybody)
+      quat = AICRAFT.quatFromEuler(0, 0, 0, b), d.players[a] = new AICRAFT.Player(-150 + 301 * Math.random(), 0, -150 + 301 * Math.random(), quat.getX(), quat.getY(), quat.getZ(), quat.getW(), b), d.players[a].buildPhysic(b), d.players[a].phybody.setIslandTag(a), d.dynamicsWorld.addRigidBody(d.players[a].phybody), quat = AICRAFT.quatFromEuler(360 * Math.random(), 0, 0, b), d.ais[a] = new AICRAFT.Ai(d.players[a].position.x, 0, d.players[a].position.z - 15, quat.getX(), quat.getY(), quat.getZ(), quat.getW(), 
+      b), d.ais[a].buildPhysic(b), d.ais[a].phybody.setIslandTag(a), d.dynamicsWorld.addRigidBody(d.ais[a].phybody)
     }
   })()
 }, networkInit:function(a) {
@@ -835,8 +846,8 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   var e = new THREE.Quaternion;
   (function() {
     for(var c = 0;c < b.totalPlayers;c++) {
-      e.setFromEuler(new THREE.Vector3(-30, -20, 0)), b.players[c] = new AICRAFT.Player(a.players.bindings[c].position[0], a.players.bindings[c].position[1], a.players.bindings[c].position[2], a.players.bindings[c].quaternion[0], a.players.bindings[c].quaternion[1], a.players.bindings[c].quaternion[2], a.players.bindings[c].quaternion[3]), b.players[c].IsClient = !0, b.players[c].buildMesh(THREE, b.scene), b.players[c].buildPhysic(Ammo), b.dynamicsWorld.addRigidBody(b.players[c].phybody), e.setFromEuler(new THREE.Vector3(30, 
-      -20, 0)), b.ais[c] = new AICRAFT.Ai(a.ais.bindings[c].position[0], a.ais.bindings[c].position[1], a.ais.bindings[c].position[2], a.ais.bindings[c].quaternion[0], a.ais.bindings[c].quaternion[1], a.ais.bindings[c].quaternion[2], a.ais.bindings[c].quaternion[3]), b.ais[c].IsClient = !0, b.ais[c].buildMesh(THREE, b.scene), b.ais[c].buildPhysic(Ammo), b.dynamicsWorld.addRigidBody(b.ais[c].phybody)
+      e.setFromEuler(new THREE.Vector3(-30, -20, 0)), b.players[c] = new AICRAFT.Player(a.players.bindings[c].position[0], a.players.bindings[c].position[1], a.players.bindings[c].position[2], a.players.bindings[c].quaternion[0], a.players.bindings[c].quaternion[1], a.players.bindings[c].quaternion[2], a.players.bindings[c].quaternion[3]), b.players[c].IsClient = !0, b.players[c].buildMesh(THREE, b.scene), b.players[c].buildPhysic(Ammo), b.players[c].phybody.setIslandTag(c), b.dynamicsWorld.addRigidBody(b.players[c].phybody), 
+      e.setFromEuler(new THREE.Vector3(30, -20, 0)), b.ais[c] = new AICRAFT.Ai(a.ais.bindings[c].position[0], a.ais.bindings[c].position[1], a.ais.bindings[c].position[2], a.ais.bindings[c].quaternion[0], a.ais.bindings[c].quaternion[1], a.ais.bindings[c].quaternion[2], a.ais.bindings[c].quaternion[3]), b.ais[c].IsClient = !0, b.ais[c].buildMesh(THREE, b.scene), b.ais[c].buildPhysic(Ammo), b.ais[c].phybody.setIslandTag(c), b.dynamicsWorld.addRigidBody(b.ais[c].phybody)
     }
   })();
   this.cameraControls = new AICRAFT.CameraControl(this.camera, this.players[this.myPnum], this.renderer.domElemen);

@@ -140,6 +140,7 @@ AICRAFT.Engine.prototype = {
 				-150 + Math.random()*301, 
 				quat.getX(),quat.getY(),quat.getZ(),quat.getW(), Ammo);
 			self.players[i].buildPhysic(Ammo);
+			self.players[i].phybody.setIslandTag(i);
 			self.dynamicsWorld.addRigidBody(self.players[i].phybody);
 			
 			//construct ai
@@ -149,6 +150,7 @@ AICRAFT.Engine.prototype = {
 				self.players[i].position.z - 15,
 				quat.getX(),quat.getY(),quat.getZ(),quat.getW(), Ammo);
 			self.ais[i].buildPhysic(Ammo);
+			self.ais[i].phybody.setIslandTag(i);
 			self.dynamicsWorld.addRigidBody(self.ais[i].phybody);
 		}})();
 

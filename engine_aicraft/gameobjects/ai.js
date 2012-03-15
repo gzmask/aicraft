@@ -21,7 +21,7 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.sight.quaternion.y = 0;
 	this.sight.quaternion.z = 0;
 	this.sight.quaternion.w = 1;
-	this.clientSight = undefined;
+	this.sightMesh = undefined;
 	this.maxSpeed = 10;
 	this.acceleration = 28;
 	this.codeUploading = false;
@@ -44,30 +44,21 @@ AICRAFT.Ai.prototype.buildMesh = function(THREE, scene) {
 	//AICRAFT.GameObject.prototype.buildMesh.call(this,THREE, scene);
 	AICRAFT.Ai.JSONloader(self,"asset/rat_walk.js", self.walkMesh, scene, THREE);
 
-	//build clientSight ray
-	var clientSightGeo = new THREE.Geometry();
-	clientSightGeo.vertices = AICRAFT.Ai.getSight(0,0,0, 0,0,-1, 200, 60, 5, this.Ammo, false);
-	/*
-	clientSightGeo.vertices.push (
-		AICRAFT.v(0,0,0, false), AICRAFT.v(-84.5,0,-260, false),
-		AICRAFT.v(0,0,0, false), AICRAFT.v(-47.6,0,-267.8, false),
-		AICRAFT.v(0,0,0, false), AICRAFT.v(0,0,-273, false),
-		AICRAFT.v(0,0,0, false), AICRAFT.v(47.6,0,-267.8, false),
-		AICRAFT.v(0,0,0, false), AICRAFT.v(84.5,0,-260, false)
-	);
-	*/
-	var clientSightMat = new THREE.LineBasicMaterial({color: 0x33ff33, lineWidth:1});
-	this.clientSight = new THREE.Line(clientSightGeo, clientSightMat);
-	this.clientSight.type = THREE.Lines;
-	this.clientSight.useQuaternion = true;
-	this.clientSight.position.x = this.position.x;
-	this.clientSight.position.y = this.position.y;
-	this.clientSight.position.z = this.position.z;
-	this.clientSight.quaternion.x = this.quaternion.x;
-	this.clientSight.quaternion.y = this.quaternion.y;
-	this.clientSight.quaternion.z = this.quaternion.z;
-	this.clientSight.quaternion.w = this.quaternion.w;
-	scene.add(this.clientSight);
+	//build sightMesh ray
+	var sightMeshGeo = new THREE.Geometry();
+	sightMeshGeo.vertices = AICRAFT.Ai.getSight(0,0,0, 0,0,-1, 80, 60, 10, this.Ammo, false);
+	var sightMeshMat = new THREE.LineBasicMaterial({color: 0x33ff33, lineWidth:1});
+	this.sightMesh = new THREE.Line(sightMeshGeo, sightMeshMat);
+	this.sightMesh.type = THREE.Lines;
+	this.sightMesh.useQuaternion = true;
+	this.sightMesh.position.x = this.position.x;
+	this.sightMesh.position.y = this.position.y;
+	this.sightMesh.position.z = this.position.z;
+	this.sightMesh.quaternion.x = this.quaternion.x;
+	this.sightMesh.quaternion.y = this.quaternion.y;
+	this.sightMesh.quaternion.z = this.quaternion.z;
+	this.sightMesh.quaternion.w = this.quaternion.w;
+	scene.add(this.sightMesh);
 };
 
 
@@ -79,41 +70,10 @@ AICRAFT.Ai.prototype.buildPhysic = function(AmmoIn) {
 	this.sight.quaternion.y = this.quaternion.y;
 	this.sight.quaternion.z = this.quaternion.z;
 	this.sight.quaternion.w = this.quaternion.w;
-	this.sight.lines = AICRAFT.Ai.getSight(0,0,0, 0,0,-1, 200, 60, 5, this.Ammo, true);
-	/*
-	this.sight.lines.push( [AICRAFT.v(0,0,0, true), AICRAFT.v(-84.5,0,-260, true)],
-		[AICRAFT.v(0,0,0, true), AICRAFT.v(-47.6,0,-267.8, true)],
-		[AICRAFT.v(0,0,0, true), AICRAFT.v(0,0,-273, true)],
-		[AICRAFT.v(0,0,0, true), AICRAFT.v(47.6,0,-267.8, true)],
-		[AICRAFT.v(0,0,0, true), AICRAFT.v(84.5,0,-260, true)]);
-		*/
+	this.sight.lines = AICRAFT.Ai.getSight(0,0,0, 0,0,-1, 80, 60, 10, this.Ammo, true);
 };
 
-AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,vx,vy,vz) {
-	x = parseFloat(x);
-	y = parseFloat(y);
-	z = parseFloat(z);
-	qx = parseFloat(qx);
-	qy = parseFloat(qy);
-	qz = parseFloat(qz);
-	qw = parseFloat(qw);
-	sqx = parseFloat(sqx);
-	sqy = parseFloat(sqy);
-	sqz = parseFloat(sqz);
-	sqw = parseFloat(sqw);
-	vx = parseFloat(vx);
-	vy = parseFloat(vy);
-	vz = parseFloat(vz);
-	AICRAFT.GameObject.prototype.setPos.call(this,AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz);
-	this.sight.quaternion.x = sqx;
-	this.sight.quaternion.y = sqy;
-	this.sight.quaternion.z = sqz;
-	this.sight.quaternion.w = sqw;
-	this.clientSight.quaternion.x = this.sight.quaternion.x;
-	this.clientSight.quaternion.y = this.sight.quaternion.y;
-	this.clientSight.quaternion.z = this.sight.quaternion.z;
-	this.clientSight.quaternion.w = this.sight.quaternion.w;
-};
+
 
 //override physic and graphic update method
 AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(dynamicsWorld, delta) {
@@ -121,22 +81,53 @@ AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(dynamicsWorld, delta) {
 		return;}
 	//AICRAFT.GameObject.prototype.physicAndGraphicUpdate.call(this, dynamicsWorld);
 	this.physicUpdate.call(this, dynamicsWorld);
-	this.clientSight.position.x = this.mesh.position.x = this.position.x;
-	this.clientSight.position.y = this.mesh.position.y = this.position.y;
-	this.clientSight.position.z = this.mesh.position.z = this.position.z;
+	this.sightMesh.position.x = this.mesh.position.x = this.position.x;
+	this.sightMesh.position.y = this.mesh.position.y = this.position.y;
+	this.sightMesh.position.z = this.mesh.position.z = this.position.z;
 	this.mesh.quaternion.x = this.quaternion.x;
 	this.mesh.quaternion.y = this.quaternion.y;
 	this.mesh.quaternion.z = this.quaternion.z;
 	this.mesh.quaternion.w = this.quaternion.w;
-	this.clientSight.quaternion.x = this.sight.quaternion.x;
-	this.clientSight.quaternion.y = this.sight.quaternion.y;
-	this.clientSight.quaternion.z = this.sight.quaternion.z;
-	this.clientSight.quaternion.w = this.sight.quaternion.w;
+	this.sightMesh.quaternion.x = this.sight.quaternion.x;
+	this.sightMesh.quaternion.y = this.sight.quaternion.y;
+	this.sightMesh.quaternion.z = this.sight.quaternion.z;
+	this.sightMesh.quaternion.w = this.sight.quaternion.w;
 	this.mesh.updateAnimation(1000*delta);
 };
 
+/**
+ * updates the physical body, the sight, and checks for enemy using raycasting
+ * 
+ */
 AICRAFT.Ai.prototype.physicUpdate = function(dynamicsWorld) {
-	AICRAFT.GameObject.prototype.physicUpdate.call(this, dynamicsWorld);
+	var self = this;
+	AICRAFT.GameObject.prototype.physicUpdate.call(self, dynamicsWorld);
+	//matches the current sight position
+	var sight_quat = new self.Ammo.btQuaternion(self.sight.quaternion.x,
+			self.sight.quaternion.y,
+			self.sight.quaternion.z,
+			self.sight.quaternion.w);
+	var trans = new self.Ammo.btTransform();
+	trans.setIdentity();
+	//trans.setOrigin(new self.Ammo.btVector3(self.position.x, self.position.y, self.position.z));
+	trans.setRotation(sight_quat);
+	var targetV3 = new self.Ammo.btVector3(0,0,-1);
+	targetV3 = trans.op_mul(targetV3);
+	self.sight.lines = AICRAFT.Ai.getSight(self.position.x,self.position.y,self.position.z, 
+			targetV3.getX()+self.position.x,targetV3.getY()+self.position.y,targetV3.getZ()+self.position.z, 
+			80, 60, 10, self.Ammo, true);
+	
+	//raycast
+	for (var i=0; i < self.sight.lines.length; i=i+2) {
+		var start = self.sight.lines[i];
+		var end = self.sight.lines[i+1];
+		var cb = new self.Ammo.ClosestRayResultCallback(start, end);
+		dynamicsWorld.rayTest(start, end, cb);
+		if (cb.hasHit()) {
+			//console.log(cb.get_m_hitPointWorld());
+			console.log(cb.get_m_collisionObject().getIslandTag());
+		}
+	}
 };
 
 /** push the body of the AI forward
@@ -207,6 +198,35 @@ AICRAFT.Ai.prototype.turnRight = function(degree, cb) {
  */
 AICRAFT.Ai.prototype.turnLeft = function(degree, cb) {
 	AICRAFT.Ai.rotate(this, degree, cb, true, true, false, 40);
+};
+
+/**
+ * set position of current ai
+ */
+AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,vx,vy,vz) {
+	x = parseFloat(x);
+	y = parseFloat(y);
+	z = parseFloat(z);
+	qx = parseFloat(qx);
+	qy = parseFloat(qy);
+	qz = parseFloat(qz);
+	qw = parseFloat(qw);
+	sqx = parseFloat(sqx);
+	sqy = parseFloat(sqy);
+	sqz = parseFloat(sqz);
+	sqw = parseFloat(sqw);
+	vx = parseFloat(vx);
+	vy = parseFloat(vy);
+	vz = parseFloat(vz);
+	AICRAFT.GameObject.prototype.setPos.call(this,AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz);
+	this.sight.quaternion.x = sqx;
+	this.sight.quaternion.y = sqy;
+	this.sight.quaternion.z = sqz;
+	this.sight.quaternion.w = sqw;
+	this.sightMesh.quaternion.x = this.sight.quaternion.x;
+	this.sightMesh.quaternion.y = this.sight.quaternion.y;
+	this.sightMesh.quaternion.z = this.sight.quaternion.z;
+	this.sightMesh.quaternion.w = this.sight.quaternion.w;
 };
 
 /** Controls the sight of the AI
