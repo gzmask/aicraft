@@ -140,7 +140,6 @@ AICRAFT.Engine.prototype = {
 				-150 + Math.random()*301, 
 				quat.getX(),quat.getY(),quat.getZ(),quat.getW(), Ammo);
 			self.players[i].buildPhysic(Ammo);
-			self.players[i].phybody.setIslandTag(i);
 			self.dynamicsWorld.addRigidBody(self.players[i].phybody);
 			
 			//construct ai
@@ -150,7 +149,6 @@ AICRAFT.Engine.prototype = {
 				self.players[i].position.z - 15,
 				quat.getX(),quat.getY(),quat.getZ(),quat.getW(), Ammo);
 			self.ais[i].buildPhysic(Ammo);
-			self.ais[i].phybody.setIslandTag(i);
 			self.dynamicsWorld.addRigidBody(self.ais[i].phybody);
 		}})();
 
@@ -250,6 +248,10 @@ AICRAFT.Engine.prototype = {
 		var self = this; //closure var, without the assignment, 'this' is animate() next call
 		AICRAFT.requestAnimationFrame(function(){self.animate();}, self.animateFPS);
 
+		//wait till game is full
+		if (AICRAFT.Engine.getNextAvailablePnum(self.players) !== -1) {
+			return;}
+		
 		//update physics
 		self.dynamicsWorld.stepSimulation(1/self.phyFPS, 10);
 		self.players.forEach( (function(player) {

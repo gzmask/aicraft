@@ -226,7 +226,8 @@ ul.inheritsList
 					<a href="../symbols/AICRAFT.GameObject.html">AICRAFT.GameObject</a>.<br />
 				
 			
-				physical part of an A.I.init to be facing north
+				physical part of an A.I.
+init to be facing north
 				
 				
 					<br /><i>Defined in: </i> <a href="../symbols/src/engine_aicraft_gameobjects_ai.js.html">ai.js</a>.
@@ -311,6 +312,15 @@ ul.inheritsList
 						</tr>
 					
 						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#found">found</a></b>(position, tag)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">AICRAFT.Ai.<b><a href="../symbols/AICRAFT.Ai.html#.getSight">getSight</a></b>(x, y, z, tx, ty, tz, length, fov, degreePerLine, Ammo, IsAmmo)
@@ -387,7 +397,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#physicUpdate">physicUpdate</a></b>(dynamicsWorld)
 								</div>
-								<div class="description"></div>
+								<div class="description">updates the physical body, the sight, and checks for enemy using raycasting</div>
 							</td>
 						</tr>
 					
@@ -396,7 +406,17 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">AICRAFT.Ai.<b><a href="../symbols/AICRAFT.Ai.html#.rotate">rotate</a></b>(degree, degree, cb, IsLeft, IsBody, IsSight, delay)
 								</div>
-								<div class="description">Rotates the body to a degree related to the front of the AI orRotates the sight to a degree related to the front of the Sight</div>
+								<div class="description">Rotates the body to a degree related to the front of the AI or
+Rotates the sight to a degree related to the front of the Sight</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">AICRAFT.Ai.<b><a href="../symbols/AICRAFT.Ai.html#.searchByTag">searchByTag</a></b>(gameObjs, tag)
+								</div>
+								<div class="description"></div>
 							</td>
 						</tr>
 					
@@ -405,7 +425,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#setPos">setPos</a></b>(AmmoIn, x, y, z, qx, qy, qz, qw, sqx, sqy, sqz, sqw, vx, vy, vz)
 								</div>
-								<div class="description"></div>
+								<div class="description">set position of current ai</div>
 							</td>
 						</tr>
 					
@@ -686,6 +706,48 @@ ul.inheritsList
 							
 								<dt>
 									<b>AmmoIn</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="found"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>found</b>(position, tag)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>position</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>tag</b>
 									
 								</dt>
 								<dd></dd>
@@ -1147,7 +1209,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						updates the physical body, the sight, and checks for enemy using raycasting
 						
 						
 					</div>
@@ -1183,7 +1245,8 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						Rotates the body to a degree related to the front of the AI orRotates the sight to a degree related to the front of the Sight
+						Rotates the body to a degree related to the front of the AI or
+Rotates the sight to a degree related to the front of the Sight
 						
 						
 					</div>
@@ -1247,6 +1310,48 @@ ul.inheritsList
 
 					<hr />
 				
+					<a name=".searchByTag"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">AICRAFT.Ai.</span><b>searchByTag</b>(gameObjs, tag)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>gameObjs</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>tag</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="setPos"> </a>
 					<div class="fixedFont">
 					
@@ -1255,7 +1360,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						set position of current ai
 						
 						
 					</div>
@@ -1462,7 +1567,7 @@ ul.inheritsList
 		
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
-			Documentation generated on Tue Mar 13 2012 18:55:28 GMT-0600 (CST)
+			Documentation generated on Thu Mar 15 2012 13:43:16 GMT-0600 (CST)
 		</div>
 	</body>
 </html>

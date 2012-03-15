@@ -190,7 +190,6 @@ AICRAFT.ClientEngine.prototype = {
 			self.players[i].IsClient = true;
 			self.players[i].buildMesh(THREE, self.scene);
 			self.players[i].buildPhysic(Ammo);
-			self.players[i].phybody.setIslandTag(i);
 			self.dynamicsWorld.addRigidBody(self.players[i].phybody);
 
 			//construct ais
@@ -206,7 +205,6 @@ AICRAFT.ClientEngine.prototype = {
 			self.ais[i].IsClient = true;
 			self.ais[i].buildMesh(THREE, self.scene);
 			self.ais[i].buildPhysic(Ammo);
-			self.ais[i].phybody.setIslandTag(i);
 			self.dynamicsWorld.addRigidBody(self.ais[i].phybody);
 		}})();
 

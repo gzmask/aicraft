@@ -10,3 +10,7 @@ AICRAFT.ai_name_to_replace.prototype.run = function() {
 	};
 	Smove();
 };
+
+AICRAFT.ai_name_to_replace.prototype.onSightFound = function(event) {
+	console.log(this.body.name+'find:'+event.tag);
+};

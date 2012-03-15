@@ -31,6 +31,7 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.hp = 100;
 	this.walkMesh = undefined;
 	this.name = undefined;
+	this.onSightFound = undefined;
 };
 
 AICRAFT.Ai.prototype = new AICRAFT.GameObject();
@@ -124,9 +125,27 @@ AICRAFT.Ai.prototype.physicUpdate = function(dynamicsWorld) {
 		var cb = new self.Ammo.ClosestRayResultCallback(start, end);
 		dynamicsWorld.rayTest(start, end, cb);
 		if (cb.hasHit()) {
-			//console.log(cb.get_m_hitPointWorld());
-			console.log(cb.get_m_collisionObject().getIslandTag());
+			self.found(cb.get_m_hitPointWorld(), cb.get_m_collisionObject().getIslandTag());
 		}
+	}
+};
+
+AICRAFT.Ai.prototype.found = function(position, tag) {
+	if (tag===-1){return;}
+	event = new Object();
+	event.position = [position.x, position.y, position.z];
+	event.tag = tag;
+	try {
+		this.onSightFound(event);
+	} catch(err) {
+		return;
+	}
+};
+
+AICRAFT.Ai.searchByTag = function(gameObjs, tag) {
+	for (var i=0; i<gameObjs.length; i++) {
+		if (gameObjs[i].phybody.getIslandTag() === tag) {
+			return gameObjs[i];}
 	}
 };
 
