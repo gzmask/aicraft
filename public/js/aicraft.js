@@ -137,21 +137,24 @@ AICRAFT.Ai.prototype.physicUpdate = function(a) {
   var b = new this.Ammo.btQuaternion(this.sight.quaternion.x, this.sight.quaternion.y, this.sight.quaternion.z, this.sight.quaternion.w), c = new this.Ammo.btTransform;
   c.setIdentity();
   c.setRotation(b);
-  b = new this.Ammo.btVector3(0, 0, -1);
-  b = c.op_mul(b);
-  this.sight.lines = AICRAFT.Ai.getSight(this.position.x, this.position.y, this.position.z, b.getX() + this.position.x, b.getY() + this.position.y, b.getZ() + this.position.z, 80, 60, 10, this.Ammo, !0);
-  this.raycast(a)
+  var d = new this.Ammo.btVector3(0, 0, -1), d = c.op_mul(d);
+  this.sight.lines = AICRAFT.Ai.getSight(this.position.x, this.position.y, this.position.z, d.getX() + this.position.x, d.getY() + this.position.y, d.getZ() + this.position.z, 80, 60, 10, this.Ammo, !0);
+  this.raycast(a, 1E3);
+  this.Ammo.destroy(c);
+  this.Ammo.destroy(b)
 };
-AICRAFT.Ai.prototype.raycast = function(a) {
+AICRAFT.Ai.prototype.raycast = function(a, b) {
   if(!0 !== this.raycastLock) {
-    for(var b = this, c = 0;c < b.sight.lines.length;c += 2) {
-      var d = b.sight.lines[c], e = b.sight.lines[c + 1], f = new b.Ammo.ClosestRayResultCallback(d, e);
-      a.rayTest(d, e, f);
-      f.hasHit() && (b.raycastLock = !0, b.found(f.get_m_hitPointWorld(), f.get_m_collisionObject().getIslandTag()), setTimeout(function() {
-        b.raycastLock = !1
-      }, 1E3))
+    for(var c = this, d = 0;d < c.sight.lines.length;d += 2) {
+      var e = c.sight.lines[d], f = c.sight.lines[d + 1], g = new c.Ammo.ClosestRayResultCallback(e, f);
+      a.rayTest(e, f, g);
+      g.hasHit() && (c.raycastLock = !0, c.found(g.get_m_hitPointWorld(), g.get_m_collisionObject().getIslandTag()), setTimeout(function() {
+        c.raycastLock = !1
+      }, b))
     }
   }
+};
+AICRAFT.Ai.prototype.fireAt = function() {
 };
 AICRAFT.Ai.prototype.found = function(a, b) {
   if(!(-1 === b || b === this.owner.phybody.getIslandTag())) {
@@ -161,13 +164,6 @@ AICRAFT.Ai.prototype.found = function(a, b) {
     try {
       this.onSightFound(event)
     }catch(c) {
-    }
-  }
-};
-AICRAFT.Ai.searchByTag = function(a, b) {
-  for(var c = 0;c < a.length;c++) {
-    if(a[c].phybody.getIslandTag() === b) {
-      return a[c]
     }
   }
 };
@@ -316,6 +312,8 @@ AICRAFT.Ai.getSight = function(a, b, c, d, e, f, g, h, k, i, j) {
   do {
     l.push(AICRAFT.v(a, b, c, j), AICRAFT.v(d.getX() + a, d.getY() + b, d.getZ() + c, j)), e = AICRAFT.quatFromEuler(-1 * k, 0, 0, i), f.setRotation(e), d = f.op_mul(d), d.normalize(), d.op_mul(g), h -= k
   }while(0 <= h);
+  i.destroy(e);
+  i.destroy(f);
   return l
 };
 AICRAFT.Player = function(a, b, c, d, e, f, g, h) {

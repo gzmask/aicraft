@@ -121,6 +121,8 @@ AICRAFT.Ai.prototype.physicUpdate = function(dynamicsWorld) {
 			80, 60, 10, self.Ammo, true);
 	
 	self.raycast(dynamicsWorld, 1000);
+	self.Ammo.destroy(trans);
+	self.Ammo.destroy(sight_quat);
 };
 
 /**
@@ -147,6 +149,8 @@ AICRAFT.Ai.prototype.raycast = function(dynamicsWorld, delay) {
 
 /**
  * fire at target, while turns the A.I facing the target at the same time
+ * Ray cast again is used to calculate if it's hit.
+ * if hits, apply force to the target, reduce its HP
  */
 AICRAFT.Ai.prototype.fireAt = function(x,y,z, delay) {
 	
@@ -438,5 +442,7 @@ AICRAFT.Ai.getSight = function(x,y,z, tx,ty,tz, length, fov, degreePerLine, Ammo
 		fov -= degreePerLine;
 	} while (fov >= 0);
 	
+	Ammo.destroy(quatRot);
+	Ammo.destroy(transRot);
 	return resultAr;
 };
