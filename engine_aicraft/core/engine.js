@@ -12,6 +12,7 @@ AICRAFT.Engine = function () {
 	this.totalPlayers = 2;
 	this.players = new Array();
 	this.ais = new Array();
+	this.objs = new Array();
 	this.animateFPS = 60;
 	this.posFPS = 20;
 	this.phyFPS = 30;
@@ -139,18 +140,20 @@ AICRAFT.Engine.prototype = {
 				0, 
 				-150 + Math.random()*301, 
 				quat.getX(),quat.getY(),quat.getZ(),quat.getW(), Ammo);
-			self.players[i].buildPhysic(Ammo);
-			self.dynamicsWorld.addRigidBody(self.players[i].phybody);
+			self.players[i].buildPhysic(Ammo, self.dynamicsWorld);
+			self.objs[self.players[i].phybody.getIslandTag()] = self.players[i];
+			self.players[i].objs = self.objs;
 			
 			//construct ai
 			quat = AICRAFT.quatFromEuler(360*Math.random(),0,0,Ammo);
 			self.ais[i] = new AICRAFT.Ai(self.players[i].position.x,
 				0,
-				self.players[i].position.z - 15,
+				self.players[i].position.z - 25,
 				quat.getX(),quat.getY(),quat.getZ(),quat.getW(), Ammo);
+			self.ais[i].buildPhysic(Ammo, self.dynamicsWorld);
 			self.ais[i].owner = self.players[i];
-			self.ais[i].buildPhysic(Ammo);
-			self.dynamicsWorld.addRigidBody(self.ais[i].phybody);
+			self.objs[self.ais[i].phybody.getIslandTag()] = self.ais[i];
+			self.ais[i].objs = self.objs;
 		}})();
 
 	},

@@ -189,8 +189,7 @@ AICRAFT.ClientEngine.prototype = {
 					socket.players.bindings[i].quaternion[3]);
 			self.players[i].IsClient = true;
 			self.players[i].buildMesh(THREE, self.scene);
-			self.players[i].buildPhysic(Ammo);
-			self.dynamicsWorld.addRigidBody(self.players[i].phybody);
+			self.players[i].buildPhysic(Ammo, self.dynamicsWorld);
 
 			//construct ais
 			quat.setFromEuler(new THREE.Vector3(30, -20, 0));
@@ -204,9 +203,8 @@ AICRAFT.ClientEngine.prototype = {
 					socket.ais.bindings[i].quaternion[3]);
 			self.ais[i].IsClient = true;
 			self.ais[i].buildMesh(THREE, self.scene);
-			self.ais[i].buildPhysic(Ammo);
+			self.ais[i].buildPhysic(Ammo, self.dynamicsWorld);
 			self.ais[i].owner = self.players[i];
-			self.dynamicsWorld.addRigidBody(self.ais[i].phybody);
 		}})();
 
 		// create a camera control

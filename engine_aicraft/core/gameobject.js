@@ -33,6 +33,8 @@ AICRAFT.GameObject = function (x,y,z, qx, qy, qz, qw) {
 	this.friction = 3;
 	this.angularFactor = 0;
 	this.IsClient = false;
+	this.dynamicsWorld = undefined;
+	this.objs = undefined;
 };
 
 AICRAFT.GameObject.prototype = {
@@ -68,7 +70,7 @@ AICRAFT.GameObject.prototype = {
 	},	
 
 	//called by client and server
-	buildPhysic: function(AmmoIn) {
+	buildPhysic: function(AmmoIn, dynamicsWorld) {
 		if (AmmoIn !== undefined) {
 			Ammo = AmmoIn;
 		};
@@ -90,6 +92,8 @@ AICRAFT.GameObject.prototype = {
 		this.phybody = new Ammo.btRigidBody(rbInfo);
 		this.phybody.setFriction(this.friction);
 		this.phybody.setAngularFactor(this.angularFactor);
+		this.dynamicsWorld = dynamicsWorld;
+		this.dynamicsWorld.addRigidBody(this.phybody);
 	},
 
 	//sets the physic states of this object

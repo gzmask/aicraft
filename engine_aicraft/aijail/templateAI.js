@@ -12,5 +12,8 @@ AICRAFT.ai_name_to_replace.prototype.run = function() {
 };
 
 AICRAFT.ai_name_to_replace.prototype.onSightFound = function(event) {
-	console.log(this.body.name+'find:'+event.tag);
+	console.log(this.body.name+' finds enemy at:'+event.position);
+	this.body.fireAt(event.position[0],
+			event.position[1],
+			event.position[2]);
 };
