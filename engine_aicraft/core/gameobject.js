@@ -42,7 +42,7 @@ AICRAFT.GameObject.prototype = {
 	constructor: AICRAFT.GameObject,
 
 	//called by client
-	buildMesh: function(THREE, scene) {
+	buildMesh: function(THREE, scene, color) {
 		/*
 		this.mesh = new THREE.Mesh(
 			new THREE.CubeGeometry(this.width,this.height,this.depth),
@@ -57,7 +57,7 @@ AICRAFT.GameObject.prototype = {
 		*/
 		this.mesh = new THREE.Mesh(
 			new THREE.SphereGeometry(this.radius),
-			new THREE.MeshLambertMaterial({color: 0xffffff})	
+			new THREE.MeshLambertMaterial({color: color})	
 		);
 		this.mesh.castShadow = true;
 		this.mesh.receiveShadow = true;

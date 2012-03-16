@@ -25,10 +25,10 @@ AICRAFT.Player.prototype.constructor = AICRAFT.Player;
 
 //called by client
 /*
-AICRAFT.Player.prototype.buildMesh = function(THREE, scene) {
+AICRAFT.Player.prototype.buildMesh = function(THREE, scene, color) {
 	this.mesh = new THREE.Mesh(
 		new THREE.CubeGeometry(this.width,this.height,this.depth),
-		new THREE.MeshLambertMaterial({color: 0xffffff})	
+		new THREE.MeshLambertMaterial({color: color})	
 	);
 	this.mesh.castShadow = true;
 	this.mesh.receiveShadow = true;

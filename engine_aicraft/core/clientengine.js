@@ -175,9 +175,11 @@ AICRAFT.ClientEngine.prototype = {
 
 
 		var quat = new THREE.Quaternion();
+		var colors = [0x002EB8, 0x99CC33, 0xFF1414, 0x66CC00, 0x7547FF, 0x3D7AB8];
 		
 		(function() { for (var i=0; i<self.totalPlayers; i++) {
 			//construct players
+			var randomNum = Math.floor(Math.random()*6);
 			quat.setFromEuler(new THREE.Vector3(-30, -20, 0));
 			self.players[i] = new AICRAFT.Player(
 					socket.players.bindings[i].position[0], 
@@ -188,7 +190,7 @@ AICRAFT.ClientEngine.prototype = {
 					socket.players.bindings[i].quaternion[2], 
 					socket.players.bindings[i].quaternion[3]);
 			self.players[i].IsClient = true;
-			self.players[i].buildMesh(THREE, self.scene);
+			self.players[i].buildMesh(THREE, self.scene, colors[randomNum]);
 			self.players[i].buildPhysic(Ammo, self.dynamicsWorld);
 
 			//construct ais
@@ -202,7 +204,7 @@ AICRAFT.ClientEngine.prototype = {
 					socket.ais.bindings[i].quaternion[2], 
 					socket.ais.bindings[i].quaternion[3]);
 			self.ais[i].IsClient = true;
-			self.ais[i].buildMesh(THREE, self.scene);
+			self.ais[i].buildMesh(THREE, self.scene, colors[randomNum]);
 			self.ais[i].buildPhysic(Ammo, self.dynamicsWorld);
 			self.ais[i].owner = self.players[i];
 		}})();

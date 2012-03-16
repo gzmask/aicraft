@@ -45,16 +45,17 @@ AICRAFT.Ai.prototype.constructor = AICRAFT.Ai;
 
 /**Overriding buildMesh method, called by client only
  */
-AICRAFT.Ai.prototype.buildMesh = function(THREE, scene) {
+AICRAFT.Ai.prototype.buildMesh = function(THREE, scene, color) {
 	var self = this;
 	//calls super method
 	//AICRAFT.GameObject.prototype.buildMesh.call(this,THREE, scene);
-	AICRAFT.Ai.JSONloader(self,"asset/rat_walk.js", self.walkMesh, scene, THREE);
+	AICRAFT.Ai.JSONloader(self,"asset/rat_walk.js", self.walkMesh, scene, color, THREE);
 
 	//build sightMesh ray
 	var sightMeshGeo = new THREE.Geometry();
 	sightMeshGeo.vertices = AICRAFT.Ai.getSight(0,0,0, 0,0,-1, self.sight.range, 60, 10, this.Ammo, false);
-	var sightMeshMat = new THREE.LineBasicMaterial({color: 0x33ff33, lineWidth:1});
+	//var sightMeshMat = new THREE.LineBasicMaterial({color: 0x33ff33, lineWidth:1});
+	var sightMeshMat = new THREE.LineBasicMaterial({color: color, lineWidth:1});
 	this.sightMesh = new THREE.Line(sightMeshGeo, sightMeshMat);
 	this.sightMesh.type = THREE.Lines;
 	this.sightMesh.useQuaternion = true;
@@ -400,12 +401,12 @@ AICRAFT.Ai.move = function(self, units, cb, IsAhead, delay) {
 };
 
 //animation loader
-AICRAFT.Ai.JSONloader = function(self, url, mesh, scene, THREE) {
+AICRAFT.Ai.JSONloader = function(self, url, mesh, scene, color, THREE) {
 	var loader = new THREE.JSONLoader();
 	loader.load( url, function(geometry){
 		var material = geometry.materials[ 0 ];
 		material.morphTargets = true;
-		material.color.setHex( 0xaaaaaa );
+		material.color.setHex( color );
 		material.ambient.setHex( 0x222222 );
 		var faceMaterial = new THREE.MeshFaceMaterial();
 		var morph = new THREE.MorphAnimMesh( geometry, faceMaterial );

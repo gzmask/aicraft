@@ -22,7 +22,7 @@
 	"colorAmbient" : [0.0, 0.0, 0.0],
 	"colorDiffuse" : [0.6400000190734865, 0.6400000190734865, 0.6400000190734865],
 	"colorSpecular" : [0.5, 0.5, 0.5],
-	"shading" : "Lambert",
+	"shading" : "Flat",
 	"specularCoef" : 50,
 	"transparency" : 1.0,
 	"vertexColors" : false
