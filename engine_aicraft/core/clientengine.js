@@ -26,6 +26,7 @@ AICRAFT.ClientEngine = function () {
 	this.ais = new Array();
 	//dirty vars
 	this.lastKeycode = 0;
+	this.colors = [0x002EB8, 0x99CC33, 0xFF1414, 0x66CC00, 0x7547FF, 0x3D7AB8];
 };
 
 //proto methods
@@ -87,7 +88,7 @@ AICRAFT.ClientEngine.prototype = {
 		//construct a ground
 		var groundGeo = new THREE.PlaneGeometry(400, 400, 10, 10);
 		//var groundGeo = new THREE.CubeGeometry(400, 0.1, 400);
-		var groundMat = new THREE.MeshLambertMaterial({color: 0xffffff});
+		var groundMat = new THREE.MeshLambertMaterial({color: this.colors[1]});
 		this.ground = new THREE.Mesh(groundGeo, groundMat);
 		this.ground.rotation.x = -Math.PI/2;
 		this.ground.position.y = -5;
@@ -175,7 +176,6 @@ AICRAFT.ClientEngine.prototype = {
 
 
 		var quat = new THREE.Quaternion();
-		var colors = [0x002EB8, 0x99CC33, 0xFF1414, 0x66CC00, 0x7547FF, 0x3D7AB8];
 		
 		(function() { for (var i=0; i<self.totalPlayers; i++) {
 			//construct players
@@ -190,7 +190,7 @@ AICRAFT.ClientEngine.prototype = {
 					socket.players.bindings[i].quaternion[2], 
 					socket.players.bindings[i].quaternion[3]);
 			self.players[i].IsClient = true;
-			self.players[i].buildMesh(THREE, self.scene, colors[randomNum]);
+			self.players[i].buildMesh(THREE, self.scene, self.colors[randomNum]);
 			self.players[i].buildPhysic(Ammo, self.dynamicsWorld);
 
 			//construct ais
@@ -204,7 +204,7 @@ AICRAFT.ClientEngine.prototype = {
 					socket.ais.bindings[i].quaternion[2], 
 					socket.ais.bindings[i].quaternion[3]);
 			self.ais[i].IsClient = true;
-			self.ais[i].buildMesh(THREE, self.scene, colors[randomNum]);
+			self.ais[i].buildMesh(THREE, self.scene, self.colors[randomNum]);
 			self.ais[i].buildPhysic(Ammo, self.dynamicsWorld);
 			self.ais[i].owner = self.players[i];
 		}})();

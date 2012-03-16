@@ -226,8 +226,7 @@ ul.inheritsList
 					<a href="../symbols/AICRAFT.GameObject.html">AICRAFT.GameObject</a>.<br />
 				
 			
-				physical part of an A.I.
-init to be facing north
+				physical part of an A.I.init to be facing north
 				
 				
 					<br /><i>Defined in: </i> <a href="../symbols/src/engine_aicraft_gameobjects_ai.js.html">ai.js</a>.
@@ -296,7 +295,7 @@ init to be facing north
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#buildMesh">buildMesh</a></b>(THREE, scene)
+								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#buildMesh">buildMesh</a></b>(THREE, scene, color)
 								</div>
 								<div class="description">Overriding buildMesh method, called by client only</div>
 							</td>
@@ -305,7 +304,7 @@ init to be facing north
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#buildPhysic">buildPhysic</a></b>(AmmoIn)
+								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#buildPhysic">buildPhysic</a></b>(AmmoIn, dynamicsWorld)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -314,9 +313,18 @@ init to be facing north
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#found">found</a></b>(position, tag)
+								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#fireAt">fireAt</a></b>(x, y, z, fn_cb)
 								</div>
-								<div class="description"></div>
+								<div class="description">fire at targetRay cast is used to calculate if it's hit.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#found">found</a></b>(x, y, z, tag)
+								</div>
+								<div class="description">binds the user found function to this instance</div>
 							</td>
 						</tr>
 					
@@ -332,7 +340,7 @@ init to be facing north
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">AICRAFT.Ai.<b><a href="../symbols/AICRAFT.Ai.html#.JSONloader">JSONloader</a></b>(self, url, mesh, scene, THREE)
+								<div class="fixedFont">AICRAFT.Ai.<b><a href="../symbols/AICRAFT.Ai.html#.JSONloader">JSONloader</a></b>(self, url, IsWalk, scene, color, THREE, cb)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -395,9 +403,18 @@ init to be facing north
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#physicUpdate">physicUpdate</a></b>(dynamicsWorld)
+								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#physicUpdate">physicUpdate</a></b>()
 								</div>
 								<div class="description">updates the physical body, the sight, and checks for enemy using raycasting</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#raycast">raycast</a></b>(delay)
+								</div>
+								<div class="description">using raycast to check if enemy is insight.</div>
 							</td>
 						</tr>
 					
@@ -406,17 +423,7 @@ init to be facing north
 							<td class="nameDescription">
 								<div class="fixedFont">AICRAFT.Ai.<b><a href="../symbols/AICRAFT.Ai.html#.rotate">rotate</a></b>(degree, degree, cb, IsLeft, IsBody, IsSight, delay)
 								</div>
-								<div class="description">Rotates the body to a degree related to the front of the AI or
-Rotates the sight to a degree related to the front of the Sight</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">AICRAFT.Ai.<b><a href="../symbols/AICRAFT.Ai.html#.searchByTag">searchByTag</a></b>(gameObjs, tag)
-								</div>
-								<div class="description"></div>
+								<div class="description">Rotates the body to a degree related to the front of the AI orRotates the sight to a degree related to the front of the Sight</div>
 							</td>
 						</tr>
 					
@@ -647,7 +654,7 @@ Rotates the sight to a degree related to the front of the Sight</div>
 					<div class="fixedFont">
 					
 					
-					<b>buildMesh</b>(THREE, scene)
+					<b>buildMesh</b>(THREE, scene, color)
 					
 					</div>
 					<div class="description">
@@ -674,6 +681,12 @@ Rotates the sight to a degree related to the front of the Sight</div>
 								</dt>
 								<dd></dd>
 							
+								<dt>
+									<b>color</b>
+									
+								</dt>
+								<dd></dd>
+							
 							</dl>
 						
 						
@@ -689,7 +702,7 @@ Rotates the sight to a degree related to the front of the Sight</div>
 					<div class="fixedFont">
 					
 					
-					<b>buildPhysic</b>(AmmoIn)
+					<b>buildPhysic</b>(AmmoIn, dynamicsWorld)
 					
 					</div>
 					<div class="description">
@@ -710,6 +723,66 @@ Rotates the sight to a degree related to the front of the Sight</div>
 								</dt>
 								<dd></dd>
 							
+								<dt>
+									<b>dynamicsWorld</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="fireAt"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>fireAt</b>(x, y, z, fn_cb)
+					
+					</div>
+					<div class="description">
+						fire at targetRay cast is used to calculate if it's hit.if hits, apply force to the target, reduce its HP
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>x</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>y</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>z</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>fn_cb</b>
+									
+								</dt>
+								<dd></dd>
+							
 							</dl>
 						
 						
@@ -725,11 +798,11 @@ Rotates the sight to a degree related to the front of the Sight</div>
 					<div class="fixedFont">
 					
 					
-					<b>found</b>(position, tag)
+					<b>found</b>(x, y, z, tag)
 					
 					</div>
 					<div class="description">
-						
+						binds the user found function to this instance
 						
 						
 					</div>
@@ -741,7 +814,19 @@ Rotates the sight to a degree related to the front of the Sight</div>
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>position</b>
+									<b>x</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>y</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>z</b>
 									
 								</dt>
 								<dd></dd>
@@ -863,7 +948,7 @@ Rotates the sight to a degree related to the front of the Sight</div>
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">AICRAFT.Ai.</span><b>JSONloader</b>(self, url, mesh, scene, THREE)
+					<span class="light">AICRAFT.Ai.</span><b>JSONloader</b>(self, url, IsWalk, scene, color, THREE, cb)
 					
 					</div>
 					<div class="description">
@@ -891,7 +976,7 @@ Rotates the sight to a degree related to the front of the Sight</div>
 								<dd></dd>
 							
 								<dt>
-									<b>mesh</b>
+									<b>IsWalk</b>
 									
 								</dt>
 								<dd></dd>
@@ -903,7 +988,19 @@ Rotates the sight to a degree related to the front of the Sight</div>
 								<dd></dd>
 							
 								<dt>
+									<b>color</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
 									<b>THREE</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>cb</b>
 									
 								</dt>
 								<dd></dd>
@@ -1205,7 +1302,7 @@ Rotates the sight to a degree related to the front of the Sight</div>
 					<div class="fixedFont">
 					
 					
-					<b>physicUpdate</b>(dynamicsWorld)
+					<b>physicUpdate</b>()
 					
 					</div>
 					<div class="description">
@@ -1217,11 +1314,36 @@ Rotates the sight to a degree related to the front of the Sight</div>
 					
 					
 						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="raycast"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>raycast</b>(delay)
+					
+					</div>
+					<div class="description">
+						using raycast to check if enemy is insight. if enemy is found, stop checking for delay value in ms
+						
+						
+					</div>
+					
+					
+					
+						
 							<dl class="detailList">
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>dynamicsWorld</b>
+									<b>delay</b>
 									
 								</dt>
 								<dd></dd>
@@ -1245,8 +1367,7 @@ Rotates the sight to a degree related to the front of the Sight</div>
 					
 					</div>
 					<div class="description">
-						Rotates the body to a degree related to the front of the AI or
-Rotates the sight to a degree related to the front of the Sight
+						Rotates the body to a degree related to the front of the AI orRotates the sight to a degree related to the front of the Sight
 						
 						
 					</div>
@@ -1295,48 +1416,6 @@ Rotates the sight to a degree related to the front of the Sight
 							
 								<dt>
 									<b>delay</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name=".searchByTag"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">AICRAFT.Ai.</span><b>searchByTag</b>(gameObjs, tag)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>gameObjs</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>tag</b>
 									
 								</dt>
 								<dd></dd>
@@ -1567,7 +1646,7 @@ Rotates the sight to a degree related to the front of the Sight
 		
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
-			Documentation generated on Thu Mar 15 2012 13:43:16 GMT-0600 (CST)
+			Documentation generated on Fri Mar 16 2012 13:36:32 GMT-0600 (CST)
 		</div>
 	</body>
 </html>
