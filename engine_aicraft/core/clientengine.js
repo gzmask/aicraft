@@ -345,8 +345,8 @@ AICRAFT.ClientEngine.prototype = {
 		// update physics and graphics
 		self.dynamicsWorld.stepSimulation(1/self.phyFPS, 10);
 		(function(){ for (var i=0; i<self.totalPlayers; i++) {
-			self.players[i].physicAndGraphicUpdate(self.dynamicsWorld, self.delta);
-			self.ais[i].physicAndGraphicUpdate(self.dynamicsWorld, self.delta);
+			self.players[i].physicAndGraphicUpdate();
+			self.ais[i].physicAndGraphicUpdate(self.delta);
 		}})();
 
 		// update camera controls

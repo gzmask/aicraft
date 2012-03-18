@@ -226,8 +226,7 @@ ul.inheritsList
 					<a href="../symbols/AICRAFT.GameObject.html">AICRAFT.GameObject</a>.<br />
 				
 			
-				physical part of an A.I.
-init to be facing north
+				physical part of an A.I.init to be facing north
 				
 				
 					<br /><i>Defined in: </i> <a href="../symbols/src/engine_aicraft_gameobjects_ai.js.html">ai.js</a>.
@@ -316,8 +315,7 @@ init to be facing north
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#fireAt">fireAt</a></b>(x, y, z, fn_cb)
 								</div>
-								<div class="description">fire at target
-Ray cast is used to calculate if it's hit.</div>
+								<div class="description">fire at targetRay cast is used to calculate if it's hit.</div>
 							</td>
 						</tr>
 					
@@ -342,7 +340,7 @@ Ray cast is used to calculate if it's hit.</div>
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">AICRAFT.Ai.<b><a href="../symbols/AICRAFT.Ai.html#.JSONloader">JSONloader</a></b>(self, url, IsWalk, scene, color, THREE, cb)
+								<div class="fixedFont">AICRAFT.Ai.<b><a href="../symbols/AICRAFT.Ai.html#.JSONloader">JSONloader</a></b>(self, url, scene, color, THREE, cb)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -396,7 +394,7 @@ Ray cast is used to calculate if it's hit.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#physicAndGraphicUpdate">physicAndGraphicUpdate</a></b>(dynamicsWorld, delta)
+								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#physicAndGraphicUpdate">physicAndGraphicUpdate</a></b>(delta)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -425,8 +423,7 @@ Ray cast is used to calculate if it's hit.</div>
 							<td class="nameDescription">
 								<div class="fixedFont">AICRAFT.Ai.<b><a href="../symbols/AICRAFT.Ai.html#.rotate">rotate</a></b>(degree, degree, cb, IsLeft, IsBody, IsSight, delay)
 								</div>
-								<div class="description">Rotates the body to a degree related to the front of the AI or
-Rotates the sight to a degree related to the front of the Sight</div>
+								<div class="description">Rotates the body to a degree related to the front of the AI orRotates the sight to a degree related to the front of the Sight</div>
 							</td>
 						</tr>
 					
@@ -751,9 +748,7 @@ Rotates the sight to a degree related to the front of the Sight</div>
 					
 					</div>
 					<div class="description">
-						fire at target
-Ray cast is used to calculate if it's hit.
-if hits, apply force to the target, reduce its HP
+						fire at targetRay cast is used to calculate if it's hit.if hits, apply force to the target, reduce its HP
 						
 						
 					</div>
@@ -953,7 +948,7 @@ if hits, apply force to the target, reduce its HP
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">AICRAFT.Ai.</span><b>JSONloader</b>(self, url, IsWalk, scene, color, THREE, cb)
+					<span class="light">AICRAFT.Ai.</span><b>JSONloader</b>(self, url, scene, color, THREE, cb)
 					
 					</div>
 					<div class="description">
@@ -976,12 +971,6 @@ if hits, apply force to the target, reduce its HP
 							
 								<dt>
 									<b>url</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>IsWalk</b>
 									
 								</dt>
 								<dd></dd>
@@ -1265,7 +1254,7 @@ if hits, apply force to the target, reduce its HP
 					<div class="fixedFont">
 					
 					
-					<b>physicAndGraphicUpdate</b>(dynamicsWorld, delta)
+					<b>physicAndGraphicUpdate</b>(delta)
 					
 					</div>
 					<div class="description">
@@ -1279,12 +1268,6 @@ if hits, apply force to the target, reduce its HP
 						
 							<dl class="detailList">
 							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>dynamicsWorld</b>
-									
-								</dt>
-								<dd></dd>
 							
 								<dt>
 									<b>delta</b>
@@ -1372,8 +1355,7 @@ if hits, apply force to the target, reduce its HP
 					
 					</div>
 					<div class="description">
-						Rotates the body to a degree related to the front of the AI or
-Rotates the sight to a degree related to the front of the Sight
+						Rotates the body to a degree related to the front of the AI orRotates the sight to a degree related to the front of the Sight
 						
 						
 					</div>
@@ -1652,7 +1634,7 @@ Rotates the sight to a degree related to the front of the Sight
 		
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
-			Documentation generated on Fri Mar 16 2012 13:45:43 GMT-0600 (CST)
+			Documentation generated on Sun Mar 18 2012 16:52:35 GMT-0600 (CST)
 		</div>
 	</body>
 </html>

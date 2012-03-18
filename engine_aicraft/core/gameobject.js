@@ -34,7 +34,6 @@ AICRAFT.GameObject = function (x,y,z, qx, qy, qz, qw) {
 	this.angularFactor = 0;
 	this.IsClient = false;
 	this.dynamicsWorld = undefined;
-	this.objs = undefined;
 };
 
 AICRAFT.GameObject.prototype = {
@@ -129,8 +128,8 @@ AICRAFT.GameObject.prototype = {
 	},
 
 	//called by client
-	physicAndGraphicUpdate: function(dynamicsWorld) {
-		this.physicUpdate.call(this, dynamicsWorld);
+	physicAndGraphicUpdate: function() {
+		this.physicUpdate.call(this);
 		this.mesh.position.x = this.position.x;
 		this.mesh.position.y = this.position.y;
 		this.mesh.position.z = this.position.z;
@@ -141,16 +140,16 @@ AICRAFT.GameObject.prototype = {
 	},
 
 	//called by server
-	physicUpdate: function(dynamicsWorld) {
+	physicUpdate: function() {
 		if (this.phybody.getMotionState()) {
-			this.phybody.getMotionState().getWorldTransform(dynamicsWorld.trans);
-			this.position.x = parseFloat(dynamicsWorld.trans.getOrigin().x().toFixed(2));
-			this.position.y = parseFloat(dynamicsWorld.trans.getOrigin().y().toFixed(2));
-			this.position.z = parseFloat(dynamicsWorld.trans.getOrigin().z().toFixed(2));
-			this.quaternion.x = parseFloat(dynamicsWorld.trans.getRotation().x());
-			this.quaternion.y = parseFloat(dynamicsWorld.trans.getRotation().y());
-			this.quaternion.z = parseFloat(dynamicsWorld.trans.getRotation().z());
-			this.quaternion.w = parseFloat(dynamicsWorld.trans.getRotation().w());
+			this.phybody.getMotionState().getWorldTransform(this.dynamicsWorld.trans);
+			this.position.x = parseFloat(this.dynamicsWorld.trans.getOrigin().x().toFixed(2));
+			this.position.y = parseFloat(this.dynamicsWorld.trans.getOrigin().y().toFixed(2));
+			this.position.z = parseFloat(this.dynamicsWorld.trans.getOrigin().z().toFixed(2));
+			this.quaternion.x = parseFloat(this.dynamicsWorld.trans.getRotation().x());
+			this.quaternion.y = parseFloat(this.dynamicsWorld.trans.getRotation().y());
+			this.quaternion.z = parseFloat(this.dynamicsWorld.trans.getRotation().z());
+			this.quaternion.w = parseFloat(this.dynamicsWorld.trans.getRotation().w());
 		}
 	}
 };

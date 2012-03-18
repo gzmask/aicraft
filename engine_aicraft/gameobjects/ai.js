@@ -34,8 +34,6 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.weaponRange = 100;
 	this.weaponDelay = 1000;
 	this.hp = 100;
-	this.walkMesh = undefined;
-	this.turnMesh = undefined;
 	this.name = undefined;
 	this.owner = undefined;
 	this.onSightFound = undefined;
@@ -51,7 +49,7 @@ AICRAFT.Ai.prototype.buildMesh = function(THREE, scene, color) {
 	
 	//calls super method
 	//AICRAFT.GameObject.prototype.buildMesh.call(this,THREE, scene);
-	AICRAFT.Ai.JSONloader(self,"asset/rat_walk.js", true, scene, color, THREE, function(){
+	AICRAFT.Ai.JSONloader(self,"asset/rat_walk.js", scene, color, THREE, function(){
 			self.mesh.visible = true;
 	});
 
@@ -88,24 +86,14 @@ AICRAFT.Ai.prototype.buildPhysic = function(AmmoIn, dynamicsWorld) {
 
 
 //override physic and graphic update method
-AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(dynamicsWorld, delta) {
+AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(delta) {
 	if (this.mesh === undefined) {
 		return;}
 	//AICRAFT.GameObject.prototype.physicAndGraphicUpdate.call(this, dynamicsWorld);
-	this.physicUpdate.call(this, dynamicsWorld);
+	this.physicUpdate.call(this, this.dynamicsWorld);
 	this.sightMesh.position.x = this.mesh.position.x = this.position.x;
 	this.sightMesh.position.y = this.mesh.position.y = this.position.y;
 	this.sightMesh.position.z = this.mesh.position.z = this.position.z;
-	
-	/*
-	this.turnMesh.position.x = this.walkMesh.position.x = this.position.x;
-	this.turnMesh.position.y = this.walkMesh.position.y = this.position.y;
-	this.turnMesh.position.z = this.walkMesh.position.z = this.position.z;
-	this.turnMesh.quaternion.x = this.walkMesh.quaternion.x = this.quaternion.x;
-	this.turnMesh.quaternion.y = this.walkMesh.quaternion.y = this.quaternion.y;
-	this.turnMesh.quaternion.z = this.walkMesh.quaternion.z = this.quaternion.z;
-	this.turnMesh.quaternion.w = this.walkMesh.quaternion.w = this.quaternion.w;
-	*/
 	
 	this.mesh.quaternion.x = this.quaternion.x;
 	this.mesh.quaternion.y = this.quaternion.y;
@@ -416,7 +404,7 @@ AICRAFT.Ai.move = function(self, units, cb, IsAhead, delay) {
 };
 
 //animation loader
-AICRAFT.Ai.JSONloader = function(self, url, IsWalk, scene, color, THREE, cb) {
+AICRAFT.Ai.JSONloader = function(self, url, scene, color, THREE, cb) {
 	var loader = new THREE.JSONLoader();
 	loader.load( url, function(geometry){
 		var mesh;
@@ -437,10 +425,6 @@ AICRAFT.Ai.JSONloader = function(self, url, IsWalk, scene, color, THREE, cb) {
 		mesh.useQuaternion = true;
 		mesh.quaternion.set(self.quaternion.x, self.quaternion.y, self.quaternion.z, self.quaternion.w);
 		mesh.scale.set(5, 5, 5);
-		if (IsWalk === true)
-			self.walkMesh = mesh;
-		else
-			self.turnMesh = mesh;
 		self.mesh = mesh;
 		scene.add( mesh );
 		mesh.visible = false;

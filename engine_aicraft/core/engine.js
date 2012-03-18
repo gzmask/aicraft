@@ -141,8 +141,6 @@ AICRAFT.Engine.prototype = {
 				-150 + Math.random()*301, 
 				quat.getX(),quat.getY(),quat.getZ(),quat.getW(), Ammo);
 			self.players[i].buildPhysic(Ammo, self.dynamicsWorld);
-			self.objs[self.players[i].phybody.getIslandTag()] = self.players[i];
-			self.players[i].objs = self.objs;
 			
 			//construct ai
 			quat = AICRAFT.quatFromEuler(360*Math.random(),0,0,Ammo);
@@ -152,8 +150,6 @@ AICRAFT.Engine.prototype = {
 				quat.getX(),quat.getY(),quat.getZ(),quat.getW(), Ammo);
 			self.ais[i].buildPhysic(Ammo, self.dynamicsWorld);
 			self.ais[i].owner = self.players[i];
-			self.objs[self.ais[i].phybody.getIslandTag()] = self.ais[i];
-			self.ais[i].objs = self.objs;
 		}})();
 
 	},
@@ -259,10 +255,10 @@ AICRAFT.Engine.prototype = {
 		//update physics
 		self.dynamicsWorld.stepSimulation(1/self.phyFPS, 10);
 		self.players.forEach( (function(player) {
-			player.physicUpdate(self.dynamicsWorld);
+			player.physicUpdate();
 		}));
 		self.ais.forEach( (function(ai) {
-			ai.physicUpdate(self.dynamicsWorld);
+			ai.physicUpdate();
 		}));
 	}
 	
