@@ -41,49 +41,10 @@ AICRAFT.Player.prototype.buildMesh = function(THREE, scene, color) {
 };
 */
 
-
-AICRAFT.Player.prototype.handleKeyDown = function(event, self) {
-	if (String.fromCharCode(event.keyCode) == "W") {
-		self.keycode = self.keycode | 8;
-	} else if (String.fromCharCode(event.keyCode) == "A") {
-		self.keycode = self.keycode | 4;
-	} else if (String.fromCharCode(event.keyCode) == "S") {
-		self.keycode = self.keycode | 2;
-	} else if (String.fromCharCode(event.keyCode) == "D") {
-		self.keycode = self.keycode | 1;
-	} else if (String.fromCharCode(event.keyCode) == "E") {
-		self.keycode = self.keycode | 16;
-	} else if (String.fromCharCode(event.keyCode) == "Q") {
-		self.keycode = self.keycode | 32;
-	} else if (event.keyCode == 17/*control key*/) {
-		self.keycode = self.keycode | 64;
-	};
-};
-
-AICRAFT.Player.prototype.handleKeyUp = function(event, self) {
-	if (String.fromCharCode(event.keyCode) == "W") {
-		self.keycode = self.keycode ^ 8;
-	} else if (String.fromCharCode(event.keyCode) == "A") {
-		self.keycode = self.keycode ^ 4;
-	} else if (String.fromCharCode(event.keyCode) == "S") {
-		self.keycode = self.keycode ^ 2;
-	} else if (String.fromCharCode(event.keyCode) == "D") {
-		self.keycode = self.keycode ^ 1;
-	} else if (String.fromCharCode(event.keyCode) == "E") {
-		self.keycode = self.keycode ^ 16;
-	} else if (String.fromCharCode(event.keyCode) == "Q") {
-		self.keycode = self.keycode ^ 32;
-	} else if (event.keyCode == 17/*control key*/) {
-		self.keycode = self.keycode ^ 64;
-	};
-};
-
 /**
  * This function got called by server and client
  */
-AICRAFT.Player.prototype.updateInput = function(AmmoIn, codeEmitter) {
-	if (AICRAFT.ClientEngine.key(this.keycode,"ctl") && this.IsClient === true) {
-			codeEmitter.fire();}
+AICRAFT.Player.prototype.updateInput = function(AmmoIn) {
 	if (this.codeUploading === true) {
 		return;}
 	if (AmmoIn !== undefined) {

@@ -8,7 +8,6 @@
  */
 AICRAFT.ClientEngine = function () {
 	this.keyFPS = 30;
-	this.phyFPS = 30;
 	this.stats = undefined;
 	this.scene = undefined; 
 	this.renderer = undefined;
@@ -17,7 +16,6 @@ AICRAFT.ClientEngine = function () {
 	this.codeEmitter = undefined;
 	this.clock = new THREE.Clock();
 	this.ground = undefined;
-	this.dynamicsWorld = undefined;
 	this.totalPlayers = undefined;
 	this.socket = undefined;
 	//number represents my player in player array
@@ -58,17 +56,6 @@ AICRAFT.ClientEngine.prototype = {
 		// create a scene
 		this.scene = new THREE.Scene();
 
-		//start physics
-		(function(){
-			var collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
-			var dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration);
-			var overlappingPairCache = new Ammo.btDbvtBroadphase();
-			var solver = new Ammo.btSequentialImpulseConstraintSolver();
-			self.dynamicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
-			self.dynamicsWorld.setGravity(new Ammo.btVector3(0,-9.82,0));
-			self.dynamicsWorld.trans = new Ammo.btTransform();
-			self.dynamicsWorld.trans.setIdentity();})();
-
 		// put a camera in the scene
 		this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000 );
 		this.scene.add(this.camera);
@@ -94,89 +81,9 @@ AICRAFT.ClientEngine.prototype = {
 		this.ground.position.y = -5;
 		this.ground.receiveShadow = true;
 		this.scene.add(this.ground);
-		//ammo part
-		(function() {
-			//ground
-			var groundShape = new Ammo.btBoxShape(new Ammo.btVector3(200, 0.5, 200));
-			var groundTransform = new Ammo.btTransform();
-			groundTransform.setIdentity();
-			groundTransform.setOrigin(new Ammo.btVector3(0,-5.5,0));
-			var mass = 0;
-			var isDynamic = (mass != 0);
-			var localInertia = new Ammo.btVector3(0, 0, 0);
-
-			if (isDynamic) {
-				groundShape.calculateLocalInertia(mass, localInertia);}
-			var myMotionState = new Ammo.btDefaultMotionState(groundTransform);
-			var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, groundShape, localInertia);
-			self.ground.phybody = new Ammo.btRigidBody(rbInfo);
-			self.dynamicsWorld.addRigidBody(self.ground.phybody);
-
-			//north wall
-			var NWallShape = new Ammo.btBoxShape(new Ammo.btVector3(200,15,0.5));
-			var NWallTransform = new Ammo.btTransform();
-			NWallTransform.setIdentity();
-			NWallTransform.setOrigin(new Ammo.btVector3(0,-5.5,-200));
-			mass = 0;
-			isDynamic = (mass != 0);
-			localInertia = new Ammo.btVector3(0, 0, 0);
-			if (isDynamic) {
-				NWallShape.calculateLocalInertia(mass, localInertia);
-			}
-			myMotionState = new Ammo.btDefaultMotionState(NWallTransform);
-			rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, NWallShape, localInertia);
-			var NWall_phybody = new Ammo.btRigidBody(rbInfo);
-			self.dynamicsWorld.addRigidBody(NWall_phybody);
-			//east wall
-			var EWallShape = new Ammo.btBoxShape(new Ammo.btVector3(0.5,15,200));
-			var EWallTransform = new Ammo.btTransform();
-			EWallTransform.setIdentity();
-			EWallTransform.setOrigin(new Ammo.btVector3(200,-5.5,0));
-			mass = 0;
-			isDynamic = (mass != 0);
-			localInertia = new Ammo.btVector3(0, 0, 0);
-			if (isDynamic) {
-				EWallShape.calculateLocalInertia(mass, localInertia);
-			}
-			myMotionState = new Ammo.btDefaultMotionState(EWallTransform);
-			rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, EWallShape, localInertia);
-			var EWall_phybody = new Ammo.btRigidBody(rbInfo);
-			self.dynamicsWorld.addRigidBody(EWall_phybody);
-			//south wall
-			var SWallShape = new Ammo.btBoxShape(new Ammo.btVector3(200,15,0.5));
-			var SWallTransform = new Ammo.btTransform();
-			SWallTransform.setIdentity();
-			SWallTransform.setOrigin(new Ammo.btVector3(0,-5.5,200));
-			mass = 0;
-			isDynamic = (mass != 0);
-			localInertia = new Ammo.btVector3(0, 0, 0);
-			if (isDynamic) {
-				SWallShape.calculateLocalInertia(mass, localInertia);
-			}
-			myMotionState = new Ammo.btDefaultMotionState(SWallTransform);
-			rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, SWallShape, localInertia);
-			var SWall_phybody = new Ammo.btRigidBody(rbInfo);
-			self.dynamicsWorld.addRigidBody(SWall_phybody);
-			//west wall
-			var WWallShape = new Ammo.btBoxShape(new Ammo.btVector3(0.5,15,200));
-			var WWallTransform = new Ammo.btTransform();
-			WWallTransform.setIdentity();
-			WWallTransform.setOrigin(new Ammo.btVector3(-200,-5.5,0));
-			mass = 0;
-			isDynamic = (mass != 0);
-			localInertia = new Ammo.btVector3(0, 0, 0);
-			if (isDynamic) {
-				WWallShape.calculateLocalInertia(mass, localInertia);
-			}
-			myMotionState = new Ammo.btDefaultMotionState(WWallTransform);
-			rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, WWallShape, localInertia);
-			var WWall_phybody = new Ammo.btRigidBody(rbInfo);
-			self.dynamicsWorld.addRigidBody(WWall_phybody);
-		})();
-
+		
 
 		var quat = new THREE.Quaternion();
-		
 		(function() { for (var i=0; i<self.totalPlayers; i++) {
 			//construct players
 			var randomNum = Math.floor(Math.random()*6);
@@ -191,7 +98,6 @@ AICRAFT.ClientEngine.prototype = {
 					socket.players.bindings[i].quaternion[3]);
 			self.players[i].IsClient = true;
 			self.players[i].buildMesh(THREE, self.scene, self.colors[randomNum]);
-			self.players[i].buildPhysic(Ammo, self.dynamicsWorld);
 
 			//construct ais
 			quat.setFromEuler(new THREE.Vector3(30, -20, 0));
@@ -205,8 +111,6 @@ AICRAFT.ClientEngine.prototype = {
 					socket.ais.bindings[i].quaternion[3]);
 			self.ais[i].IsClient = true;
 			self.ais[i].buildMesh(THREE, self.scene, self.colors[randomNum]);
-			self.ais[i].buildPhysic(Ammo, self.dynamicsWorld);
-			self.ais[i].owner = self.players[i];
 		}})();
 
 		// create a camera control
@@ -321,7 +225,7 @@ AICRAFT.ClientEngine.prototype = {
 			return;}
 		if (self.players[self.myPnum].keycode != 0) {
 			self.socket.emit("k", self.players[self.myPnum].keycode);
-			self.players[self.myPnum].updateInput(Ammo, self.codeEmitter);
+			self.players[self.myPnum].updateInput(self.codeEmitter);
 		} else if((self.players[self.myPnum].keycode == 0) && (self.lastKeycode != 0)) {
 			self.socket.emit("k", 0);
 		};
@@ -342,8 +246,7 @@ AICRAFT.ClientEngine.prototype = {
 
 		requestAnimationFrame(self.animate.bind(self));
 
-		// update physics and graphics
-		self.dynamicsWorld.stepSimulation(1/self.phyFPS, 10);
+		// update graphics
 		(function(){ for (var i=0; i<self.totalPlayers; i++) {
 			self.players[i].physicAndGraphicUpdate();
 			self.ais[i].physicAndGraphicUpdate(self.delta);

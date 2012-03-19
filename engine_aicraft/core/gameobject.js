@@ -23,7 +23,6 @@ AICRAFT.GameObject = function (x,y,z, qx, qy, qz, qw) {
 	this.quaternion.y = parseFloat(this.quaternion.y);
 	this.quaternion.z = parseFloat(this.quaternion.z);
 	this.quaternion.w = parseFloat(this.quaternion.w);
-	this.mesh = undefined;
 	this.phybody = undefined;
 	this.width = 8;
 	this.height = 8;
@@ -39,34 +38,6 @@ AICRAFT.GameObject = function (x,y,z, qx, qy, qz, qw) {
 AICRAFT.GameObject.prototype = {
 
 	constructor: AICRAFT.GameObject,
-
-	//called by client
-	buildMesh: function(THREE, scene, color) {
-		/*
-		this.mesh = new THREE.Mesh(
-			new THREE.CubeGeometry(this.width,this.height,this.depth),
-			new THREE.MeshLambertMaterial({color: 0xffffff})	
-		);
-		*/
-		/*
-		this.mesh = new THREE.Mesh(
-			new THREE.CylinderGeometry(this.radius,this.radius,this.height),
-			new THREE.MeshLambertMaterial({color: 0xffffff})	
-		);
-		*/
-		this.mesh = new THREE.Mesh(
-			new THREE.SphereGeometry(this.radius),
-			new THREE.MeshLambertMaterial({color: color})	
-		);
-		this.mesh.castShadow = true;
-		this.mesh.receiveShadow = true;
-		this.mesh.position.x = this.position.x;
-		this.mesh.position.y = this.position.y;
-		this.mesh.position.z = this.position.z;
-		this.mesh.useQuaternion = true;
-		this.mesh.quaternion.set(this.quaternion.x, this.quaternion.y, this.quaternion.z, this.quaternion.w);
-		scene.add(this.mesh);
-	},	
 
 	//called by client and server
 	buildPhysic: function(AmmoIn, dynamicsWorld) {
@@ -125,18 +96,6 @@ AICRAFT.GameObject.prototype = {
 		this.phybody.getMotionState().setWorldTransform(objTransform);
 		this.phybody.setCenterOfMassTransform(objTransform);
 		this.phybody.setAngularVelocity(new Ammo.btVector3(vx,vy,vz));
-	},
-
-	//called by client
-	physicAndGraphicUpdate: function() {
-		this.physicUpdate.call(this);
-		this.mesh.position.x = this.position.x;
-		this.mesh.position.y = this.position.y;
-		this.mesh.position.z = this.position.z;
-		this.mesh.quaternion.x = this.quaternion.x;
-		this.mesh.quaternion.y = this.quaternion.y;
-		this.mesh.quaternion.z = this.quaternion.z;
-		this.mesh.quaternion.w = this.quaternion.w;
 	},
 
 	//called by server

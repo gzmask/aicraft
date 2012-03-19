@@ -101,7 +101,10 @@ AICRAFT.CameraControl.prototype.frontVector = function() {
 AICRAFT.CameraControl.setVector = function(self, distance, IsFront) {
 	if (IsFront === true) { var k = -1; } else { var k = 1;}
 	var vector = new Ammo.btVector3(0,0,k);
-	var quat = self.gameObj.phybody.getOrientation();
+	var quat = new Ammo.btQuaternion(self.gameObj.quaternion.x,
+			self.gameObj.quaternion.y,
+			self.gameObj.quaternion.z,
+			self.gameObj.quaternion.w);
 	var transform = new Ammo.btTransform();
 	transform.setIdentity();
 	transform.setRotation(quat);

@@ -35,43 +35,11 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.weaponDelay = 1000;
 	this.hp = 100;
 	this.name = undefined;
-	this.owner = undefined;
 	this.onSightFound = undefined;
 };
 
 AICRAFT.Ai.prototype = new AICRAFT.GameObject();
 AICRAFT.Ai.prototype.constructor = AICRAFT.Ai;
-
-/**Overriding buildMesh method, called by client only
- */
-AICRAFT.Ai.prototype.buildMesh = function(THREE, scene, color) {
-	var self = this;
-	
-	//calls super method
-	//AICRAFT.GameObject.prototype.buildMesh.call(this,THREE, scene);
-	AICRAFT.Ai.JSONloader(self,"asset/rat_walk.js", scene, color, THREE, function(){
-			self.mesh.visible = true;
-	});
-
-	//build sightMesh ray
-	var sightMeshGeo = new THREE.Geometry();
-	sightMeshGeo.vertices = AICRAFT.Ai.getSight(0,0,0, 0,0,-1, self.sight.range, 60, 10, this.Ammo, false);
-	//var sightMeshMat = new THREE.LineBasicMaterial({color: 0x33ff33, lineWidth:1});
-	var sightMeshMat = new THREE.LineBasicMaterial({color: color, lineWidth:1});
-	this.sightMesh = new THREE.Line(sightMeshGeo, sightMeshMat);
-	this.sightMesh.type = THREE.Lines;
-	this.sightMesh.useQuaternion = true;
-	this.sightMesh.position.x = this.position.x;
-	this.sightMesh.position.y = this.position.y;
-	this.sightMesh.position.z = this.position.z;
-	this.sightMesh.quaternion.x = this.quaternion.x;
-	this.sightMesh.quaternion.y = this.quaternion.y;
-	this.sightMesh.quaternion.z = this.quaternion.z;
-	this.sightMesh.quaternion.w = this.quaternion.w;
-	scene.add(this.sightMesh);
-};
-
-
 
 AICRAFT.Ai.prototype.buildPhysic = function(AmmoIn, dynamicsWorld) {
 	//calls super method to build a basic collision shape, such as a sphere
@@ -81,29 +49,6 @@ AICRAFT.Ai.prototype.buildPhysic = function(AmmoIn, dynamicsWorld) {
 	this.sight.quaternion.z = this.quaternion.z;
 	this.sight.quaternion.w = this.quaternion.w;
 	this.sight.lines = AICRAFT.Ai.getSight(0,0,0, 0,0,-1, this.sight.range, 60, 10, this.Ammo, true);
-};
-
-
-
-//override physic and graphic update method
-AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(delta) {
-	if (this.mesh === undefined) {
-		return;}
-	//AICRAFT.GameObject.prototype.physicAndGraphicUpdate.call(this, dynamicsWorld);
-	this.physicUpdate.call(this, this.dynamicsWorld);
-	this.sightMesh.position.x = this.mesh.position.x = this.position.x;
-	this.sightMesh.position.y = this.mesh.position.y = this.position.y;
-	this.sightMesh.position.z = this.mesh.position.z = this.position.z;
-	
-	this.mesh.quaternion.x = this.quaternion.x;
-	this.mesh.quaternion.y = this.quaternion.y;
-	this.mesh.quaternion.z = this.quaternion.z;
-	this.mesh.quaternion.w = this.quaternion.w;
-	this.sightMesh.quaternion.x = this.sight.quaternion.x;
-	this.sightMesh.quaternion.y = this.sight.quaternion.y;
-	this.sightMesh.quaternion.z = this.sight.quaternion.z;
-	this.sightMesh.quaternion.w = this.sight.quaternion.w;
-	this.mesh.updateAnimation(1000*delta);
 };
 
 /**
@@ -401,35 +346,6 @@ AICRAFT.Ai.move = function(self, units, cb, IsAhead, delay) {
 		self.moveLock = false;
 		AICRAFT.Ai.move(self, units-1, cb, IsAhead, delay);
 	}, delay);
-};
-
-//animation loader
-AICRAFT.Ai.JSONloader = function(self, url, scene, color, THREE, cb) {
-	var loader = new THREE.JSONLoader();
-	loader.load( url, function(geometry){
-		var mesh;
-		var material = geometry.materials[ 0 ];
-		material.morphTargets = true;
-		material.color.setHex( color );
-		material.ambient.setHex( 0x222222 );
-		var faceMaterial = new THREE.MeshFaceMaterial();
-		var morph = new THREE.MorphAnimMesh( geometry, faceMaterial );
-		morph.duration = 1000;
-		morph.time = 0; //stands for when I am at in the duration
-		mesh = morph;
-		mesh.castShadow = true;
-		mesh.receiveShadow = true;
-		mesh.position.x = self.position.x;
-		mesh.position.y = self.position.y;
-		mesh.position.z = self.position.z;
-		mesh.useQuaternion = true;
-		mesh.quaternion.set(self.quaternion.x, self.quaternion.y, self.quaternion.z, self.quaternion.w);
-		mesh.scale.set(5, 5, 5);
-		self.mesh = mesh;
-		scene.add( mesh );
-		mesh.visible = false;
-		if (cb !== undefined) {cb();}
-	}); 
 };
 
 /** returns the array of sight lines
