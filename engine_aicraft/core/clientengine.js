@@ -343,7 +343,7 @@ AICRAFT.ClientEngine.key = function(keycode, key) {
 		} else {
 			return false;
 		};	
-	} else if (key == "ctl") {
+	} else if (key == "code") {
 		if (keycode & 64) {
 			return true;
 		} else {
