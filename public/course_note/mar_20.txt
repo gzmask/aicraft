@@ -1,0 +1,35 @@
+FSM written in a special scripting language
+	typically the script, i.e. program written in this language is interpreted, i.e. translated at execution time line by line, as the game is running
+	the best known scripting language is called Lua
+	script can be checked for consistency and completenese
+		e.g. make sure some next state is defined for every possibility
+
+FSM looks like a script, but is translated by a preprocessing step into an efficient programming language
+
+Stack-Based FSM
+
+Multiple FSM
+	keep track of different aspects of characteristics behavior via different FSMs
+	levels act mostly independently
+		the state at level 0 is updated according to the FSM at level 0, 
+		the state at level 1 is updated according to the FSM at level 1, 
+		the state at level 2 is updated according to the FSM at level 2, etc. 
+
+Hierarchical FSM
+	break overall FSM into lower-level FSMs (like modules)
+		high level FSM + serval low level FSMs
+		can repeat for more levels
+	adv: high level FSM can guide loading and unloading of low level FSMs
+		low level FSMs can be reused in multiple high level FSMs
+
+Steering behaviors
+	Craig Regnolds
+	
+	Seek
+		given a position P and a target T, a current velocity V, and a maximum speed Max_V, find the steering velocity
+	flee
+	pursuit
+	evade
+	offset pursuit
+	arrival
+	wonder
