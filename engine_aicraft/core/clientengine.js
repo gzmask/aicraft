@@ -24,7 +24,7 @@ AICRAFT.ClientEngine = function () {
 	this.ais = new Array();
 	//dirty vars
 	this.lastKeycode = 0;
-	this.colors = [0x002EB8, 0x99CC33, 0xFF1414, 0x66CC00, 0x7547FF, 0x3D7AB8];
+	this.colors = [0x7547FF, 0xFF1414, 0x66CC00, 0x002EB8, 0x3D7AB8, 0x99CC33];
 };
 
 //proto methods
@@ -75,7 +75,7 @@ AICRAFT.ClientEngine.prototype = {
 		//construct a ground
 		var groundGeo = new THREE.PlaneGeometry(400, 400, 10, 10);
 		//var groundGeo = new THREE.CubeGeometry(400, 0.1, 400);
-		var groundMat = new THREE.MeshLambertMaterial({color: this.colors[1]});
+		var groundMat = new THREE.MeshLambertMaterial({color: this.colors[5]});
 		this.ground = new THREE.Mesh(groundGeo, groundMat);
 		this.ground.rotation.x = -Math.PI/2;
 		this.ground.position.y = -5;
@@ -86,7 +86,6 @@ AICRAFT.ClientEngine.prototype = {
 		var quat = new THREE.Quaternion();
 		(function() { for (var i=0; i<self.totalPlayers; i++) {
 			//construct players
-			var randomNum = Math.floor(Math.random()*6);
 			quat.setFromEuler(new THREE.Vector3(-30, -20, 0));
 			self.players[i] = new AICRAFT.Player(
 					socket.players.bindings[i].position[0], 
@@ -97,7 +96,7 @@ AICRAFT.ClientEngine.prototype = {
 					socket.players.bindings[i].quaternion[2], 
 					socket.players.bindings[i].quaternion[3]);
 			self.players[i].IsClient = true;
-			self.players[i].buildMesh(THREE, self.scene, self.colors[randomNum]);
+			self.players[i].buildMesh(THREE, self.scene, self.colors[i]);
 
 			//construct ais
 			quat.setFromEuler(new THREE.Vector3(30, -20, 0));
@@ -110,7 +109,7 @@ AICRAFT.ClientEngine.prototype = {
 					socket.ais.bindings[i].quaternion[2], 
 					socket.ais.bindings[i].quaternion[3]);
 			self.ais[i].IsClient = true;
-			self.ais[i].buildMesh(THREE, self.scene, self.colors[randomNum]);
+			self.ais[i].buildMesh(THREE, self.scene, self.colors[i]);
 		}})();
 
 		// create a camera control

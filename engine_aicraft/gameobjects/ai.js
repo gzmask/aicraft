@@ -22,7 +22,6 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.sight.quaternion.z = 0;
 	this.sight.quaternion.w = 1;
 	this.sight.range = 80;
-	this.sightMesh = undefined;
 	this.maxSpeed = 10;
 	this.acceleration = 28;
 	this.codeUploading = false;
@@ -240,10 +239,6 @@ AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,
 	this.sight.quaternion.y = sqy;
 	this.sight.quaternion.z = sqz;
 	this.sight.quaternion.w = sqw;
-	this.sightMesh.quaternion.x = this.sight.quaternion.x;
-	this.sightMesh.quaternion.y = this.sight.quaternion.y;
-	this.sightMesh.quaternion.z = this.sight.quaternion.z;
-	this.sightMesh.quaternion.w = this.sight.quaternion.w;
 };
 
 /** Controls the sight of the AI

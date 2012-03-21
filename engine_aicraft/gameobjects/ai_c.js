@@ -23,18 +23,11 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.sight.quaternion.w = 1;
 	this.sight.range = 80;
 	this.sightMesh = undefined;
-	this.maxSpeed = 10;
-	this.acceleration = 28;
-	this.codeUploading = false;
-	this.moveLock = false;
-	this.rotateLock = false;
-	this.lookAtLock = false;
-	this.raycastLock = false;
-	this.weaponLock = false;
-	this.weaponRange = 100;
-	this.weaponDelay = 1000;
 	this.hp = 100;
 	this.name = undefined;
+	this.mesh_w = undefined;
+	this.mesh_t = undefined;
+	this.IsMoving = false;
 };
 
 AICRAFT.Ai.prototype = new AICRAFT.GameObject();
@@ -47,26 +40,31 @@ AICRAFT.Ai.prototype.buildMesh = function(THREE, scene, color) {
 	
 	//calls super method
 	//AICRAFT.GameObject.prototype.buildMesh.call(this,THREE, scene);
-	AICRAFT.Ai.JSONloader(self,"asset/rat_walk.js", scene, color, THREE, function(){
-			self.mesh.visible = true;
+	self.mesh = AICRAFT.Ai.JSONloader(self,"asset/rat_turn.js", self.mesh_t, scene, color, THREE, false, function(){
+		console.log("turn:"+self.mesh);
+		self.mesh_t = self.mesh;
+	});
+	self.mesh = AICRAFT.Ai.JSONloader(self,"asset/rat_walk.js", self.mesh_w, scene, color, THREE, true, function(){
+		console.log("walk:"+self.mesh);
+		self.mesh_w = self.mesh;
 	});
 
 	//build sightMesh ray
 	var sightMeshGeo = new THREE.Geometry();
-	sightMeshGeo.vertices = AICRAFT.Ai.getSight(0,0,0, 0,0,-1, self.sight.range, 60, 10, this.Ammo, false);
+	sightMeshGeo.vertices = AICRAFT.Ai.getSight(0,0,0, 0,0,-1, self.sight.range, 60, 10, self.Ammo, false);
 	//var sightMeshMat = new THREE.LineBasicMaterial({color: 0x33ff33, lineWidth:1});
 	var sightMeshMat = new THREE.LineBasicMaterial({color: color, lineWidth:1});
-	this.sightMesh = new THREE.Line(sightMeshGeo, sightMeshMat);
-	this.sightMesh.type = THREE.Lines;
-	this.sightMesh.useQuaternion = true;
-	this.sightMesh.position.x = this.position.x;
-	this.sightMesh.position.y = this.position.y;
-	this.sightMesh.position.z = this.position.z;
-	this.sightMesh.quaternion.x = this.quaternion.x;
-	this.sightMesh.quaternion.y = this.quaternion.y;
-	this.sightMesh.quaternion.z = this.quaternion.z;
-	this.sightMesh.quaternion.w = this.quaternion.w;
-	scene.add(this.sightMesh);
+	self.sightMesh = new THREE.Line(sightMeshGeo, sightMeshMat);
+	self.sightMesh.type = THREE.Lines;
+	self.sightMesh.useQuaternion = true;
+	self.sightMesh.position.x = self.position.x;
+	self.sightMesh.position.y = self.position.y;
+	self.sightMesh.position.z = self.position.z;
+	self.sightMesh.quaternion.x = self.quaternion.x;
+	self.sightMesh.quaternion.y = self.quaternion.y;
+	self.sightMesh.quaternion.z = self.quaternion.z;
+	self.sightMesh.quaternion.w = self.quaternion.w;
+	scene.add(self.sightMesh);
 };
 
 
@@ -74,6 +72,9 @@ AICRAFT.Ai.prototype.buildMesh = function(THREE, scene, color) {
 AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(delta) {
 	if (this.mesh === undefined) {
 		return;}
+	//get deltaPos
+	this.deltaPos(this.mesh.position.x, this.position.x, this.mesh.position.z, this.position.z);
+
 	this.sightMesh.position.x = this.mesh.position.x = this.position.x;
 	this.sightMesh.position.y = this.mesh.position.y = this.position.y;
 	this.sightMesh.position.z = this.mesh.position.z = this.position.z;
@@ -87,6 +88,23 @@ AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(delta) {
 	this.sightMesh.quaternion.z = this.sight.quaternion.z;
 	this.sightMesh.quaternion.w = this.sight.quaternion.w;
 	this.mesh.updateAnimation(1000*delta);
+};
+
+AICRAFT.Ai.prototype.applyAnimation = function(deltaPos, mesh_t, mesh_w){
+	if (deltaPos > 0.1) {
+		//apply moving
+	} else {
+		//apply turnning
+	}
+};
+
+/**
+ * how much model has moved since last frame
+ */
+AICRAFT.Ai.prototype.deltaPos = function(px,x,pz,z){
+	var d = Math.abs(px - x) +
+		Math.abs(pz - z);
+	return d;
 };
 
 /**
@@ -119,10 +137,9 @@ AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,
 };
 
 //animation loader
-AICRAFT.Ai.JSONloader = function(self, url, scene, color, THREE, cb) {
+AICRAFT.Ai.JSONloader = function(self, url, mesh, scene, color, THREE, visible, cb) {
 	var loader = new THREE.JSONLoader();
 	loader.load( url, function(geometry){
-		var mesh;
 		var material = geometry.materials[ 0 ];
 		material.morphTargets = true;
 		material.color.setHex( color );
@@ -142,8 +159,9 @@ AICRAFT.Ai.JSONloader = function(self, url, scene, color, THREE, cb) {
 		mesh.scale.set(5, 5, 5);
 		self.mesh = mesh;
 		scene.add( mesh );
-		mesh.visible = false;
+		mesh.visible = visible;
 		if (cb !== undefined) {cb();}
+		return mesh;
 	}); 
 };
 
