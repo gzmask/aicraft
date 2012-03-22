@@ -212,7 +212,8 @@ AICRAFT.ClientEngine.prototype = {
 					ais[i].sightQuaternion[3],
 					ais[i].velocity[0],
 					ais[i].velocity[1],
-					ais[i].velocity[2]);
+					ais[i].velocity[2],
+					ais[i].IsMoving[0]);
 			};
 		});
 	},

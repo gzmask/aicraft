@@ -297,6 +297,7 @@ AICRAFT.Engine.encryptedPacket = function(xs){
 		result.push(s.phybody.getAngularVelocity().getX());
 		result.push(s.phybody.getAngularVelocity().getY());
 		result.push(s.phybody.getAngularVelocity().getZ());
+		result.push(s.IsMoving);
 	});
 	return result;
 };
@@ -307,9 +308,9 @@ AICRAFT.Engine.encryptedPacket = function(xs){
  * @return an JSON object containing all the informations
  */
 AICRAFT.Engine.extractPacket = function(packet){
-	if (packet.length % 10 == 0) {
+	if (packet.length % 11 == 0) {
 		var json_text = '({"bindings":[';
-		for (var i=0; i<packet.length; i+=10) {
+		for (var i=0; i<packet.length; i+=11) {
 			json_text += '{"position":';
 			json_text += '['+packet[i]+','+
 				packet[i+1]+','+
@@ -322,14 +323,16 @@ AICRAFT.Engine.extractPacket = function(packet){
 			json_text += '"velocity":';
 			json_text += '['+packet[i+7]+','+
 				packet[i+8]+','+
-				packet[i+9]+']';
+				packet[i+9]+'],';
+			json_text += '"IsMoving":';
+			json_text += '['+packet[i+10]+']'
 			json_text += '},';
 		};
 		json_text += ']})';
 		return eval(json_text);
-	} else if(packet.length % 14 == 0) {
+	} else if(packet.length % 15 == 0) {
 		var json_text = '({"bindings":[';
-		for (var i=0; i<packet.length; i+=14) {
+		for (var i=0; i<packet.length; i+=15) {
 			json_text += '{"position":';
 			json_text += '['+packet[i]+','+
 				packet[i+1]+','+
@@ -347,7 +350,9 @@ AICRAFT.Engine.extractPacket = function(packet){
 			json_text += '"velocity":';
 			json_text += '['+packet[i+11]+','+
 				packet[i+12]+','+
-				packet[i+13]+']';
+				packet[i+13]+'],';
+			json_text += '"IsMoving":';
+			json_text += '['+packet[i+14]+']'
 			json_text += '},';
 		};
 		json_text += ']})';

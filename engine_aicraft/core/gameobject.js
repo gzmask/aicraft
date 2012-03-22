@@ -33,6 +33,7 @@ AICRAFT.GameObject = function (x,y,z, qx, qy, qz, qw) {
 	this.angularFactor = 0;
 	this.IsClient = false;
 	this.dynamicsWorld = undefined;
+	this.IsMoving = false;
 };
 
 AICRAFT.GameObject.prototype = {

@@ -20,7 +20,7 @@ AICRAFT.GameObject = function(b, a, c, d, f, e, i) {
   this.mass = 1;
   this.friction = 3;
   this.angularFactor = 0;
-  this.IsClient = !1
+  this.IsMoving = this.IsClient = !1
 };
 AICRAFT.GameObject.prototype = {constructor:AICRAFT.GameObject, buildMesh:function(b, a, c) {
   this.mesh = new b.Mesh(new b.SphereGeometry(this.radius), new b.MeshLambertMaterial({color:c}));
@@ -85,12 +85,12 @@ AICRAFT.Ai.prototype.constructor = AICRAFT.Ai;
 AICRAFT.Ai.prototype.buildMesh = function(b, a, c) {
   var d = this;
   d.mesh = AICRAFT.Ai.JSONloader(d, "asset/rat_turn.js", d.mesh_t, a, c, b, !1, function() {
-    console.log("turn:" + d.mesh);
-    d.mesh_t = d.mesh
+    d.mesh_t = d.mesh;
+    console.log("turn:" + d.mesh_t)
   });
   d.mesh = AICRAFT.Ai.JSONloader(d, "asset/rat_walk.js", d.mesh_w, a, c, b, !0, function() {
-    console.log("walk:" + d.mesh);
-    d.mesh_w = d.mesh
+    d.mesh_w = d.mesh;
+    console.log("walk:" + d.mesh_w)
   });
   var f = new b.Geometry;
   f.vertices = AICRAFT.Ai.getSight(0, 0, 0, 0, 0, -1, d.sight.range, 60, 10, d.Ammo, !1);
@@ -108,15 +108,16 @@ AICRAFT.Ai.prototype.buildMesh = function(b, a, c) {
   a.add(d.sightMesh)
 };
 AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(b) {
-  void 0 !== this.mesh && (this.deltaPos(this.mesh.position.x, this.position.x, this.mesh.position.z, this.position.z), this.sightMesh.position.x = this.mesh.position.x = this.position.x, this.sightMesh.position.y = this.mesh.position.y = this.position.y, this.sightMesh.position.z = this.mesh.position.z = this.position.z, this.mesh.quaternion.x = this.quaternion.x, this.mesh.quaternion.y = this.quaternion.y, this.mesh.quaternion.z = this.quaternion.z, this.mesh.quaternion.w = this.quaternion.w, this.sightMesh.quaternion.x = 
-  this.sight.quaternion.x, this.sightMesh.quaternion.y = this.sight.quaternion.y, this.sightMesh.quaternion.z = this.sight.quaternion.z, this.sightMesh.quaternion.w = this.sight.quaternion.w, this.mesh.updateAnimation(1E3 * b))
+  void 0 !== this.mesh && (this.applyAnimation(this.mesh_t, this.mesh_w), this.sightMesh.position.x = this.mesh.position.x = this.position.x, this.sightMesh.position.y = this.mesh.position.y = this.position.y, this.sightMesh.position.z = this.mesh.position.z = this.position.z, this.mesh.quaternion.x = this.quaternion.x, this.mesh.quaternion.y = this.quaternion.y, this.mesh.quaternion.z = this.quaternion.z, this.mesh.quaternion.w = this.quaternion.w, this.sightMesh.quaternion.x = this.sight.quaternion.x, 
+  this.sightMesh.quaternion.y = this.sight.quaternion.y, this.sightMesh.quaternion.z = this.sight.quaternion.z, this.sightMesh.quaternion.w = this.sight.quaternion.w, this.mesh.updateAnimation(1E3 * b))
 };
-AICRAFT.Ai.prototype.applyAnimation = function() {
+AICRAFT.Ai.prototype.applyAnimation = function(b, a) {
+  !0 === this.IsMoving ? (b.visible = !1, a.visible = !0, this.mesh = a) : (b.visible = !0, a.visible = !1, this.mesh = b)
 };
 AICRAFT.Ai.prototype.deltaPos = function(b, a, c, d) {
   return Math.abs(b - a) + Math.abs(c - d)
 };
-AICRAFT.Ai.prototype.setPos = function(b, a, c, d, f, e, i, h, k, j, g, l, m, n, o) {
+AICRAFT.Ai.prototype.setPos = function(b, a, c, d, f, e, i, h, k, j, g, l, m, n, o, p) {
   a = parseFloat(a);
   c = parseFloat(c);
   d = parseFloat(d);
@@ -132,6 +133,7 @@ AICRAFT.Ai.prototype.setPos = function(b, a, c, d, f, e, i, h, k, j, g, l, m, n,
   n = parseFloat(n);
   o = parseFloat(o);
   AICRAFT.GameObject.prototype.setPos.call(this, b, a, c, d, f, e, i, h, m, n, o);
+  this.IsMoving = p;
   this.sight.quaternion.x = k;
   this.sight.quaternion.y = j;
   this.sight.quaternion.z = g;
@@ -497,21 +499,22 @@ AICRAFT.Engine.encryptedPacket = function(b) {
     void 0 !== b.sight && (a.push(b.sight.quaternion.x), a.push(b.sight.quaternion.y), a.push(b.sight.quaternion.z), a.push(b.sight.quaternion.w));
     a.push(b.phybody.getAngularVelocity().getX());
     a.push(b.phybody.getAngularVelocity().getY());
-    a.push(b.phybody.getAngularVelocity().getZ())
+    a.push(b.phybody.getAngularVelocity().getZ());
+    a.push(b.IsMoving)
   });
   return a
 };
 AICRAFT.Engine.extractPacket = function(b) {
-  if(0 == b.length % 10) {
-    for(var a = '({"bindings":[', c = 0;c < b.length;c += 10) {
-      a += '{"position":', a += "[" + b[c] + "," + b[c + 1] + "," + b[c + 2] + "],", a += '"quaternion":', a += "[" + b[c + 3] + "," + b[c + 4] + "," + b[c + 5] + "," + b[c + 6] + "],", a += '"velocity":', a += "[" + b[c + 7] + "," + b[c + 8] + "," + b[c + 9] + "]", a += "},"
+  if(0 == b.length % 11) {
+    for(var a = '({"bindings":[', c = 0;c < b.length;c += 11) {
+      a += '{"position":', a += "[" + b[c] + "," + b[c + 1] + "," + b[c + 2] + "],", a += '"quaternion":', a += "[" + b[c + 3] + "," + b[c + 4] + "," + b[c + 5] + "," + b[c + 6] + "],", a += '"velocity":', a += "[" + b[c + 7] + "," + b[c + 8] + "," + b[c + 9] + "],", a += '"IsMoving":', a += "[" + b[c + 10] + "]", a += "},"
     }
     return eval(a + "]})")
   }
-  if(0 == b.length % 14) {
+  if(0 == b.length % 15) {
     a = '({"bindings":[';
-    for(c = 0;c < b.length;c += 14) {
-      a += '{"position":', a += "[" + b[c] + "," + b[c + 1] + "," + b[c + 2] + "],", a += '"quaternion":', a += "[" + b[c + 3] + "," + b[c + 4] + "," + b[c + 5] + "," + b[c + 6] + "],", a += '"sightQuaternion":', a += "[" + b[c + 7] + "," + b[c + 8] + "," + b[c + 9] + "," + b[c + 10] + "],", a += '"velocity":', a += "[" + b[c + 11] + "," + b[c + 12] + "," + b[c + 13] + "]", a += "},"
+    for(c = 0;c < b.length;c += 15) {
+      a += '{"position":', a += "[" + b[c] + "," + b[c + 1] + "," + b[c + 2] + "],", a += '"quaternion":', a += "[" + b[c + 3] + "," + b[c + 4] + "," + b[c + 5] + "," + b[c + 6] + "],", a += '"sightQuaternion":', a += "[" + b[c + 7] + "," + b[c + 8] + "," + b[c + 9] + "," + b[c + 10] + "],", a += '"velocity":', a += "[" + b[c + 11] + "," + b[c + 12] + "," + b[c + 13] + "],", a += '"IsMoving":', a += "[" + b[c + 14] + "]", a += "},"
     }
     return eval(a + "]})")
   }
@@ -683,7 +686,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   });
   b.socket.on("a", function(a) {
     for(var a = AICRAFT.Engine.extractPacket(a).bindings, c = 0;c < b.totalPlayers;c++) {
-      b.ais[c].setPos(Ammo, a[c].position[0], a[c].position[1], a[c].position[2], a[c].quaternion[0], a[c].quaternion[1], a[c].quaternion[2], a[c].quaternion[3], a[c].sightQuaternion[0], a[c].sightQuaternion[1], a[c].sightQuaternion[2], a[c].sightQuaternion[3], a[c].velocity[0], a[c].velocity[1], a[c].velocity[2])
+      b.ais[c].setPos(Ammo, a[c].position[0], a[c].position[1], a[c].position[2], a[c].quaternion[0], a[c].quaternion[1], a[c].quaternion[2], a[c].quaternion[3], a[c].sightQuaternion[0], a[c].sightQuaternion[1], a[c].sightQuaternion[2], a[c].sightQuaternion[3], a[c].velocity[0], a[c].velocity[1], a[c].velocity[2], a[c].IsMoving[0])
     }
   })
 }, syncKey:function() {

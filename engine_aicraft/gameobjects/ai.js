@@ -25,7 +25,6 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.maxSpeed = 10;
 	this.acceleration = 28;
 	this.codeUploading = false;
-	this.moveLock = false;
 	this.rotateLock = false;
 	this.lookAtLock = false;
 	this.raycastLock = false;
@@ -206,14 +205,14 @@ AICRAFT.Ai.prototype.lookAt = function(degree, cb) {
  * @param degree this can not be negative
  */
 AICRAFT.Ai.prototype.turnRight = function(degree, cb) {
-	AICRAFT.Ai.rotate(this, degree, cb, false, true, false, 40);
+	AICRAFT.Ai.rotate(this, degree, cb, false, true, true, 40);
 };
 
 /** turns the body of the AI to the left
  * @param degree this can not be negative
  */
 AICRAFT.Ai.prototype.turnLeft = function(degree, cb) {
-	AICRAFT.Ai.rotate(this, degree, cb, true, true, false, 40);
+	AICRAFT.Ai.rotate(this, degree, cb, true, true, true, 40);
 };
 
 /**
@@ -302,13 +301,13 @@ AICRAFT.Ai.rotate = function(self, degree, cb, IsLeft, IsBody, IsSight, delay) {
 };
 
 AICRAFT.Ai.move = function(self, units, cb, IsAhead, delay) {
-	if (units < 1 || self.hp < 1 || self.codeUploading || self.moveLock === true) {
+	if (units < 1 || self.hp < 1 || self.codeUploading || self.IsMoving === true) {
 		if (cb !== undefined && self.codeUploading !== true) {
 			cb();}
 		console.log('quiting move');
 		return false;
 	}
-	self.moveLock = true;
+	self.IsMoving = true;
 	var velocity = self.phybody.getLinearVelocity();
 	var absVelocity = Math.sqrt(velocity.getX()*velocity.getX() + velocity.getY()*velocity.getY() + velocity.getZ()*velocity.getZ()); 
 
@@ -338,7 +337,7 @@ AICRAFT.Ai.move = function(self, units, cb, IsAhead, delay) {
 		self.phybody.applyCentralImpulse(frontVector);};
 
 	setTimeout( function(){
-		self.moveLock = false;
+		self.IsMoving = false;
 		AICRAFT.Ai.move(self, units-1, cb, IsAhead, delay);
 	}, delay);
 };

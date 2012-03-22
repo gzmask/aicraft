@@ -41,12 +41,12 @@ AICRAFT.Ai.prototype.buildMesh = function(THREE, scene, color) {
 	//calls super method
 	//AICRAFT.GameObject.prototype.buildMesh.call(this,THREE, scene);
 	self.mesh = AICRAFT.Ai.JSONloader(self,"asset/rat_turn.js", self.mesh_t, scene, color, THREE, false, function(){
-		console.log("turn:"+self.mesh);
 		self.mesh_t = self.mesh;
+		console.log("turn:"+self.mesh_t);
 	});
 	self.mesh = AICRAFT.Ai.JSONloader(self,"asset/rat_walk.js", self.mesh_w, scene, color, THREE, true, function(){
-		console.log("walk:"+self.mesh);
 		self.mesh_w = self.mesh;
+		console.log("walk:"+self.mesh_w);
 	});
 
 	//build sightMesh ray
@@ -73,7 +73,7 @@ AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(delta) {
 	if (this.mesh === undefined) {
 		return;}
 	//get deltaPos
-	this.deltaPos(this.mesh.position.x, this.position.x, this.mesh.position.z, this.position.z);
+	this.applyAnimation(this.mesh_t, this.mesh_w);
 
 	this.sightMesh.position.x = this.mesh.position.x = this.position.x;
 	this.sightMesh.position.y = this.mesh.position.y = this.position.y;
@@ -90,11 +90,18 @@ AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(delta) {
 	this.mesh.updateAnimation(1000*delta);
 };
 
-AICRAFT.Ai.prototype.applyAnimation = function(deltaPos, mesh_t, mesh_w){
-	if (deltaPos > 0.1) {
-		//apply moving
+AICRAFT.Ai.prototype.applyAnimation = function(mesh_t, mesh_w){
+	var self = this;
+	if (self.IsMoving === true) {
+		//apply walking
+		mesh_t.visible = false;
+		mesh_w.visible = true;
+		this.mesh = mesh_w;
 	} else {
 		//apply turnning
+		mesh_t.visible = true;
+		mesh_w.visible = false;
+		this.mesh = mesh_t;
 	}
 };
 
@@ -110,7 +117,7 @@ AICRAFT.Ai.prototype.deltaPos = function(px,x,pz,z){
 /**
  * set position of current ai
  */
-AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,vx,vy,vz) {
+AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,vx,vy,vz,im) {
 	x = parseFloat(x);
 	y = parseFloat(y);
 	z = parseFloat(z);
@@ -126,6 +133,7 @@ AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,
 	vy = parseFloat(vy);
 	vz = parseFloat(vz);
 	AICRAFT.GameObject.prototype.setPos.call(this,AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz);
+	this.IsMoving = im;
 	this.sight.quaternion.x = sqx;
 	this.sight.quaternion.y = sqy;
 	this.sight.quaternion.z = sqz;
