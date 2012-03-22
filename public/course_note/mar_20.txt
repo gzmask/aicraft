@@ -28,8 +28,13 @@ Steering behaviors
 	Seek
 		given a position P and a target T, a current velocity V, and a maximum speed Max_V, find the steering velocity
 	flee
+		opposite of seek
 	pursuit
+		seek + knowing where the target is going
 	evade
+		flee + knowing where the target is going
 	offset pursuit
+		pursue an offset position to the target knowing where it is going
 	arrival
+		a distance to decide wether to slow down
 	wonder
