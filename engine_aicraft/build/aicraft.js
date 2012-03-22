@@ -20,6 +20,7 @@ AICRAFT.GameObject = function(a, b, c, d, f, e, g) {
   this.mass = 1;
   this.friction = 3;
   this.angularFactor = 0;
+  this.hp = 100;
   this.IsClient = !1;
   this.dynamicsWorld = void 0;
   this.IsMoving = !1
@@ -86,7 +87,6 @@ AICRAFT.Ai = function(a, b, c, d, f, e, g, h) {
   this.weaponLock = this.raycastLock = this.lookAtLock = this.rotateLock = this.codeUploading = !1;
   this.weaponRange = 100;
   this.weaponDelay = 1E3;
-  this.hp = 100;
   this.onSightFound = this.name = void 0
 };
 AICRAFT.Ai.prototype = new AICRAFT.GameObject;
@@ -182,27 +182,6 @@ AICRAFT.Ai.prototype.turnRight = function(a, b) {
 };
 AICRAFT.Ai.prototype.turnLeft = function(a, b) {
   AICRAFT.Ai.rotate(this, a, b, !0, !0, !0, 40)
-};
-AICRAFT.Ai.prototype.setPos = function(a, b, c, d, f, e, g, h, k, j, i, l, m, n, o) {
-  b = parseFloat(b);
-  c = parseFloat(c);
-  d = parseFloat(d);
-  f = parseFloat(f);
-  e = parseFloat(e);
-  g = parseFloat(g);
-  h = parseFloat(h);
-  k = parseFloat(k);
-  j = parseFloat(j);
-  i = parseFloat(i);
-  l = parseFloat(l);
-  m = parseFloat(m);
-  n = parseFloat(n);
-  o = parseFloat(o);
-  AICRAFT.GameObject.prototype.setPos.call(this, a, b, c, d, f, e, g, h, m, n, o);
-  this.sight.quaternion.x = k;
-  this.sight.quaternion.y = j;
-  this.sight.quaternion.z = i;
-  this.sight.quaternion.w = l
 };
 AICRAFT.Ai.lookRotate = function(a, b, c, d) {
   AICRAFT.Ai.rotate(a, b, c, d, !1, !0, 30)
@@ -701,12 +680,7 @@ AICRAFT.AIEngine.prototype = {constructor:AICRAFT.AIEngine, loadAI:function(a, b
   c.body.onSightFound = function(a) {
     c.onSightFound(a)
   };
-  c.run();
   this.ais.push(c)
-}, stepSimulation:function() {
-  this.ais.forEach(function(a) {
-    a.run()
-  })
 }};
 AICRAFT.ClientEngine = function() {
   this.keyFPS = 30;

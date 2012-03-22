@@ -31,6 +31,7 @@ AICRAFT.GameObject = function (x,y,z, qx, qy, qz, qw) {
 	this.mass = 1;
 	this.friction = 3;
 	this.angularFactor = 0;
+	this.hp = 100;
 	this.IsClient = false;
 	this.IsMoving = false;
 };

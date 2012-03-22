@@ -23,7 +23,6 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.sight.quaternion.w = 1;
 	this.sight.range = 80;
 	this.sightMesh = undefined;
-	this.hp = 100;
 	this.name = undefined;
 	this.mesh_w = undefined;
 	this.mesh_t = undefined;

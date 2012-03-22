@@ -20,6 +20,7 @@ AICRAFT.GameObject = function(b, a, c, d, f, e, i) {
   this.mass = 1;
   this.friction = 3;
   this.angularFactor = 0;
+  this.hp = 100;
   this.IsMoving = this.IsClient = !1
 };
 AICRAFT.GameObject.prototype = {constructor:AICRAFT.GameObject, buildMesh:function(b, a, c) {
@@ -75,9 +76,7 @@ AICRAFT.Ai = function(b, a, c, d, f, e, i, h) {
   this.sight.quaternion.z = 0;
   this.sight.quaternion.w = 1;
   this.sight.range = 80;
-  this.sightMesh = void 0;
-  this.hp = 100;
-  this.mesh_t = this.mesh_w = this.name = void 0;
+  this.mesh_t = this.mesh_w = this.name = this.sightMesh = void 0;
   this.IsMoving = !1
 };
 AICRAFT.Ai.prototype = new AICRAFT.GameObject;
@@ -579,12 +578,7 @@ AICRAFT.AIEngine.prototype = {constructor:AICRAFT.AIEngine, loadAI:function(b, a
   c.body.onSightFound = function(a) {
     c.onSightFound(a)
   };
-  c.run();
   this.ais.push(c)
-}, stepSimulation:function() {
-  this.ais.forEach(function(b) {
-    b.run()
-  })
 }};
 AICRAFT.ClientEngine = function() {
   this.keyFPS = 30;

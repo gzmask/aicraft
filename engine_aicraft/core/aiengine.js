@@ -35,7 +35,6 @@ AICRAFT.AIEngine.prototype = {
 				}
 				return;}
 		});
-		//eval("var AI = AICRAFT.AI_"+AIname.toString());
 	},
 	
 	/** initialize the AI
@@ -54,14 +53,7 @@ AICRAFT.AIEngine.prototype = {
 		ai.body.onSightFound = function(event){
 			ai.onSightFound(event);
 		};
-		ai.run();
 		this.ais.push(ai);
-	},
-	
-	stepSimulation: function() {
-		this.ais.forEach( function(ai) {
-			ai.run();
-		});
 	}
-
+	
 };

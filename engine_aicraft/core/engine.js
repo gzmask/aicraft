@@ -308,9 +308,11 @@ AICRAFT.Engine.encryptedPacket = function(xs){
  * @return an JSON object containing all the informations
  */
 AICRAFT.Engine.extractPacket = function(packet){
-	if (packet.length % 11 == 0) {
+	var player_len = 11;
+	var ai_len = 15;
+	if (packet.length % player_len == 0) {
 		var json_text = '({"bindings":[';
-		for (var i=0; i<packet.length; i+=11) {
+		for (var i=0; i<packet.length; i+=player_len) {
 			json_text += '{"position":';
 			json_text += '['+packet[i]+','+
 				packet[i+1]+','+
@@ -330,9 +332,9 @@ AICRAFT.Engine.extractPacket = function(packet){
 		};
 		json_text += ']})';
 		return eval(json_text);
-	} else if(packet.length % 15 == 0) {
+	} else if(packet.length % ai_len == 0) {
 		var json_text = '({"bindings":[';
-		for (var i=0; i<packet.length; i+=15) {
+		for (var i=0; i<packet.length; i+=ai_len) {
 			json_text += '{"position":';
 			json_text += '['+packet[i]+','+
 				packet[i+1]+','+

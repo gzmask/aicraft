@@ -31,7 +31,6 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.weaponLock = false;
 	this.weaponRange = 100;
 	this.weaponDelay = 1000;
-	this.hp = 100;
 	this.name = undefined;
 	this.onSightFound = undefined;
 };
@@ -213,31 +212,6 @@ AICRAFT.Ai.prototype.turnRight = function(degree, cb) {
  */
 AICRAFT.Ai.prototype.turnLeft = function(degree, cb) {
 	AICRAFT.Ai.rotate(this, degree, cb, true, true, true, 40);
-};
-
-/**
- * set position of current ai
- */
-AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,vx,vy,vz) {
-	x = parseFloat(x);
-	y = parseFloat(y);
-	z = parseFloat(z);
-	qx = parseFloat(qx);
-	qy = parseFloat(qy);
-	qz = parseFloat(qz);
-	qw = parseFloat(qw);
-	sqx = parseFloat(sqx);
-	sqy = parseFloat(sqy);
-	sqz = parseFloat(sqz);
-	sqw = parseFloat(sqw);
-	vx = parseFloat(vx);
-	vy = parseFloat(vy);
-	vz = parseFloat(vz);
-	AICRAFT.GameObject.prototype.setPos.call(this,AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz);
-	this.sight.quaternion.x = sqx;
-	this.sight.quaternion.y = sqy;
-	this.sight.quaternion.z = sqz;
-	this.sight.quaternion.w = sqw;
 };
 
 /** Controls the sight of the AI
