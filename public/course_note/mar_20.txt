@@ -38,3 +38,4 @@ Steering behaviors
 	arrival
 		a distance to decide wether to slow down
 	wonder
+		draw a circle in front, pick one point on the circle randomly, and use it as direction frame by frame

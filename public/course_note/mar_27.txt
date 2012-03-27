@@ -1,0 +1,12 @@
+Flocking 
+	flockmates or boids
+	local programming - each bird executes all rules
+	global programming - some rule will apply in global scope
+
+School of fish
+	Seperation
+	Alignment
+	Cohesion
+
+	Method: summation approach
+
