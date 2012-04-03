@@ -192,7 +192,8 @@ AICRAFT.ClientEngine.prototype = {
 					players[i].quaternion[3],
 					players[i].velocity[0],
 					players[i].velocity[1],
-					players[i].velocity[2]);
+					players[i].velocity[2],
+					players[i].IsMoving[0]);
 			};
 		});
 		self.socket.on('a', function(data) {
@@ -248,7 +249,7 @@ AICRAFT.ClientEngine.prototype = {
 
 		// update graphics
 		(function(){ for (var i=0; i<self.totalPlayers; i++) {
-			self.players[i].physicAndGraphicUpdate();
+			self.players[i].physicAndGraphicUpdate(self.delta);
 			self.ais[i].physicAndGraphicUpdate(self.delta);
 		}})();
 

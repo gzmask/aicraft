@@ -50,15 +50,20 @@ AICRAFT.Player.prototype.updateInput = function(AmmoIn) {
 	if (AmmoIn !== undefined) {
 		Ammo = AmmoIn;};
 	var self = this;
+    self.IsMoving = false;
 	var velocity = this.phybody.getLinearVelocity();
 	var absVelocity = Math.sqrt(velocity.getX()*velocity.getX() + velocity.getY()*velocity.getY() + velocity.getZ()*velocity.getZ()); 
 	if (AICRAFT.ClientEngine.key(this.keycode,"w") && absVelocity < this.maxSpeed && this.position.y < 1) {
+        self.IsMoving = true;
 		AICRAFT.Player.ahead(this, true);}
 	if (AICRAFT.ClientEngine.key(this.keycode,"a") && absVelocity < this.maxSpeed && this.position.y < 1) {
+        self.IsMoving = true;
 		AICRAFT.Player.side(this, true);}
 	if (AICRAFT.ClientEngine.key(this.keycode,"s") &&  absVelocity < this.maxSpeed && this.position.y < 1) {
+        self.IsMoving = true;
 		AICRAFT.Player.ahead(this, false);}
 	if (AICRAFT.ClientEngine.key(this.keycode,"d") &&  absVelocity < this.maxSpeed && this.position.y < 1) {
+        self.IsMoving = true;
 		AICRAFT.Player.side(this, false);}
 	if (AICRAFT.ClientEngine.key(this.keycode,"e") && this.position.y < 0.1) {
 		this.rotate(2);}
