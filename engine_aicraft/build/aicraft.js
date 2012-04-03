@@ -792,7 +792,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   this.delta = this.clock.getDelta();
   requestAnimationFrame(this.animate.bind(this));
   for(var a = 0;a < this.totalPlayers;a++) {
-    this.players[a].physicAndGraphicUpdate(), this.ais[a].physicAndGraphicUpdate(this.delta)
+    this.players[a].physicAndGraphicUpdate(this.delta), this.ais[a].physicAndGraphicUpdate(this.delta)
   }
   this.cameraControls.update();
   this.render();

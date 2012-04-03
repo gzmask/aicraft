@@ -248,7 +248,7 @@ AICRAFT.ClientEngine.prototype = {
 
 		// update graphics
 		(function(){ for (var i=0; i<self.totalPlayers; i++) {
-			self.players[i].physicAndGraphicUpdate();
+			self.players[i].physicAndGraphicUpdate(self.delta);
 			self.ais[i].physicAndGraphicUpdate(self.delta);
 		}})();
 
