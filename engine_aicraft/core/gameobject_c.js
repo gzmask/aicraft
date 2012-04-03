@@ -69,7 +69,7 @@ AICRAFT.GameObject.prototype = {
 	},	
 
 	//sets the physic states of this object
-	setPos: function(AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz) {
+	setPos: function(AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz,im) {
 		x = parseFloat(x);
 		y = parseFloat(y);
 		z = parseFloat(z);
@@ -80,6 +80,7 @@ AICRAFT.GameObject.prototype = {
 		vx = parseFloat(vx);
 		vy = parseFloat(vy);
 		vz = parseFloat(vz);
+	    this.IsMoving = im;
 		if (AmmoIn !== undefined) {
 			Ammo = AmmoIn;
 		};

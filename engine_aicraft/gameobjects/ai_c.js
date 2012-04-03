@@ -26,7 +26,6 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.name = undefined;
 	this.mesh_w = undefined;
 	this.mesh_t = undefined;
-	this.IsMoving = false;
 };
 
 AICRAFT.Ai.prototype = new AICRAFT.GameObject();
@@ -131,8 +130,7 @@ AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,
 	vx = parseFloat(vx);
 	vy = parseFloat(vy);
 	vz = parseFloat(vz);
-	AICRAFT.GameObject.prototype.setPos.call(this,AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz);
-	this.IsMoving = im;
+	AICRAFT.GameObject.prototype.setPos.call(this,AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz,im);
 	this.sight.quaternion.x = sqx;
 	this.sight.quaternion.y = sqy;
 	this.sight.quaternion.z = sqz;

@@ -260,8 +260,8 @@ AICRAFT.Player = function(a, b, c, d, f, e, g, h) {
 AICRAFT.Player.prototype = new AICRAFT.GameObject;
 AICRAFT.Player.prototype.constructor = AICRAFT.Player;
 AICRAFT.Player.prototype.updateInput = function(a) {
-  !0 !== this.codeUploading && (void 0 !== a && (Ammo = a), a = this.phybody.getLinearVelocity(), a = Math.sqrt(a.getX() * a.getX() + a.getY() * a.getY() + a.getZ() * a.getZ()), AICRAFT.ClientEngine.key(this.keycode, "w") && a < this.maxSpeed && 1 > this.position.y && AICRAFT.Player.ahead(this, !0), AICRAFT.ClientEngine.key(this.keycode, "a") && a < this.maxSpeed && 1 > this.position.y && AICRAFT.Player.side(this, !0), AICRAFT.ClientEngine.key(this.keycode, "s") && a < this.maxSpeed && 1 > this.position.y && 
-  AICRAFT.Player.ahead(this, !1), AICRAFT.ClientEngine.key(this.keycode, "d") && a < this.maxSpeed && 1 > this.position.y && AICRAFT.Player.side(this, !1), AICRAFT.ClientEngine.key(this.keycode, "e") && 0.1 > this.position.y && this.rotate(2), AICRAFT.ClientEngine.key(this.keycode, "q") && 0.1 > this.position.y && this.rotate(2, !0))
+  !0 !== this.codeUploading && (void 0 !== a && (Ammo = a), this.IsMoving = !1, a = this.phybody.getLinearVelocity(), a = Math.sqrt(a.getX() * a.getX() + a.getY() * a.getY() + a.getZ() * a.getZ()), AICRAFT.ClientEngine.key(this.keycode, "w") && a < this.maxSpeed && 1 > this.position.y && (this.IsMoving = !0, AICRAFT.Player.ahead(this, !0)), AICRAFT.ClientEngine.key(this.keycode, "a") && a < this.maxSpeed && 1 > this.position.y && (this.IsMoving = !0, AICRAFT.Player.side(this, !0)), AICRAFT.ClientEngine.key(this.keycode, 
+  "s") && a < this.maxSpeed && 1 > this.position.y && (this.IsMoving = !0, AICRAFT.Player.ahead(this, !1)), AICRAFT.ClientEngine.key(this.keycode, "d") && a < this.maxSpeed && 1 > this.position.y && (this.IsMoving = !0, AICRAFT.Player.side(this, !1)), AICRAFT.ClientEngine.key(this.keycode, "e") && 0.1 > this.position.y && this.rotate(2), AICRAFT.ClientEngine.key(this.keycode, "q") && 0.1 > this.position.y && this.rotate(2, !0))
 };
 AICRAFT.Player.prototype.rotate = function(a, b) {
   if(!0 !== this.codeUploading) {
@@ -777,7 +777,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   var a = this;
   a.socket.on("p", function(b) {
     for(var b = AICRAFT.Engine.extractPacket(b).bindings, c = 0;c < a.totalPlayers;c++) {
-      a.players[c].setPos(Ammo, b[c].position[0], b[c].position[1], b[c].position[2], b[c].quaternion[0], b[c].quaternion[1], b[c].quaternion[2], b[c].quaternion[3], b[c].velocity[0], b[c].velocity[1], b[c].velocity[2])
+      a.players[c].setPos(Ammo, b[c].position[0], b[c].position[1], b[c].position[2], b[c].quaternion[0], b[c].quaternion[1], b[c].quaternion[2], b[c].quaternion[3], b[c].velocity[0], b[c].velocity[1], b[c].velocity[2], b[c].IsMoving[0])
     }
   });
   a.socket.on("a", function(b) {

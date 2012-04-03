@@ -33,7 +33,7 @@ AICRAFT.GameObject.prototype = {constructor:AICRAFT.GameObject, buildMesh:functi
   this.mesh.useQuaternion = !0;
   this.mesh.quaternion.set(this.quaternion.x, this.quaternion.y, this.quaternion.z, this.quaternion.w);
   a.add(this.mesh)
-}, setPos:function(b, a, c, d, f, e, j, g, k, h, i) {
+}, setPos:function(b, a, c, d, f, e, j, g, k, h, i, l) {
   a = parseFloat(a);
   c = parseFloat(c);
   d = parseFloat(d);
@@ -44,6 +44,7 @@ AICRAFT.GameObject.prototype = {constructor:AICRAFT.GameObject, buildMesh:functi
   parseFloat(k);
   parseFloat(h);
   parseFloat(i);
+  this.IsMoving = l;
   void 0 !== b && (Ammo = b);
   b = new Ammo.btTransform;
   b.setIdentity();
@@ -76,8 +77,7 @@ AICRAFT.Ai = function(b, a, c, d, f, e, j, g) {
   this.sight.quaternion.z = 0;
   this.sight.quaternion.w = 1;
   this.sight.range = 80;
-  this.mesh_t = this.mesh_w = this.name = this.sightMesh = void 0;
-  this.IsMoving = !1
+  this.mesh_t = this.mesh_w = this.name = this.sightMesh = void 0
 };
 AICRAFT.Ai.prototype = new AICRAFT.GameObject;
 AICRAFT.Ai.prototype.constructor = AICRAFT.Ai;
@@ -131,8 +131,7 @@ AICRAFT.Ai.prototype.setPos = function(b, a, c, d, f, e, j, g, k, h, i, l, m, n,
   m = parseFloat(m);
   n = parseFloat(n);
   o = parseFloat(o);
-  AICRAFT.GameObject.prototype.setPos.call(this, b, a, c, d, f, e, j, g, m, n, o);
-  this.IsMoving = p;
+  AICRAFT.GameObject.prototype.setPos.call(this, b, a, c, d, f, e, j, g, m, n, o, p);
   this.sight.quaternion.x = k;
   this.sight.quaternion.y = h;
   this.sight.quaternion.z = i;
@@ -719,7 +718,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   var b = this;
   b.socket.on("p", function(a) {
     for(var a = AICRAFT.Engine.extractPacket(a).bindings, c = 0;c < b.totalPlayers;c++) {
-      b.players[c].setPos(Ammo, a[c].position[0], a[c].position[1], a[c].position[2], a[c].quaternion[0], a[c].quaternion[1], a[c].quaternion[2], a[c].quaternion[3], a[c].velocity[0], a[c].velocity[1], a[c].velocity[2])
+      b.players[c].setPos(Ammo, a[c].position[0], a[c].position[1], a[c].position[2], a[c].quaternion[0], a[c].quaternion[1], a[c].quaternion[2], a[c].quaternion[3], a[c].velocity[0], a[c].velocity[1], a[c].velocity[2], a[c].IsMoving[0])
     }
   });
   b.socket.on("a", function(a) {
