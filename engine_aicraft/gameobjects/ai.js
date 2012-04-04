@@ -32,6 +32,13 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.weaponRange = 100;
 	this.weaponDelay = 1000;
 	this.name = undefined;
+	/*
+	 * points to the player after init
+	 */
+	this.owner = undefined;
+	/*
+	 * user defined function, not existed at init
+	 */
 	this.onSightFound = undefined;
 };
 
@@ -90,7 +97,7 @@ AICRAFT.Ai.prototype.raycast = function(delay) {
 			self.raycastLock = true;
 			self.found(cb.get_m_hitPointWorld().getX(),
 					cb.get_m_hitPointWorld().getY(),
-					cb.get_m_hitPointWorld().getZ(), cb.get_m_collisionObject().getIslandTag());
+					cb.get_m_hitPointWorld().getZ(), cb.get_m_collisionObject().getUserPointer());
 			setTimeout(function(){
 				self.raycastLock = false;
 			}, delay);
@@ -120,7 +127,8 @@ AICRAFT.Ai.prototype.fireAt = function(x,y,z, fn_cb) {
 	if (cb.hasHit()) {
 		self.weaponLock = true;
 		//insert bullet hit stuff
-		console.log('hit! objectID:'+cb.get_m_collisionObject().getIslandTag());
+		//console.log('hit! objectID:'+cb.get_m_collisionObject().getIslandTag());
+		console.log('hit! getUserPointer:'+cb.get_m_collisionObject().getUserPointer());
 		setTimeout(function(){
 			self.weaponLock = false;
 			if (fn_cb !== undefined) {fn_cb();}
@@ -133,7 +141,8 @@ AICRAFT.Ai.prototype.fireAt = function(x,y,z, fn_cb) {
  */
 AICRAFT.Ai.prototype.found = function(x,y,z, tag) {
 	if (tag===-1){return;}
-	if (tag===this.owner.phybody.getIslandTag()) {return;}
+	//if (tag===this.owner.phybody.getIslandTag()) {return;}
+	if (tag===this.owner.phybody.getUserPointer()) {return;}
 	event = new Object();
 	event.position = [x, y, z];
 	event.tag = tag;

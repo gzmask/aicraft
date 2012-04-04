@@ -459,9 +459,9 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(b, a, c) {
     d.dynamicsWorld.addRigidBody(e)
   })();
   (function() {
-    for(var b = 0;b < d.totalPlayers;b++) {
-      quat = AICRAFT.quatFromEuler(0, 0, 0, a), d.players[b] = new AICRAFT.Player(-150 + 301 * Math.random(), 0, -150 + 301 * Math.random(), quat.getX(), quat.getY(), quat.getZ(), quat.getW(), a), d.players[b].buildPhysic(a, d.dynamicsWorld), quat = AICRAFT.quatFromEuler(360 * Math.random(), 0, 0, a), d.ais[b] = new AICRAFT.Ai(d.players[b].position.x, 0, d.players[b].position.z - 25, quat.getX(), quat.getY(), quat.getZ(), quat.getW(), a), d.ais[b].buildPhysic(a, d.dynamicsWorld), d.ais[b].owner = 
-      d.players[b]
+    for(var b = [], c = 0, e = 0;e < d.totalPlayers;e++) {
+      quat = AICRAFT.quatFromEuler(0, 0, 0, a), d.players[e] = new AICRAFT.Player(-150 + 301 * Math.random(), 0, -150 + 301 * Math.random(), quat.getX(), quat.getY(), quat.getZ(), quat.getW(), a), d.players[e].buildPhysic(a, d.dynamicsWorld), d.players[e].phybody.setUserPointer(c), b.push(d.players[e]), d.players[e].objects = b, c++, quat = AICRAFT.quatFromEuler(360 * Math.random(), 0, 0, a), d.ais[e] = new AICRAFT.Ai(d.players[e].position.x, 0, d.players[e].position.z - 25, quat.getX(), quat.getY(), 
+      quat.getZ(), quat.getW(), a), d.ais[e].buildPhysic(a, d.dynamicsWorld), d.ais[e].owner = d.players[e], d.ais[e].phybody.setUserPointer(c), b.push(d.ais[e]), d.ais[e].objects = b, c++
     }
   })()
 }, networkInit:function(b) {

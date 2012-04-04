@@ -23,7 +23,8 @@ AICRAFT.GameObject = function(a, b, c, d, f, e, g) {
   this.hp = 100;
   this.IsClient = !1;
   this.dynamicsWorld = void 0;
-  this.IsMoving = !1
+  this.IsMoving = !1;
+  this.objects = void 0
 };
 AICRAFT.GameObject.prototype = {constructor:AICRAFT.GameObject, buildPhysic:function(a, b) {
   void 0 !== a && (Ammo = a);
@@ -87,7 +88,7 @@ AICRAFT.Ai = function(a, b, c, d, f, e, g, h) {
   this.weaponLock = this.raycastLock = this.lookAtLock = this.rotateLock = this.codeUploading = !1;
   this.weaponRange = 100;
   this.weaponDelay = 1E3;
-  this.onSightFound = this.name = void 0
+  this.onSightFound = this.owner = this.name = void 0
 };
 AICRAFT.Ai.prototype = new AICRAFT.GameObject;
 AICRAFT.Ai.prototype.constructor = AICRAFT.Ai;
@@ -115,7 +116,7 @@ AICRAFT.Ai.prototype.raycast = function(a) {
     for(var b = this, c = 0;c < b.sight.lines.length;c += 2) {
       var d = b.sight.lines[c], f = b.sight.lines[c + 1], e = new b.Ammo.ClosestRayResultCallback(d, f);
       this.dynamicsWorld.rayTest(d, f, e);
-      e.hasHit() && (b.raycastLock = !0, b.found(e.get_m_hitPointWorld().getX(), e.get_m_hitPointWorld().getY(), e.get_m_hitPointWorld().getZ(), e.get_m_collisionObject().getIslandTag()), setTimeout(function() {
+      e.hasHit() && (b.raycastLock = !0, b.found(e.get_m_hitPointWorld().getX(), e.get_m_hitPointWorld().getY(), e.get_m_hitPointWorld().getZ(), e.get_m_collisionObject().getUserPointer()), setTimeout(function() {
         b.raycastLock = !1
       }, a))
     }
@@ -130,14 +131,14 @@ AICRAFT.Ai.prototype.fireAt = function(a, b, c, d) {
     console.log("fire from" + e.getX() + "," + e.getZ() + " to " + a.getX() + "," + a.getZ());
     b = new f.Ammo.ClosestRayResultCallback(e, a);
     f.dynamicsWorld.rayTest(e, a, b);
-    b.hasHit() && (f.weaponLock = !0, console.log("hit! objectID:" + b.get_m_collisionObject().getIslandTag()), setTimeout(function() {
+    b.hasHit() && (f.weaponLock = !0, console.log("hit! getUserPointer:" + b.get_m_collisionObject().getUserPointer()), setTimeout(function() {
       f.weaponLock = !1;
       void 0 !== d && d()
     }, f.weaponDelay))
   }
 };
 AICRAFT.Ai.prototype.found = function(a, b, c, d) {
-  if(!(-1 === d || d === this.owner.phybody.getIslandTag())) {
+  if(!(-1 === d || d === this.owner.phybody.getUserPointer())) {
     event = {};
     event.position = [a, b, c];
     event.tag = d;
@@ -518,9 +519,9 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(a, b, c) {
     d.dynamicsWorld.addRigidBody(e)
   })();
   (function() {
-    for(var a = 0;a < d.totalPlayers;a++) {
-      quat = AICRAFT.quatFromEuler(0, 0, 0, b), d.players[a] = new AICRAFT.Player(-150 + 301 * Math.random(), 0, -150 + 301 * Math.random(), quat.getX(), quat.getY(), quat.getZ(), quat.getW(), b), d.players[a].buildPhysic(b, d.dynamicsWorld), quat = AICRAFT.quatFromEuler(360 * Math.random(), 0, 0, b), d.ais[a] = new AICRAFT.Ai(d.players[a].position.x, 0, d.players[a].position.z - 25, quat.getX(), quat.getY(), quat.getZ(), quat.getW(), b), d.ais[a].buildPhysic(b, d.dynamicsWorld), d.ais[a].owner = 
-      d.players[a]
+    for(var a = [], c = 0, e = 0;e < d.totalPlayers;e++) {
+      quat = AICRAFT.quatFromEuler(0, 0, 0, b), d.players[e] = new AICRAFT.Player(-150 + 301 * Math.random(), 0, -150 + 301 * Math.random(), quat.getX(), quat.getY(), quat.getZ(), quat.getW(), b), d.players[e].buildPhysic(b, d.dynamicsWorld), d.players[e].phybody.setUserPointer(c), a.push(d.players[e]), d.players[e].objects = a, c++, quat = AICRAFT.quatFromEuler(360 * Math.random(), 0, 0, b), d.ais[e] = new AICRAFT.Ai(d.players[e].position.x, 0, d.players[e].position.z - 25, quat.getX(), quat.getY(), 
+      quat.getZ(), quat.getW(), b), d.ais[e].buildPhysic(b, d.dynamicsWorld), d.ais[e].owner = d.players[e], d.ais[e].phybody.setUserPointer(c), a.push(d.ais[e]), d.ais[e].objects = a, c++
     }
   })()
 }, networkInit:function(a) {

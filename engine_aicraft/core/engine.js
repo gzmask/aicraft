@@ -133,6 +133,8 @@ AICRAFT.Engine.prototype = {
 		
 		//init game characters
 		(function() { 
+			var objArray = new Array();
+			var tmp_counter = 0;
 			for (var i=0; i< self.totalPlayers; i++) {
 			//construct player
 			quat = AICRAFT.quatFromEuler(0,0,0, Ammo);
@@ -141,6 +143,10 @@ AICRAFT.Engine.prototype = {
 				-150 + Math.random()*301, 
 				quat.getX(),quat.getY(),quat.getZ(),quat.getW(), Ammo);
 			self.players[i].buildPhysic(Ammo, self.dynamicsWorld);
+			self.players[i].phybody.setUserPointer(tmp_counter);
+			objArray.push(self.players[i]);
+			self.players[i].objects = objArray;
+			tmp_counter++;
 			
 			//construct ai
 			quat = AICRAFT.quatFromEuler(360*Math.random(),0,0,Ammo);
@@ -150,6 +156,10 @@ AICRAFT.Engine.prototype = {
 				quat.getX(),quat.getY(),quat.getZ(),quat.getW(), Ammo);
 			self.ais[i].buildPhysic(Ammo, self.dynamicsWorld);
 			self.ais[i].owner = self.players[i];
+			self.ais[i].phybody.setUserPointer(tmp_counter);
+			objArray.push(self.ais[i]);
+			self.ais[i].objects = objArray;
+			tmp_counter++;
 		}})();
 
 	},
