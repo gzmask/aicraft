@@ -32,6 +32,7 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.weaponRange = 100;
 	this.weaponForce = 20;
 	this.weaponDelay = 1000;
+    this.weaponDamage = 10;
 	this.name = undefined;
 	/*
 	 * points to the player after init
@@ -129,17 +130,29 @@ AICRAFT.Ai.prototype.fireAt = function(x,y,z, fn_cb) {
 		self.weaponLock = true;
         var ptrInd = cb.get_m_collisionObject().getUserPointer();
 		//insert bullet hit stuff
-		//console.log('hit! objectID:'+cb.get_m_collisionObject().getIslandTag());
-        self.objects[ptrInd].phybody.activate();
-        self.objects[ptrInd].phybody.applyCentralImpulse(self.feedbackVector(start,end));
-        self.objects[ptrInd].hp--;
-		console.log('hit! getUserPointer:'+ ptrInd);
-        console.log('it has hp of:'+self.objects[ptrInd].hp);
+        AICRAFT.Ai.charge(self, start, end, function(){
+            self.objects[ptrInd].phybody.activate();
+            self.objects[ptrInd].phybody.applyCentralImpulse(self.feedbackVector(start,end).op_mul(1.5));
+            self.objects[ptrInd].hp-=self.weaponDamage;
+            console.log('hit! getUserPointer:'+ ptrInd);
+            console.log('it has hp of:'+self.objects[ptrInd].hp);
+        }, 300);
 		setTimeout(function(){
 			self.weaponLock = false;
 			if (fn_cb !== undefined) {fn_cb();}
 		}, self.weaponDelay);
 	}
+};
+
+/**
+ * charge function
+ */
+AICRAFT.Ai.charge = function(self, start, end, cb, delay) {
+    self.phybody.activate();
+    self.phybody.applyCentralImpulse(self.feedbackVector(start, end).op_mul(1.1));
+    setTimeout(function(){
+        cb();
+    },delay);
 };
 
 /**
@@ -149,7 +162,7 @@ AICRAFT.Ai.prototype.feedbackVector = function(start, end) {
     var result = end.op_sub(start);
     result.normalize();
     result.op_mul(this.weaponForce);
-    result.setY(result.getY()+1*this.weaponForce);
+    result.setY(result.getY()+0.3*this.weaponForce);
     return result;
 };
 

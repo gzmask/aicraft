@@ -70,7 +70,7 @@ AICRAFT.Engine.prototype = {
 			self.dynamicsWorld.addRigidBody(ground_phybody);
 
 			//north wall
-			var NWallShape = new Ammo.btBoxShape(new Ammo.btVector3(200,15,0.5));
+			var NWallShape = new Ammo.btBoxShape(new Ammo.btVector3(200,200,0.5));
 			var NWallTransform = new Ammo.btTransform();
 			NWallTransform.setIdentity();
 			NWallTransform.setOrigin(new Ammo.btVector3(0,-5.5,-200));
@@ -85,7 +85,7 @@ AICRAFT.Engine.prototype = {
 			var NWall_phybody = new Ammo.btRigidBody(rbInfo);
 			self.dynamicsWorld.addRigidBody(NWall_phybody);
 			//east wall
-			var EWallShape = new Ammo.btBoxShape(new Ammo.btVector3(0.5,15,200));
+			var EWallShape = new Ammo.btBoxShape(new Ammo.btVector3(0.5,200,200));
 			var EWallTransform = new Ammo.btTransform();
 			EWallTransform.setIdentity();
 			EWallTransform.setOrigin(new Ammo.btVector3(200,-5.5,0));
@@ -100,7 +100,7 @@ AICRAFT.Engine.prototype = {
 			var EWall_phybody = new Ammo.btRigidBody(rbInfo);
 			self.dynamicsWorld.addRigidBody(EWall_phybody);
 			//south wall
-			var SWallShape = new Ammo.btBoxShape(new Ammo.btVector3(200,15,0.5));
+			var SWallShape = new Ammo.btBoxShape(new Ammo.btVector3(200,200,0.5));
 			var SWallTransform = new Ammo.btTransform();
 			SWallTransform.setIdentity();
 			SWallTransform.setOrigin(new Ammo.btVector3(0,-5.5,200));
@@ -115,7 +115,7 @@ AICRAFT.Engine.prototype = {
 			var SWall_phybody = new Ammo.btRigidBody(rbInfo);
 			self.dynamicsWorld.addRigidBody(SWall_phybody);
 			//west wall
-			var WWallShape = new Ammo.btBoxShape(new Ammo.btVector3(0.5,15,200));
+			var WWallShape = new Ammo.btBoxShape(new Ammo.btVector3(0.5,200,200));
 			var WWallTransform = new Ammo.btTransform();
 			WWallTransform.setIdentity();
 			WWallTransform.setOrigin(new Ammo.btVector3(-200,-5.5,0));

@@ -303,6 +303,24 @@ init to be facing north
 						</tr>
 					
 						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">AICRAFT.Ai.<b><a href="../symbols/AICRAFT.Ai.html#.charge">charge</a></b>(self, start, end, cb, stepDistance, delay)
+								</div>
+								<div class="description">charge function</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#feedbackVector">feedbackVector</a></b>(start, end)
+								</div>
+								<div class="description">fire force feedback Vector caculator</div>
+							</td>
+						</tr>
+					
+						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#fireAt">fireAt</a></b>(x, y, z, fn_cb)
@@ -406,15 +424,6 @@ Rotates the sight to a degree related to the front of the Sight</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#setPos">setPos</a></b>(AmmoIn, x, y, z, qx, qy, qz, qw, sqx, sqy, sqz, sqw, vx, vy, vz)
-								</div>
-								<div class="description">set position of current ai</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/AICRAFT.Ai.html#turnLeft">turnLeft</a></b>(degree, cb)
 								</div>
 								<div class="description">turns the body of the AI to the left</div>
@@ -436,7 +445,7 @@ Rotates the sight to a degree related to the front of the Sight</div>
 				
 				
 				<dl class="inheritsList">
-				
+				<dt>Methods borrowed from class <a href="../symbols/AICRAFT.GameObject.html">AICRAFT.GameObject</a>: </dt><dd><a href="../symbols/AICRAFT.GameObject.html#setPos">setPos</a></dd>
 				</dl>
 				
 			
@@ -653,6 +662,114 @@ Rotates the sight to a degree related to the front of the Sight</div>
 							
 								<dt>
 									<b>dynamicsWorld</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".charge"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">AICRAFT.Ai.</span><b>charge</b>(self, start, end, cb, stepDistance, delay)
+					
+					</div>
+					<div class="description">
+						charge function
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>self</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>start</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>end</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>cb</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>stepDistance</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>delay</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="feedbackVector"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>feedbackVector</b>(start, end)
+					
+					</div>
+					<div class="description">
+						fire force feedback Vector caculator
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>start</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>end</b>
 									
 								</dt>
 								<dd></dd>
@@ -1248,126 +1365,6 @@ Rotates the sight to a degree related to the front of the Sight
 
 					<hr />
 				
-					<a name="setPos"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>setPos</b>(AmmoIn, x, y, z, qx, qy, qz, qw, sqx, sqy, sqz, sqw, vx, vy, vz)
-					
-					</div>
-					<div class="description">
-						set position of current ai
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>AmmoIn</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>x</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>y</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>z</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>qx</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>qy</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>qz</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>qw</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>sqx</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>sqy</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>sqz</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>sqw</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>vx</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>vy</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>vz</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
 					<a name="turnLeft"> </a>
 					<div class="fixedFont">
 					
@@ -1463,7 +1460,7 @@ Rotates the sight to a degree related to the front of the Sight
 		
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
-			Documentation generated on Wed Mar 21 2012 14:25:12 GMT-0600 (CST)
+			Documentation generated on Wed Apr 04 2012 14:10:45 GMT-0600 (CST)
 		</div>
 	</body>
 </html>

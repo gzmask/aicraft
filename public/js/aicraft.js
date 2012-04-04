@@ -409,7 +409,7 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(b, a, c) {
     e = new a.btRigidBodyConstructionInfo(e, f, b, i);
     e = new a.btRigidBody(e);
     d.dynamicsWorld.addRigidBody(e);
-    b = new a.btBoxShape(new a.btVector3(200, 15, 0.5));
+    b = new a.btBoxShape(new a.btVector3(200, 200, 0.5));
     c = new a.btTransform;
     c.setIdentity();
     c.setOrigin(new a.btVector3(0, -5.5, -200));
@@ -421,7 +421,7 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(b, a, c) {
     e = new a.btRigidBodyConstructionInfo(e, f, b, i);
     e = new a.btRigidBody(e);
     d.dynamicsWorld.addRigidBody(e);
-    b = new a.btBoxShape(new a.btVector3(0.5, 15, 200));
+    b = new a.btBoxShape(new a.btVector3(0.5, 200, 200));
     c = new a.btTransform;
     c.setIdentity();
     c.setOrigin(new a.btVector3(200, -5.5, 0));
@@ -433,7 +433,7 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(b, a, c) {
     e = new a.btRigidBodyConstructionInfo(e, f, b, i);
     e = new a.btRigidBody(e);
     d.dynamicsWorld.addRigidBody(e);
-    b = new a.btBoxShape(new a.btVector3(200, 15, 0.5));
+    b = new a.btBoxShape(new a.btVector3(200, 200, 0.5));
     c = new a.btTransform;
     c.setIdentity();
     c.setOrigin(new a.btVector3(0, -5.5, 200));
@@ -445,7 +445,7 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(b, a, c) {
     e = new a.btRigidBodyConstructionInfo(e, f, b, i);
     e = new a.btRigidBody(e);
     d.dynamicsWorld.addRigidBody(e);
-    b = new a.btBoxShape(new a.btVector3(0.5, 15, 200));
+    b = new a.btBoxShape(new a.btVector3(0.5, 200, 200));
     c = new a.btTransform;
     c.setIdentity();
     c.setOrigin(new a.btVector3(-200, -5.5, 0));
