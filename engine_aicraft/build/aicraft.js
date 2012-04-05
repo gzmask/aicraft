@@ -142,9 +142,7 @@ AICRAFT.Ai.prototype.fireAt = function(b, a, c, d) {
         e.objects[h].phybody.activate();
         e.objects[h].phybody.applyCentralImpulse(e.feedbackVector(f, g).op_mul(1.5));
         e.objects[h].hp -= e.weaponDamage;
-        0 > e.objects[h].hp && e.objects[h].phybody.setUserPointer(-1);
-        console.log("hit! getUserPointer:" + h);
-        console.log("it has hp of:" + e.objects[h].hp)
+        1 > e.objects[h].hp ? e.objects[h].phybody.setUserPointer(-1) : (console.log("hit! getUserPointer:" + h), console.log("it has hp of:" + e.objects[h].hp))
       }, 300);
       setTimeout(function() {
         e.weaponLock = !1;
@@ -550,13 +548,11 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(b, a, c) {
   AICRAFT.requestAnimationFrame(function() {
     b.animate()
   }, b.animateFPS);
-  b.dynamicsWorld.stepSimulation(1 / b.phyFPS, 10);
-  b.players.forEach(function(a) {
+  -1 === AICRAFT.Engine.getNextAvailablePnum(b.players) && (b.dynamicsWorld.stepSimulation(1 / b.phyFPS, 10), b.players.forEach(function(a) {
     a.physicUpdate()
-  });
-  b.ais.forEach(function(a) {
+  }), b.ais.forEach(function(a) {
     a.physicUpdate()
-  })
+  }))
 }};
 AICRAFT.Engine.encryptedPacket = function(b) {
   var a = [];
@@ -826,7 +822,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   void 0 === this.players[this.myPnum] || void 0 === this.myPnum || (0 != this.players[this.myPnum].keycode ? (this.socket.emit("k", this.players[this.myPnum].keycode), this.players[this.myPnum].updateInput(this.codeEmitter)) : 0 == this.players[this.myPnum].keycode && 0 != this.lastKeycode && this.socket.emit("k", 0), this.lastKeycode = this.players[this.myPnum].keycode)
 }, animate:function() {
   this.delta = this.clock.getDelta();
-  if(0 > this.players[this.myPnum].hp || 0 > this.ais[this.myPnum].hp) {
+  if(1 > this.players[this.myPnum].hp || 1 > this.ais[this.myPnum].hp) {
     alert("your tream have lost!")
   }else {
     requestAnimationFrame(this.animate.bind(this));

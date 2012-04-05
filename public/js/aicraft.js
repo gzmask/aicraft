@@ -60,7 +60,7 @@ AICRAFT.GameObject.prototype = {constructor:AICRAFT.GameObject, buildMesh:functi
   this.mesh.quaternion.w = this.quaternion.w;
   var b = this;
   this.sprites.forEach(function(a) {
-    a.scale.x *= b.hp / 100;
+    a.scale.x = b.hp / 600;
     a.position.set(b.position.x + a.dx, b.position.y + a.dy, b.position.z + a.dz)
   })
 }};
@@ -458,13 +458,11 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(b, a, c) {
   AICRAFT.requestAnimationFrame(function() {
     b.animate()
   }, b.animateFPS);
-  b.dynamicsWorld.stepSimulation(1 / b.phyFPS, 10);
-  b.players.forEach(function(a) {
+  -1 === AICRAFT.Engine.getNextAvailablePnum(b.players) && (b.dynamicsWorld.stepSimulation(1 / b.phyFPS, 10), b.players.forEach(function(a) {
     a.physicUpdate()
-  });
-  b.ais.forEach(function(a) {
+  }), b.ais.forEach(function(a) {
     a.physicUpdate()
-  })
+  }))
 }};
 AICRAFT.Engine.encryptedPacket = function(b) {
   var a = [];
@@ -734,7 +732,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   void 0 === this.players[this.myPnum] || void 0 === this.myPnum || (0 != this.players[this.myPnum].keycode ? (this.socket.emit("k", this.players[this.myPnum].keycode), this.players[this.myPnum].updateInput(this.codeEmitter)) : 0 == this.players[this.myPnum].keycode && 0 != this.lastKeycode && this.socket.emit("k", 0), this.lastKeycode = this.players[this.myPnum].keycode)
 }, animate:function() {
   this.delta = this.clock.getDelta();
-  if(0 > this.players[this.myPnum].hp || 0 > this.ais[this.myPnum].hp) {
+  if(1 > this.players[this.myPnum].hp || 1 > this.ais[this.myPnum].hp) {
     alert("your tream have lost!")
   }else {
     requestAnimationFrame(this.animate.bind(this));

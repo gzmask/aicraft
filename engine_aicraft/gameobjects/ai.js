@@ -136,8 +136,9 @@ AICRAFT.Ai.prototype.fireAt = function(x,y,z, fn_cb) {
             self.objects[ptrInd].phybody.activate();
             self.objects[ptrInd].phybody.applyCentralImpulse(self.feedbackVector(start,end).op_mul(1.5));
             self.objects[ptrInd].hp-=self.weaponDamage;
-            if (self.objects[ptrInd].hp < 0) {
+            if (self.objects[ptrInd].hp < 1) {
                 self.objects[ptrInd].phybody.setUserPointer(-1);
+                return;
             };
             console.log('hit! getUserPointer:'+ ptrInd);
             console.log('it has hp of:'+self.objects[ptrInd].hp);

@@ -132,7 +132,7 @@ AICRAFT.GameObject.prototype = {
         var self = this;
         this.sprites.forEach(function(sprite) {
             //sprite.scale.set(0.1*self.hp/100, 0.05, 0.1);
-            sprite.scale.x *= self.hp/100;
+            sprite.scale.x = self.hp/600;
             sprite.position.set(self.position.x+sprite.dx,self.position.y+sprite.dy,self.position.z+sprite.dz);
         });
 	}

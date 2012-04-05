@@ -248,7 +248,7 @@ AICRAFT.ClientEngine.prototype = {
 		this.delta = this.clock.getDelta();
 
 		var self = this;
-        if ((self.players[self.myPnum].hp < 0) || (self.ais[self.myPnum].hp < 0)) {
+        if ((self.players[self.myPnum].hp < 1) || (self.ais[self.myPnum].hp < 1)) {
             alert("your tream have lost!");    
             return;
         };
