@@ -27,7 +27,7 @@ AICRAFT.GameObject = function(b, a, c, d, e, f, g) {
 AICRAFT.GameObject.prototype = {constructor:AICRAFT.GameObject, buildMesh:function(b, a, c, d) {
   var e = b.ImageUtils.loadTexture("asset/battery_b.png"), b = new b.Sprite({map:e, useScreenCoordinates:!1, color:c});
   b.position.set(this.position.x + b.dx, this.position.y + b.dy, this.position.z + b.dz);
-  !0 !== d ? (b.dx = 0, b.dy = 9, b.dz = 0, b.scale.set(0.1, 0.05, 0.1)) : (b.dx = 0, b.dy = 19, b.dz = 0, b.scale.set(0.1, 0.01, 0.1));
+  !0 !== d ? (b.dx = 0, b.dy = 9, b.dz = 0, b.scale.set(0.1, 0.05, 0.1)) : (b.dx = 0, b.dy = 17, b.dz = 0, b.scale.set(0.1, 0.04, 0.1), b.opacity = 0.7);
   a.add(b);
   this.sprites.push(b)
 }, setPos:function(b, a, c, d, e, f, g, h, j, i, k, l, m) {
@@ -60,7 +60,7 @@ AICRAFT.GameObject.prototype = {constructor:AICRAFT.GameObject, buildMesh:functi
   this.mesh.quaternion.w = this.quaternion.w;
   var b = this;
   this.sprites.forEach(function(a) {
-    a.scale.set(0.1 * b.hp / 100, 0.05, 0.1);
+    a.scale.x *= b.hp / 100;
     a.position.set(b.position.x + a.dx, b.position.y + a.dy, b.position.z + a.dz)
   })
 }};

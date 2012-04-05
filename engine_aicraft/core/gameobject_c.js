@@ -53,9 +53,10 @@ AICRAFT.GameObject.prototype = {
             spriteA.scale.set(0.1,0.05,0.1);
         } else {
             spriteA.dx = 0;
-            spriteA.dy = 19;
+            spriteA.dy = 17;
             spriteA.dz = 0;
-            spriteA.scale.set(0.1,0.01,0.1);
+            spriteA.scale.set(0.1,0.04,0.1);
+            spriteA.opacity = 0.7;
         }
         scene.add(spriteA);
         this.sprites.push(spriteA);
@@ -130,7 +131,8 @@ AICRAFT.GameObject.prototype = {
 		this.mesh.quaternion.w = this.quaternion.w;
         var self = this;
         this.sprites.forEach(function(sprite) {
-            sprite.scale.set(0.1*self.hp/100, 0.05, 0.1);
+            //sprite.scale.set(0.1*self.hp/100, 0.05, 0.1);
+            sprite.scale.x *= self.hp/100;
             sprite.position.set(self.position.x+sprite.dx,self.position.y+sprite.dy,self.position.z+sprite.dz);
         });
 	}
