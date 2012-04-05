@@ -1,15 +1,15 @@
 var AICRAFT = AICRAFT || {};
 "undefined" !== typeof exports && null !== exports && (exports.AICRAFT = AICRAFT);
-AICRAFT.GameObject = function(b, a, c, d, f, e, j) {
+AICRAFT.GameObject = function(b, a, c, d, e, f, g) {
   this.position = {};
   this.position.x = parseFloat(b);
   this.position.y = parseFloat(a);
   this.position.z = parseFloat(c);
   this.quaternion = {};
   this.quaternion.x = d || 0;
-  this.quaternion.y = f || 0;
-  this.quaternion.z = e || 0;
-  this.quaternion.w = void 0 === j ? 1 : j;
+  this.quaternion.y = e || 0;
+  this.quaternion.z = f || 0;
+  this.quaternion.w = void 0 === g ? 1 : g;
   this.quaternion.x = parseFloat(this.quaternion.x);
   this.quaternion.y = parseFloat(this.quaternion.y);
   this.quaternion.z = parseFloat(this.quaternion.z);
@@ -33,30 +33,31 @@ AICRAFT.GameObject.prototype = {constructor:AICRAFT.GameObject, buildMesh:functi
   this.mesh.useQuaternion = !0;
   this.mesh.quaternion.set(this.quaternion.x, this.quaternion.y, this.quaternion.z, this.quaternion.w);
   a.add(this.mesh)
-}, setPos:function(b, a, c, d, f, e, j, g, k, h, i, l) {
+}, setPos:function(b, a, c, d, e, f, g, h, j, i, k, l, m) {
   a = parseFloat(a);
   c = parseFloat(c);
   d = parseFloat(d);
-  f = parseFloat(f);
   e = parseFloat(e);
-  j = parseFloat(j);
+  f = parseFloat(f);
   g = parseFloat(g);
-  parseFloat(k);
-  parseFloat(h);
+  h = parseFloat(h);
+  parseFloat(j);
   parseFloat(i);
+  parseFloat(k);
   this.IsMoving = l;
   void 0 !== b && (Ammo = b);
   b = new Ammo.btTransform;
   b.setIdentity();
   b.setOrigin(new Ammo.btVector3(a, c, d));
-  b.setRotation(new Ammo.btQuaternion(f, e, j, g));
+  b.setRotation(new Ammo.btQuaternion(e, f, g, h));
   this.position.x = a;
   this.position.y = c;
   this.position.z = d;
-  this.quaternion.x = f;
-  this.quaternion.y = e;
-  this.quaternion.z = j;
-  this.quaternion.w = g
+  this.quaternion.x = e;
+  this.quaternion.y = f;
+  this.quaternion.z = g;
+  this.quaternion.w = h;
+  this.hp = m
 }, physicAndGraphicUpdate:function() {
   this.mesh.position.x = this.position.x;
   this.mesh.position.y = this.position.y;
@@ -66,9 +67,9 @@ AICRAFT.GameObject.prototype = {constructor:AICRAFT.GameObject, buildMesh:functi
   this.mesh.quaternion.z = this.quaternion.z;
   this.mesh.quaternion.w = this.quaternion.w
 }};
-AICRAFT.Ai = function(b, a, c, d, f, e, j, g) {
-  AICRAFT.GameObject.call(this, b, a, c, d, f, e, j);
-  this.Ammo = void 0 !== g ? g : Ammo;
+AICRAFT.Ai = function(b, a, c, d, e, f, g, h) {
+  AICRAFT.GameObject.call(this, b, a, c, d, e, f, g);
+  this.Ammo = void 0 !== h ? h : Ammo;
   this.sight = {};
   this.sight.lines = [];
   this.sight.quaternion = {};
@@ -91,10 +92,10 @@ AICRAFT.Ai.prototype.buildMesh = function(b, a, c) {
     d.mesh_w = d.mesh;
     console.log("walk:" + d.mesh_w)
   });
-  var f = new b.Geometry;
-  f.vertices = AICRAFT.Ai.getSight(0, 0, 0, 0, 0, -1, d.sight.range, 60, 10, d.Ammo, !1);
+  var e = new b.Geometry;
+  e.vertices = AICRAFT.Ai.getSight(0, 0, 0, 0, 0, -1, d.sight.range, 60, 10, d.Ammo, !1);
   c = new b.LineBasicMaterial({color:c, lineWidth:1});
-  d.sightMesh = new b.Line(f, c);
+  d.sightMesh = new b.Line(e, c);
   d.sightMesh.type = b.Lines;
   d.sightMesh.useQuaternion = !0;
   d.sightMesh.position.x = d.position.x;
@@ -107,7 +108,7 @@ AICRAFT.Ai.prototype.buildMesh = function(b, a, c) {
   a.add(d.sightMesh)
 };
 AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(b) {
-  void 0 !== this.mesh && (this.applyAnimation(this.mesh_t, this.mesh_w), this.sightMesh.position.x = this.mesh.position.x = this.position.x, this.sightMesh.position.y = this.mesh.position.y = this.position.y, this.sightMesh.position.z = this.mesh.position.z = this.position.z, this.mesh.quaternion.x = this.quaternion.x, this.mesh.quaternion.y = this.quaternion.y, this.mesh.quaternion.z = this.quaternion.z, this.mesh.quaternion.w = this.quaternion.w, this.sightMesh.quaternion.x = this.sight.quaternion.x, 
+  void 0 === this.mesh || 1 > this.hp || (this.applyAnimation(this.mesh_t, this.mesh_w), this.sightMesh.position.x = this.mesh.position.x = this.position.x, this.sightMesh.position.y = this.mesh.position.y = this.position.y, this.sightMesh.position.z = this.mesh.position.z = this.position.z, this.mesh.quaternion.x = this.quaternion.x, this.mesh.quaternion.y = this.quaternion.y, this.mesh.quaternion.z = this.quaternion.z, this.mesh.quaternion.w = this.quaternion.w, this.sightMesh.quaternion.x = this.sight.quaternion.x, 
   this.sightMesh.quaternion.y = this.sight.quaternion.y, this.sightMesh.quaternion.z = this.sight.quaternion.z, this.sightMesh.quaternion.w = this.sight.quaternion.w, this.mesh.updateAnimation(1E3 * b))
 };
 AICRAFT.Ai.prototype.applyAnimation = function(b, a) {
@@ -116,39 +117,39 @@ AICRAFT.Ai.prototype.applyAnimation = function(b, a) {
 AICRAFT.Ai.prototype.deltaPos = function(b, a, c, d) {
   return Math.abs(b - a) + Math.abs(c - d)
 };
-AICRAFT.Ai.prototype.setPos = function(b, a, c, d, f, e, j, g, k, h, i, l, m, n, o, p) {
+AICRAFT.Ai.prototype.setPos = function(b, a, c, d, e, f, g, h, j, i, k, l, m, n, o, p, q) {
   a = parseFloat(a);
   c = parseFloat(c);
   d = parseFloat(d);
-  f = parseFloat(f);
   e = parseFloat(e);
-  j = parseFloat(j);
+  f = parseFloat(f);
   g = parseFloat(g);
-  k = parseFloat(k);
   h = parseFloat(h);
+  j = parseFloat(j);
   i = parseFloat(i);
+  k = parseFloat(k);
   l = parseFloat(l);
   m = parseFloat(m);
   n = parseFloat(n);
   o = parseFloat(o);
-  AICRAFT.GameObject.prototype.setPos.call(this, b, a, c, d, f, e, j, g, m, n, o, p);
-  this.sight.quaternion.x = k;
-  this.sight.quaternion.y = h;
-  this.sight.quaternion.z = i;
+  AICRAFT.GameObject.prototype.setPos.call(this, b, a, c, d, e, f, g, h, m, n, o, p, q);
+  this.sight.quaternion.x = j;
+  this.sight.quaternion.y = i;
+  this.sight.quaternion.z = k;
   this.sight.quaternion.w = l;
   this.sightMesh.quaternion.x = this.sight.quaternion.x;
   this.sightMesh.quaternion.y = this.sight.quaternion.y;
   this.sightMesh.quaternion.z = this.sight.quaternion.z;
   this.sightMesh.quaternion.w = this.sight.quaternion.w
 };
-AICRAFT.Ai.JSONloader = function(b, a, c, d, f, e, j, g) {
-  (new e.JSONLoader).load(a, function(a) {
-    var h = a.materials[0];
-    h.morphTargets = !0;
-    h.color.setHex(f);
-    h.ambient.setHex(2236962);
-    h = new e.MeshFaceMaterial;
-    a = new e.MorphAnimMesh(a, h);
+AICRAFT.Ai.JSONloader = function(b, a, c, d, e, f, g, h) {
+  (new f.JSONLoader).load(a, function(a) {
+    var i = a.materials[0];
+    i.morphTargets = !0;
+    i.color.setHex(e);
+    i.ambient.setHex(2236962);
+    i = new f.MeshFaceMaterial;
+    a = new f.MorphAnimMesh(a, i);
     a.duration = 1E3;
     a.time = 0;
     c = a;
@@ -162,27 +163,27 @@ AICRAFT.Ai.JSONloader = function(b, a, c, d, f, e, j, g) {
     c.scale.set(5, 5, 5);
     b.mesh = c;
     d.add(c);
-    c.visible = j;
-    void 0 !== g && g();
+    c.visible = g;
+    void 0 !== h && h();
     return c
   })
 };
-AICRAFT.Ai.getSight = function(b, a, c, d, f, e, j, g, k, h, i) {
-  var l = [], d = new h.btVector3(d - b, f - a, e - c), f = AICRAFT.quatFromEuler(g / 2, 0, 0, h), e = new h.btTransform;
-  e.setRotation(f);
-  d = e.op_mul(d);
+AICRAFT.Ai.getSight = function(b, a, c, d, e, f, g, h, j, i, k) {
+  var l = [], d = new i.btVector3(d - b, e - a, f - c), e = AICRAFT.quatFromEuler(h / 2, 0, 0, i), f = new i.btTransform;
+  f.setRotation(e);
+  d = f.op_mul(d);
   d.normalize();
-  d.op_mul(j);
+  d.op_mul(g);
   do {
-    l.push(AICRAFT.v(b, a, c, i), AICRAFT.v(d.getX() + b, d.getY() + a, d.getZ() + c, i)), f = AICRAFT.quatFromEuler(-1 * k, 0, 0, h), e.setRotation(f), d = e.op_mul(d), d.normalize(), d.op_mul(j), g -= k
-  }while(0 <= g);
-  h.destroy(f);
-  h.destroy(e);
+    l.push(AICRAFT.v(b, a, c, k), AICRAFT.v(d.getX() + b, d.getY() + a, d.getZ() + c, k)), e = AICRAFT.quatFromEuler(-1 * j, 0, 0, i), f.setRotation(e), d = f.op_mul(d), d.normalize(), d.op_mul(g), h -= j
+  }while(0 <= h);
+  i.destroy(e);
+  i.destroy(f);
   return l
 };
-AICRAFT.Player = function(b, a, c, d, f, e, j, g) {
-  AICRAFT.GameObject.call(this, b, a, c, d, f, e, j);
-  this.Ammo = void 0 !== g ? g : Ammo;
+AICRAFT.Player = function(b, a, c, d, e, f, g, h) {
+  AICRAFT.GameObject.call(this, b, a, c, d, e, f, g);
+  this.Ammo = void 0 !== h ? h : Ammo;
   this.maxSpeed = 20;
   this.acceleration = 4;
   this.connected = !1;
@@ -216,16 +217,16 @@ AICRAFT.Player.prototype.handleKeyUp = function(b, a) {
   "W" == String.fromCharCode(b.keyCode) ? a.keycode ^= 8 : "A" == String.fromCharCode(b.keyCode) ? a.keycode ^= 4 : "S" == String.fromCharCode(b.keyCode) ? a.keycode ^= 2 : "D" == String.fromCharCode(b.keyCode) ? a.keycode ^= 1 : "E" == String.fromCharCode(b.keyCode) ? a.keycode ^= 16 : "Q" == String.fromCharCode(b.keyCode) ? a.keycode ^= 32 : 18 == b.keyCode && (a.keycode ^= 64)
 };
 AICRAFT.Player.prototype.updateInput = function(b) {
-  AICRAFT.ClientEngine.key(this.keycode, "code") && b.fire()
+  AICRAFT.ClientEngine.key(this.keycode, "code") && b.request()
 };
-AICRAFT.Player.JSONloader = function(b, a, c, d, f, e, j, g) {
-  (new e.JSONLoader).load(a, function(a) {
-    var h = a.materials[0];
-    h.morphTargets = !0;
-    h.color.setHex(f);
-    h.ambient.setHex(2236962);
-    h = new e.MeshFaceMaterial;
-    a = new e.MorphAnimMesh(a, h);
+AICRAFT.Player.JSONloader = function(b, a, c, d, e, f, g, h) {
+  (new f.JSONLoader).load(a, function(a) {
+    var i = a.materials[0];
+    i.morphTargets = !0;
+    i.color.setHex(e);
+    i.ambient.setHex(2236962);
+    i = new f.MeshFaceMaterial;
+    a = new f.MorphAnimMesh(a, i);
     a.duration = 1E3;
     a.time = 0;
     c = a;
@@ -239,8 +240,8 @@ AICRAFT.Player.JSONloader = function(b, a, c, d, f, e, j, g) {
     c.scale.set(5, 5, 5);
     b.mesh = c;
     d.add(c);
-    c.visible = j;
-    void 0 !== g && g();
+    c.visible = g;
+    void 0 !== h && h();
     return c
   })
 };
@@ -305,14 +306,14 @@ AICRAFT.CameraControl.setVector = function(b, a, c) {
   c = d.op_mul(c);
   return new THREE.Vector3(c.getX() * a, c.getY() * a, c.getZ() * a)
 };
-AICRAFT.CodeEmitter = function(b, a, c, d, f) {
-  var e = this;
+AICRAFT.CodeEmitter = function(b, a, c, d, e) {
+  var f = this;
   this.cameraControls = b;
   this.socket = d;
   this.player = a;
   this.ai = c;
-  if(void 0 === f || null === f) {
-    f = document.body
+  if(void 0 === e || null === e) {
+    e = document.body
   }
   this.switching = this.IsEnable = !1;
   this.editor = document.createElement("div");
@@ -325,18 +326,18 @@ AICRAFT.CodeEmitter = function(b, a, c, d, f) {
   this.editor.style.visibility = "hidden";
   this.editor.style.left = this.cameraControls.viewHalfX;
   this.editor.style.top = this.cameraControls.viewHalfY;
-  f.appendChild(this.editor);
+  e.appendChild(this.editor);
   this.editorAce = ace.edit("editor");
   this.editorAce.setReadOnly(!1);
   this.editorAceDom = document.getElementById("editor");
   d.on("emitterInit", function(a) {
-    a = a.replace(/ai_name_to_replace/g, "AI_" + e.ai.name.toString());
-    e.editorAce.focus();
-    e.editorAce.getSession().setValue(a)
+    a = a.replace(/ai_name_to_replace/g, "AI_" + f.ai.name.toString());
+    f.editorAce.focus();
+    f.editorAce.getSession().setValue(a)
   })
 };
 AICRAFT.CodeEmitter.prototype.constructor = AICRAFT.CodeEmitter;
-AICRAFT.CodeEmitter.prototype.fire = function() {
+AICRAFT.CodeEmitter.prototype.request = function() {
   if(!0 !== this.switching) {
     this.switching = !0;
     !0 === this.IsEnable ? this.send() : this.enable();
@@ -347,7 +348,7 @@ AICRAFT.CodeEmitter.prototype.fire = function() {
   }
 };
 AICRAFT.CodeEmitter.prototype.enable = function() {
-  !0 !== this.IsEnable && (this.IsEnable = !0, this.editor.style.visibility = "visible", this.editor.style.left = "20%", this.editor.style.top = "20%", this.editorAceDom.style.visibility = "visible", this.editor.style.zIndex = "3", this.editorAce.setReadOnly(!1), this.ai.codeUploading = !0, this.player.codeUploading = !0, this.socket.emit("code"))
+  !0 !== this.IsEnable && (this.IsEnable = !0, this.editor.style.visibility = "visible", this.editor.style.left = "20%", this.editor.style.top = "20%", this.editorAceDom.style.visibility = "visible", this.editor.style.zIndex = "3", this.editor.focus(), this.editorAce.setReadOnly(!1), this.editorAce.focus(), this.ai.codeUploading = !0, this.player.codeUploading = !0, this.socket.emit("code"))
 };
 AICRAFT.CodeEmitter.prototype.send = function() {
   !1 !== this.IsEnable && (this.IsEnable = !1, this.editor.style.visibility = "hidden", this.editorAceDom.style.visibility = "hidden", this.editor.style.zIndex = "-3", this.editorAce.setReadOnly(!0), this.ai.codeUploading = !1, this.player.codeUploading = !1, this.socket.emit("coded", this.editorAce.getSession().getValue()))
@@ -372,8 +373,8 @@ AICRAFT.quatMul = function(b, a) {
 };
 AICRAFT.quatFromEuler = function(b, a, c, d) {
   this.Ammo = void 0 !== d ? d : Ammo;
-  var d = b * Math.PI / 360, f = a * Math.PI / 360, e = c * Math.PI / 360, c = Math.sin(d), a = Math.sin(f), b = Math.sin(e), d = Math.cos(d), f = Math.cos(f), e = Math.cos(e);
-  return(new this.Ammo.btQuaternion(b * d * f - e * c * a, e * c * f + b * d * a, e * d * a - b * c * f, e * d * f + b * c * a)).normalize()
+  var d = b * Math.PI / 360, e = a * Math.PI / 360, f = c * Math.PI / 360, c = Math.sin(d), a = Math.sin(e), b = Math.sin(f), d = Math.cos(d), e = Math.cos(e), f = Math.cos(f);
+  return(new this.Ammo.btQuaternion(b * d * e - f * c * a, f * c * e + b * d * a, f * d * a - b * c * e, f * d * e + b * c * a)).normalize()
 };
 AICRAFT.bind = function(b, a) {
   return function() {
@@ -392,78 +393,18 @@ AICRAFT.Engine = function() {
   this.aiEngine = void 0
 };
 AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(b, a, c) {
-  var d = this;
-  d.aiEngine = c;
-  var b = new a.btDefaultCollisionConfiguration, c = new a.btCollisionDispatcher(b), f = new a.btDbvtBroadphase, e = new a.btSequentialImpulseConstraintSolver;
-  this.dynamicsWorld = new a.btDiscreteDynamicsWorld(c, f, e, b);
+  this.aiEngine = c;
+  var b = new a.btDefaultCollisionConfiguration, c = new a.btCollisionDispatcher(b), d = new a.btDbvtBroadphase, e = new a.btSequentialImpulseConstraintSolver;
+  this.dynamicsWorld = new a.btDiscreteDynamicsWorld(c, d, e, b);
   this.dynamicsWorld.setGravity(new a.btVector3(0, -9.82, 0));
   this.dynamicsWorld.trans = new a.btTransform;
   this.dynamicsWorld.trans.setIdentity();
-  (function() {
-    var b = new a.btBoxShape(new a.btVector3(200, 0.5, 200)), c = new a.btTransform;
-    c.setIdentity();
-    c.setOrigin(new a.btVector3(0, -5.5, 0));
-    var e = 0, f = 0 != e, i = new a.btVector3(0, 0, 0);
-    f && b.calculateLocalInertia(e, i);
-    f = new a.btDefaultMotionState(c);
-    e = new a.btRigidBodyConstructionInfo(e, f, b, i);
-    e = new a.btRigidBody(e);
-    d.dynamicsWorld.addRigidBody(e);
-    b = new a.btBoxShape(new a.btVector3(200, 200, 0.5));
-    c = new a.btTransform;
-    c.setIdentity();
-    c.setOrigin(new a.btVector3(0, -5.5, -200));
-    e = 0;
-    f = 0 != e;
-    i = new a.btVector3(0, 0, 0);
-    f && b.calculateLocalInertia(e, i);
-    f = new a.btDefaultMotionState(c);
-    e = new a.btRigidBodyConstructionInfo(e, f, b, i);
-    e = new a.btRigidBody(e);
-    d.dynamicsWorld.addRigidBody(e);
-    b = new a.btBoxShape(new a.btVector3(0.5, 200, 200));
-    c = new a.btTransform;
-    c.setIdentity();
-    c.setOrigin(new a.btVector3(200, -5.5, 0));
-    e = 0;
-    f = 0 != e;
-    i = new a.btVector3(0, 0, 0);
-    f && b.calculateLocalInertia(e, i);
-    f = new a.btDefaultMotionState(c);
-    e = new a.btRigidBodyConstructionInfo(e, f, b, i);
-    e = new a.btRigidBody(e);
-    d.dynamicsWorld.addRigidBody(e);
-    b = new a.btBoxShape(new a.btVector3(200, 200, 0.5));
-    c = new a.btTransform;
-    c.setIdentity();
-    c.setOrigin(new a.btVector3(0, -5.5, 200));
-    e = 0;
-    f = 0 != e;
-    i = new a.btVector3(0, 0, 0);
-    f && b.calculateLocalInertia(e, i);
-    f = new a.btDefaultMotionState(c);
-    e = new a.btRigidBodyConstructionInfo(e, f, b, i);
-    e = new a.btRigidBody(e);
-    d.dynamicsWorld.addRigidBody(e);
-    b = new a.btBoxShape(new a.btVector3(0.5, 200, 200));
-    c = new a.btTransform;
-    c.setIdentity();
-    c.setOrigin(new a.btVector3(-200, -5.5, 0));
-    e = 0;
-    f = 0 != e;
-    i = new a.btVector3(0, 0, 0);
-    f && b.calculateLocalInertia(e, i);
-    f = new a.btDefaultMotionState(c);
-    e = new a.btRigidBodyConstructionInfo(e, f, b, i);
-    e = new a.btRigidBody(e);
-    d.dynamicsWorld.addRigidBody(e)
-  })();
-  (function() {
-    for(var b = [], c = 0, e = 0;e < d.totalPlayers;e++) {
-      quat = AICRAFT.quatFromEuler(0, 0, 0, a), d.players[e] = new AICRAFT.Player(-150 + 301 * Math.random(), 0, -150 + 301 * Math.random(), quat.getX(), quat.getY(), quat.getZ(), quat.getW(), a), d.players[e].buildPhysic(a, d.dynamicsWorld), d.players[e].phybody.setUserPointer(c), b.push(d.players[e]), d.players[e].objects = b, c++, quat = AICRAFT.quatFromEuler(360 * Math.random(), 0, 0, a), d.ais[e] = new AICRAFT.Ai(d.players[e].position.x, 0, d.players[e].position.z - 25, quat.getX(), quat.getY(), 
-      quat.getZ(), quat.getW(), a), d.ais[e].buildPhysic(a, d.dynamicsWorld), d.ais[e].owner = d.players[e], d.ais[e].phybody.setUserPointer(c), b.push(d.ais[e]), d.ais[e].objects = b, c++
-    }
-  })()
+  AICRAFT.Engine.initScene(this, a);
+  b = [];
+  for(d = c = 0;d < this.totalPlayers;d++) {
+    quat = AICRAFT.quatFromEuler(0, 0, 0, a), this.players[d] = new AICRAFT.Player(-150 + 301 * Math.random(), 0, -150 + 301 * Math.random(), quat.getX(), quat.getY(), quat.getZ(), quat.getW(), a), this.players[d].buildPhysic(a, this.dynamicsWorld), this.players[d].phybody.setUserPointer(c), b.push(this.players[d]), this.players[d].objects = b, c++, quat = AICRAFT.quatFromEuler(360 * Math.random(), 0, 0, a), this.ais[d] = new AICRAFT.Ai(this.players[d].position.x, 0, this.players[d].position.z - 
+    25, quat.getX(), quat.getY(), quat.getZ(), quat.getW(), a), this.ais[d].buildPhysic(a, this.dynamicsWorld), this.ais[d].owner = this.players[d], this.ais[d].phybody.setUserPointer(c), b.push(this.ais[d]), this.ais[d].objects = b, c++
+  }
 }, networkInit:function(b) {
   var a = this;
   b.emit("totalPlayers", this.totalPlayers);
@@ -494,10 +435,10 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(b, a, c) {
     })
   });
   b.on("coded", function(c) {
-    b.get("Pnum", function(b, f) {
-      a.ais[f].codeUploading = !1;
-      a.players[f].codeUploading = !1;
-      a.aiEngine.loadAI(c, a.ais[f].name)
+    b.get("Pnum", function(b, e) {
+      a.ais[e].codeUploading = !1;
+      a.players[e].codeUploading = !1;
+      a.aiEngine.loadAI(c, a.ais[e].name)
     })
   })
 }, syncPos:function(b) {
@@ -510,9 +451,9 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(b, a, c) {
 }, syncKey:function(b, a) {
   var c = this;
   b.on("k", function(d) {
-    b.get("Pnum", function(b, e) {
-      c.players[e].keycode = d;
-      c.players[e].updateInput(a)
+    b.get("Pnum", function(b, f) {
+      c.players[f].keycode = d;
+      c.players[f].updateInput(a)
     })
   })
 }, animate:function() {
@@ -542,21 +483,22 @@ AICRAFT.Engine.encryptedPacket = function(b) {
     a.push(b.phybody.getAngularVelocity().getX());
     a.push(b.phybody.getAngularVelocity().getY());
     a.push(b.phybody.getAngularVelocity().getZ());
-    a.push(b.IsMoving)
+    a.push(b.IsMoving);
+    a.push(b.hp)
   });
   return a
 };
 AICRAFT.Engine.extractPacket = function(b) {
-  if(0 == b.length % 11) {
-    for(var a = '({"bindings":[', c = 0;c < b.length;c += 11) {
-      a += '{"position":', a += "[" + b[c] + "," + b[c + 1] + "," + b[c + 2] + "],", a += '"quaternion":', a += "[" + b[c + 3] + "," + b[c + 4] + "," + b[c + 5] + "," + b[c + 6] + "],", a += '"velocity":', a += "[" + b[c + 7] + "," + b[c + 8] + "," + b[c + 9] + "],", a += '"IsMoving":', a += "[" + b[c + 10] + "]", a += "},"
+  if(0 == b.length % 12) {
+    for(var a = '({"bindings":[', c = 0;c < b.length;c += 12) {
+      a += '{"position":', a += "[" + b[c] + "," + b[c + 1] + "," + b[c + 2] + "],", a += '"quaternion":', a += "[" + b[c + 3] + "," + b[c + 4] + "," + b[c + 5] + "," + b[c + 6] + "],", a += '"velocity":', a += "[" + b[c + 7] + "," + b[c + 8] + "," + b[c + 9] + "],", a += '"IsMoving":', a += "[" + b[c + 10] + "],", a += '"hp":', a += "[" + b[c + 11] + "]", a += "},"
     }
     return eval(a + "]})")
   }
-  if(0 == b.length % 15) {
+  if(0 == b.length % 16) {
     a = '({"bindings":[';
-    for(c = 0;c < b.length;c += 15) {
-      a += '{"position":', a += "[" + b[c] + "," + b[c + 1] + "," + b[c + 2] + "],", a += '"quaternion":', a += "[" + b[c + 3] + "," + b[c + 4] + "," + b[c + 5] + "," + b[c + 6] + "],", a += '"sightQuaternion":', a += "[" + b[c + 7] + "," + b[c + 8] + "," + b[c + 9] + "," + b[c + 10] + "],", a += '"velocity":', a += "[" + b[c + 11] + "," + b[c + 12] + "," + b[c + 13] + "],", a += '"IsMoving":', a += "[" + b[c + 14] + "]", a += "},"
+    for(c = 0;c < b.length;c += 16) {
+      a += '{"position":', a += "[" + b[c] + "," + b[c + 1] + "," + b[c + 2] + "],", a += '"quaternion":', a += "[" + b[c + 3] + "," + b[c + 4] + "," + b[c + 5] + "," + b[c + 6] + "],", a += '"sightQuaternion":', a += "[" + b[c + 7] + "," + b[c + 8] + "," + b[c + 9] + "," + b[c + 10] + "],", a += '"velocity":', a += "[" + b[c + 11] + "," + b[c + 12] + "," + b[c + 13] + "],", a += '"IsMoving":', a += "[" + b[c + 14] + "],", a += '"hp":', a += "[" + b[c + 15] + "]", a += "},"
     }
     return eval(a + "]})")
   }
@@ -585,6 +527,70 @@ AICRAFT.Engine.makeJson = function(b) {
   });
   a += "]})";
   return eval(a)
+};
+AICRAFT.Engine.initScene = function(b, a) {
+  var c = new a.btBoxShape(new a.btVector3(200, 0.5, 200)), d = new a.btTransform;
+  d.setIdentity();
+  d.setOrigin(new a.btVector3(0, -5.5, 0));
+  var e = 0, f = 0 != e, g = new a.btVector3(0, 0, 0);
+  f && c.calculateLocalInertia(e, g);
+  f = new a.btDefaultMotionState(d);
+  e = new a.btRigidBodyConstructionInfo(e, f, c, g);
+  e = new a.btRigidBody(e);
+  e.setUserPointer(-1);
+  b.dynamicsWorld.addRigidBody(e);
+  c = new a.btBoxShape(new a.btVector3(200, 200, 0.5));
+  d = new a.btTransform;
+  d.setIdentity();
+  d.setOrigin(new a.btVector3(0, -5.5, -200));
+  e = 0;
+  f = 0 != e;
+  g = new a.btVector3(0, 0, 0);
+  f && c.calculateLocalInertia(e, g);
+  f = new a.btDefaultMotionState(d);
+  e = new a.btRigidBodyConstructionInfo(e, f, c, g);
+  e = new a.btRigidBody(e);
+  e.setUserPointer(-1);
+  b.dynamicsWorld.addRigidBody(e);
+  c = new a.btBoxShape(new a.btVector3(0.5, 200, 200));
+  d = new a.btTransform;
+  d.setIdentity();
+  d.setOrigin(new a.btVector3(200, -5.5, 0));
+  e = 0;
+  f = 0 != e;
+  g = new a.btVector3(0, 0, 0);
+  f && c.calculateLocalInertia(e, g);
+  f = new a.btDefaultMotionState(d);
+  e = new a.btRigidBodyConstructionInfo(e, f, c, g);
+  e = new a.btRigidBody(e);
+  e.setUserPointer(-1);
+  b.dynamicsWorld.addRigidBody(e);
+  c = new a.btBoxShape(new a.btVector3(200, 200, 0.5));
+  d = new a.btTransform;
+  d.setIdentity();
+  d.setOrigin(new a.btVector3(0, -5.5, 200));
+  e = 0;
+  f = 0 != e;
+  g = new a.btVector3(0, 0, 0);
+  f && c.calculateLocalInertia(e, g);
+  f = new a.btDefaultMotionState(d);
+  e = new a.btRigidBodyConstructionInfo(e, f, c, g);
+  e = new a.btRigidBody(e);
+  e.setUserPointer(-1);
+  b.dynamicsWorld.addRigidBody(e);
+  c = new a.btBoxShape(new a.btVector3(0.5, 200, 200));
+  d = new a.btTransform;
+  d.setIdentity();
+  d.setOrigin(new a.btVector3(-200, -5.5, 0));
+  e = 0;
+  f = 0 != e;
+  g = new a.btVector3(0, 0, 0);
+  f && c.calculateLocalInertia(e, g);
+  f = new a.btDefaultMotionState(d);
+  e = new a.btRigidBodyConstructionInfo(e, f, c, g);
+  e = new a.btRigidBody(e);
+  e.setUserPointer(-1);
+  b.dynamicsWorld.addRigidBody(e)
 };
 AICRAFT.AIEngine = function() {
   this.templateStr = void 0;
@@ -661,10 +667,10 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   this.ground.position.y = -5;
   this.ground.receiveShadow = !0;
   this.scene.add(this.ground);
-  var f = new THREE.Quaternion;
+  var e = new THREE.Quaternion;
   (function() {
     for(var c = 0;c < a.totalPlayers;c++) {
-      f.setFromEuler(new THREE.Vector3(-30, -20, 0)), a.players[c] = new AICRAFT.Player(b.players.bindings[c].position[0], b.players.bindings[c].position[1], b.players.bindings[c].position[2], b.players.bindings[c].quaternion[0], b.players.bindings[c].quaternion[1], b.players.bindings[c].quaternion[2], b.players.bindings[c].quaternion[3]), a.players[c].IsClient = !0, a.players[c].buildMesh(THREE, a.scene, a.colors[c]), f.setFromEuler(new THREE.Vector3(30, -20, 0)), a.ais[c] = new AICRAFT.Ai(b.ais.bindings[c].position[0], 
+      e.setFromEuler(new THREE.Vector3(-30, -20, 0)), a.players[c] = new AICRAFT.Player(b.players.bindings[c].position[0], b.players.bindings[c].position[1], b.players.bindings[c].position[2], b.players.bindings[c].quaternion[0], b.players.bindings[c].quaternion[1], b.players.bindings[c].quaternion[2], b.players.bindings[c].quaternion[3]), a.players[c].IsClient = !0, a.players[c].buildMesh(THREE, a.scene, a.colors[c]), e.setFromEuler(new THREE.Vector3(30, -20, 0)), a.ais[c] = new AICRAFT.Ai(b.ais.bindings[c].position[0], 
       b.ais.bindings[c].position[1], b.ais.bindings[c].position[2], b.ais.bindings[c].quaternion[0], b.ais.bindings[c].quaternion[1], b.ais.bindings[c].quaternion[2], b.ais.bindings[c].quaternion[3]), a.ais[c].IsClient = !0, a.ais[c].buildMesh(THREE, a.scene, a.colors[c])
     }
   })();
@@ -685,27 +691,27 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   });
   return!1
 }, networkReady:function(b, a, c, d) {
-  var f = this;
-  f.socket = io.connect("/");
-  f.socket.on("totalPlayers", function(a) {
-    f.totalPlayers = a
+  var e = this;
+  e.socket = io.connect("/");
+  e.socket.on("totalPlayers", function(a) {
+    e.totalPlayers = a
   });
-  f.socket.on("connect", function(a) {
-    f.myPnum = a
+  e.socket.on("connect", function(a) {
+    e.myPnum = a
   });
-  f.socket.on("pi", function(e) {
-    f.socket.players = AICRAFT.Engine.extractPacket(e);
-    f.socket.on("ai", function(e) {
-      f.socket.ais = AICRAFT.Engine.extractPacket(e);
-      if(-1 != f.myPnum) {
-        b(f.socket);
-        f.players[f.myPnum].connected = !0;
-        e = "aicraft" + f.myPnum.toString();
+  e.socket.on("pi", function(f) {
+    e.socket.players = AICRAFT.Engine.extractPacket(f);
+    e.socket.on("ai", function(f) {
+      e.socket.ais = AICRAFT.Engine.extractPacket(f);
+      if(-1 != e.myPnum) {
+        b(e.socket);
+        e.players[e.myPnum].connected = !0;
+        f = "aicraft" + e.myPnum.toString();
         do {
-          prompt("what is the name of your AI?", e)
-        }while(!0 === f.aiNameExist(e));
-        f.ais[f.myPnum].name = e;
-        f.socket.emit("connected", [f.myPnum, f.ais[f.myPnum].name]);
+          prompt("what is the name of your AI?", f)
+        }while(!0 === e.aiNameExist(f));
+        e.ais[e.myPnum].name = f;
+        e.socket.emit("connected", [e.myPnum, e.ais[e.myPnum].name]);
         a();
         c();
         d()
@@ -718,12 +724,12 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   var b = this;
   b.socket.on("p", function(a) {
     for(var a = AICRAFT.Engine.extractPacket(a).bindings, c = 0;c < b.totalPlayers;c++) {
-      b.players[c].setPos(Ammo, a[c].position[0], a[c].position[1], a[c].position[2], a[c].quaternion[0], a[c].quaternion[1], a[c].quaternion[2], a[c].quaternion[3], a[c].velocity[0], a[c].velocity[1], a[c].velocity[2], a[c].IsMoving[0])
+      b.players[c].setPos(Ammo, a[c].position[0], a[c].position[1], a[c].position[2], a[c].quaternion[0], a[c].quaternion[1], a[c].quaternion[2], a[c].quaternion[3], a[c].velocity[0], a[c].velocity[1], a[c].velocity[2], a[c].IsMoving[0], a[c].hp[0])
     }
   });
   b.socket.on("a", function(a) {
     for(var a = AICRAFT.Engine.extractPacket(a).bindings, c = 0;c < b.totalPlayers;c++) {
-      b.ais[c].setPos(Ammo, a[c].position[0], a[c].position[1], a[c].position[2], a[c].quaternion[0], a[c].quaternion[1], a[c].quaternion[2], a[c].quaternion[3], a[c].sightQuaternion[0], a[c].sightQuaternion[1], a[c].sightQuaternion[2], a[c].sightQuaternion[3], a[c].velocity[0], a[c].velocity[1], a[c].velocity[2], a[c].IsMoving[0])
+      b.ais[c].setPos(Ammo, a[c].position[0], a[c].position[1], a[c].position[2], a[c].quaternion[0], a[c].quaternion[1], a[c].quaternion[2], a[c].quaternion[3], a[c].sightQuaternion[0], a[c].sightQuaternion[1], a[c].sightQuaternion[2], a[c].sightQuaternion[3], a[c].velocity[0], a[c].velocity[1], a[c].velocity[2], a[c].IsMoving[0], a[c].hp[0])
     }
   })
 }, syncKey:function() {
@@ -731,13 +737,17 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   void 0 === this.players[this.myPnum] || void 0 === this.myPnum || (0 != this.players[this.myPnum].keycode ? (this.socket.emit("k", this.players[this.myPnum].keycode), this.players[this.myPnum].updateInput(this.codeEmitter)) : 0 == this.players[this.myPnum].keycode && 0 != this.lastKeycode && this.socket.emit("k", 0), this.lastKeycode = this.players[this.myPnum].keycode)
 }, animate:function() {
   this.delta = this.clock.getDelta();
-  requestAnimationFrame(this.animate.bind(this));
-  for(var b = 0;b < this.totalPlayers;b++) {
-    this.players[b].physicAndGraphicUpdate(this.delta), this.ais[b].physicAndGraphicUpdate(this.delta)
+  if(0 > this.players[this.myPnum].hp) {
+    alert("you are dead!")
+  }else {
+    requestAnimationFrame(this.animate.bind(this));
+    for(var b = 0;b < this.totalPlayers;b++) {
+      this.players[b].physicAndGraphicUpdate(this.delta), this.ais[b].physicAndGraphicUpdate(this.delta)
+    }
+    this.cameraControls.update();
+    this.render();
+    this.stats.update()
   }
-  this.cameraControls.update();
-  this.render();
-  this.stats.update()
 }, render:function() {
   this.renderer.render(this.scene, this.camera)
 }};

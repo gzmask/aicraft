@@ -69,7 +69,7 @@ AICRAFT.GameObject.prototype = {
 	},	
 
 	//sets the physic states of this object
-	setPos: function(AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz,im) {
+	setPos: function(AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz,im,hp) {
 		x = parseFloat(x);
 		y = parseFloat(y);
 		z = parseFloat(z);
@@ -95,6 +95,7 @@ AICRAFT.GameObject.prototype = {
 		this.quaternion.y = qy;
 		this.quaternion.z = qz;
 		this.quaternion.w = qw;
+        this.hp = hp;
 	},
 
 	//called by client

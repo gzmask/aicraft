@@ -193,7 +193,8 @@ AICRAFT.ClientEngine.prototype = {
 					players[i].velocity[0],
 					players[i].velocity[1],
 					players[i].velocity[2],
-					players[i].IsMoving[0]);
+					players[i].IsMoving[0],
+					players[i].hp[0]);
 			};
 		});
 		self.socket.on('a', function(data) {
@@ -214,7 +215,8 @@ AICRAFT.ClientEngine.prototype = {
 					ais[i].velocity[0],
 					ais[i].velocity[1],
 					ais[i].velocity[2],
-					ais[i].IsMoving[0]);
+					ais[i].IsMoving[0],
+					ais[i].hp[0]);
 			};
 		});
 	},
@@ -244,14 +246,18 @@ AICRAFT.ClientEngine.prototype = {
 		this.delta = this.clock.getDelta();
 
 		var self = this;
+        if (self.players[self.myPnum].hp < 0) {
+            alert("you are dead!");    
+            return;
+        };
 
 		requestAnimationFrame(self.animate.bind(self));
 
 		// update graphics
-		(function(){ for (var i=0; i<self.totalPlayers; i++) {
-			self.players[i].physicAndGraphicUpdate(self.delta);
-			self.ais[i].physicAndGraphicUpdate(self.delta);
-		}})();
+        (function(){ for (var i=0; i<self.totalPlayers; i++) {
+            self.players[i].physicAndGraphicUpdate(self.delta);
+            self.ais[i].physicAndGraphicUpdate(self.delta);
+        }})();
 
 		// update camera controls
 		self.cameraControls.update();

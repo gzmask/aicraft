@@ -63,6 +63,9 @@ AICRAFT.Ai.prototype.buildPhysic = function(AmmoIn, dynamicsWorld) {
  */
 AICRAFT.Ai.prototype.physicUpdate = function() {
 	var self = this;
+    if (self.hp < 1) {
+        self.phybody.setUserPointer(-1);
+        return;}
 	AICRAFT.GameObject.prototype.physicUpdate.call(self, self.dynamicsWorld);
 	//matches the current sight position
 	var sight_quat = new self.Ammo.btQuaternion(self.sight.quaternion.x,
@@ -162,7 +165,7 @@ AICRAFT.Ai.prototype.feedbackVector = function(start, end) {
     var result = end.op_sub(start);
     result.normalize();
     result.op_mul(this.weaponForce);
-    result.setY(result.getY()+0.3*this.weaponForce);
+    result.setY(result.getY()+0.2*this.weaponForce);
     return result;
 };
 

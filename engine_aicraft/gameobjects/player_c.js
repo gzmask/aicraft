@@ -87,7 +87,7 @@ AICRAFT.Player.prototype.handleKeyDown = function(event, self) {
 		self.keycode = self.keycode | 16;
 	} else if (String.fromCharCode(event.keyCode) == "Q") {
 		self.keycode = self.keycode | 32;
-	} else if (event.keyCode == 18/*control key*/) {
+	} else if (event.keyCode == 18/*alt key*/) {
 		self.keycode = self.keycode | 64;
 	};
 };
@@ -112,7 +112,7 @@ AICRAFT.Player.prototype.handleKeyUp = function(event, self) {
 
 AICRAFT.Player.prototype.updateInput = function(codeEmitter) {
 	if (AICRAFT.ClientEngine.key(this.keycode,"code")) {
-			codeEmitter.fire();}
+			codeEmitter.request();}
 };
 
 AICRAFT.Player.JSONloader = function(self, url, mesh, scene, color, THREE, visible, cb) {

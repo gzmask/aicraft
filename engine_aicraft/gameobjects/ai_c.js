@@ -70,6 +70,8 @@ AICRAFT.Ai.prototype.buildMesh = function(THREE, scene, color) {
 AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(delta) {
 	if (this.mesh === undefined) {
 		return;}
+    if (this.hp < 1) {
+        return;}
 	//get deltaPos
 	this.applyAnimation(this.mesh_t, this.mesh_w);
 
@@ -115,7 +117,7 @@ AICRAFT.Ai.prototype.deltaPos = function(px,x,pz,z){
 /**
  * set position of current ai
  */
-AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,vx,vy,vz,im) {
+AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,vx,vy,vz,im,hp) {
 	x = parseFloat(x);
 	y = parseFloat(y);
 	z = parseFloat(z);
@@ -130,7 +132,7 @@ AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,
 	vx = parseFloat(vx);
 	vy = parseFloat(vy);
 	vz = parseFloat(vz);
-	AICRAFT.GameObject.prototype.setPos.call(this,AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz,im);
+	AICRAFT.GameObject.prototype.setPos.call(this,AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz,im,hp);
 	this.sight.quaternion.x = sqx;
 	this.sight.quaternion.y = sqy;
 	this.sight.quaternion.z = sqz;

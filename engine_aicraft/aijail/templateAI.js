@@ -1,3 +1,10 @@
+AICRAFT.ai_name_to_replace.prototype.run = function() {
+};
+
+AICRAFT.ai_name_to_replace.prototype.onSightFound = function(event) {
+    this.body.fireAt(event.position[0],event.position[1],event.position[2]);
+};
+
 /** Entry point function : AICRAFT.[ai name].prototype.run
  * When AI sees something, function AICRAFT.[ai name].prototype.onSightFound is executed : AICRAFT.[ai name].prototype.run
  * 
@@ -11,19 +18,15 @@
  * this.body.turnRight(degree, cb)
  * 
  * Sight: 
- * lookAt(to, cb)
- * lookLeft(degree, cb)
- * lookRight(degree, cb)
+ * this.body.lookAt(to, cb)
+ * this.body.lookLeft(degree, cb)
+ * this.body.lookRight(degree, cb)
  * 
  * Weapon:
- * fireAt(x, y, z, fn_cb)
+ * this.body.fireAt(x, y, z, fn_cb)
  * 
  * Event Object in onSightFound function:
  * event.position is an array[x,y,z]
  * event.tag is the object ID of the discovered Object.
  */
-AICRAFT.ai_name_to_replace.prototype.run = function() {
-};
 
-AICRAFT.ai_name_to_replace.prototype.onSightFound = function(event) {
-};
