@@ -103,9 +103,7 @@ AICRAFT.Ai.prototype.buildPhysic = function(b, a) {
   this.sight.lines = AICRAFT.Ai.getSight(0, 0, 0, 0, 0, -1, this.sight.range, 60, 10, this.Ammo, !0)
 };
 AICRAFT.Ai.prototype.physicUpdate = function() {
-  if(1 > this.hp) {
-    this.phybody.setUserPointer(-1)
-  }else {
+  if(!(1 > this.hp)) {
     AICRAFT.GameObject.prototype.physicUpdate.call(this, this.dynamicsWorld);
     var b = new this.Ammo.btQuaternion(this.sight.quaternion.x, this.sight.quaternion.y, this.sight.quaternion.z, this.sight.quaternion.w), a = new this.Ammo.btTransform;
     a.setIdentity();
@@ -144,6 +142,7 @@ AICRAFT.Ai.prototype.fireAt = function(b, a, c, d) {
         e.objects[h].phybody.activate();
         e.objects[h].phybody.applyCentralImpulse(e.feedbackVector(f, g).op_mul(1.5));
         e.objects[h].hp -= e.weaponDamage;
+        0 > e.objects[h].hp && e.objects[h].phybody.setUserPointer(-1);
         console.log("hit! getUserPointer:" + h);
         console.log("it has hp of:" + e.objects[h].hp)
       }, 300);
@@ -760,7 +759,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   var e = new THREE.Quaternion;
   (function() {
     for(var c = 0;c < a.totalPlayers;c++) {
-      e.setFromEuler(new THREE.Vector3(-30, -20, 0)), a.players[c] = new AICRAFT.Player(b.players.bindings[c].position[0], b.players.bindings[c].position[1], b.players.bindings[c].position[2], b.players.bindings[c].quaternion[0], b.players.bindings[c].quaternion[1], b.players.bindings[c].quaternion[2], b.players.bindings[c].quaternion[3]), a.players[c].IsClient = !0, a.players[c].buildMesh(THREE, a.scene, a.colors[c]), e.setFromEuler(new THREE.Vector3(30, -20, 0)), a.ais[c] = new AICRAFT.Ai(b.ais.bindings[c].position[0], 
+      e.setFromEuler(new THREE.Vector3(-30, -20, 0)), a.players[c] = new AICRAFT.Player(b.players.bindings[c].position[0], b.players.bindings[c].position[1], b.players.bindings[c].position[2], b.players.bindings[c].quaternion[0], b.players.bindings[c].quaternion[1], b.players.bindings[c].quaternion[2], b.players.bindings[c].quaternion[3]), a.players[c].IsClient = !0, a.players[c].buildMesh(THREE, a.scene, a.colors[c], c === a.myPnum), e.setFromEuler(new THREE.Vector3(30, -20, 0)), a.ais[c] = new AICRAFT.Ai(b.ais.bindings[c].position[0], 
       b.ais.bindings[c].position[1], b.ais.bindings[c].position[2], b.ais.bindings[c].quaternion[0], b.ais.bindings[c].quaternion[1], b.ais.bindings[c].quaternion[2], b.ais.bindings[c].quaternion[3]), a.ais[c].IsClient = !0, a.ais[c].buildMesh(THREE, a.scene, a.colors[c])
     }
   })();
@@ -827,8 +826,8 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   void 0 === this.players[this.myPnum] || void 0 === this.myPnum || (0 != this.players[this.myPnum].keycode ? (this.socket.emit("k", this.players[this.myPnum].keycode), this.players[this.myPnum].updateInput(this.codeEmitter)) : 0 == this.players[this.myPnum].keycode && 0 != this.lastKeycode && this.socket.emit("k", 0), this.lastKeycode = this.players[this.myPnum].keycode)
 }, animate:function() {
   this.delta = this.clock.getDelta();
-  if(0 > this.players[this.myPnum].hp) {
-    alert("you are dead!")
+  if(0 > this.players[this.myPnum].hp || 0 > this.ais[this.myPnum].hp) {
+    alert("your tream have lost!")
   }else {
     requestAnimationFrame(this.animate.bind(this));
     for(var b = 0;b < this.totalPlayers;b++) {

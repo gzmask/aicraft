@@ -20,24 +20,26 @@ AICRAFT.Player = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.codeUploading = false;
 	this.mesh_w = undefined;
 	this.mesh_t = undefined;
+    this.IsMe = false;
 };
 
 AICRAFT.Player.prototype = new AICRAFT.GameObject();
 AICRAFT.Player.prototype.constructor = AICRAFT.Player;
 
 //called by client
-AICRAFT.Player.prototype.buildMesh = function(THREE, scene, color) {
+AICRAFT.Player.prototype.buildMesh = function(THREE, scene, color, im) {
 	var self = this;
+    self.IsMe = im;
 	
-	//calls super method
-	//AICRAFT.GameObject.prototype.buildMesh.call(this,THREE, scene);
 	self.mesh = AICRAFT.Player.JSONloader(self,"asset/rat_turn.js", self.mesh_t, scene, color, THREE, false, function(){
 		self.mesh_t = self.mesh;
-		console.log("turn:"+self.mesh_t);
+		//console.log("turn:"+self.mesh_t);
 	});
 	self.mesh = AICRAFT.Player.JSONloader(self,"asset/rat_walk.js", self.mesh_w, scene, color, THREE, true, function(){
 		self.mesh_w = self.mesh;
-		console.log("walk:"+self.mesh_w);
+		//console.log("walk:"+self.mesh_w);
+        //calls super method
+        AICRAFT.GameObject.prototype.buildMesh.call(self,THREE, scene, color, im);
 	});
 
 };
@@ -45,9 +47,13 @@ AICRAFT.Player.prototype.buildMesh = function(THREE, scene, color) {
 AICRAFT.Player.prototype.physicAndGraphicUpdate = function(delta) {
 	if (this.mesh === undefined) {
 		return;}
+    if (this.hp < 1) {
+        return;}
 	//get deltaPos
 	this.applyAnimation(this.mesh_t, this.mesh_w);
 
+    AICRAFT.GameObject.prototype.physicAndGraphicUpdate.call(this);
+    /*
 	this.mesh.position.x = this.position.x;
 	this.mesh.position.y = this.position.y;
 	this.mesh.position.z = this.position.z;
@@ -56,9 +62,12 @@ AICRAFT.Player.prototype.physicAndGraphicUpdate = function(delta) {
 	this.mesh.quaternion.y = this.quaternion.y;
 	this.mesh.quaternion.z = this.quaternion.z;
 	this.mesh.quaternion.w = this.quaternion.w;
+    */
 	this.mesh.updateAnimation(1000*delta);
 };
 
+/** check IsMoving boolean, if true, switch on walking animation, else use standing animation
+ */
 AICRAFT.Player.prototype.applyAnimation = function(mesh_t, mesh_w){
 	var self = this;
 	if (self.IsMoving === true) {

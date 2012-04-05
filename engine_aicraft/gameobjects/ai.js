@@ -64,7 +64,6 @@ AICRAFT.Ai.prototype.buildPhysic = function(AmmoIn, dynamicsWorld) {
 AICRAFT.Ai.prototype.physicUpdate = function() {
 	var self = this;
     if (self.hp < 1) {
-        self.phybody.setUserPointer(-1);
         return;}
 	AICRAFT.GameObject.prototype.physicUpdate.call(self, self.dynamicsWorld);
 	//matches the current sight position
@@ -137,6 +136,9 @@ AICRAFT.Ai.prototype.fireAt = function(x,y,z, fn_cb) {
             self.objects[ptrInd].phybody.activate();
             self.objects[ptrInd].phybody.applyCentralImpulse(self.feedbackVector(start,end).op_mul(1.5));
             self.objects[ptrInd].hp-=self.weaponDamage;
+            if (self.objects[ptrInd].hp < 0) {
+                self.objects[ptrInd].phybody.setUserPointer(-1);
+            };
             console.log('hit! getUserPointer:'+ ptrInd);
             console.log('it has hp of:'+self.objects[ptrInd].hp);
         }, 300);

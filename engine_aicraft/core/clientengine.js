@@ -96,7 +96,8 @@ AICRAFT.ClientEngine.prototype = {
 					socket.players.bindings[i].quaternion[2], 
 					socket.players.bindings[i].quaternion[3]);
 			self.players[i].IsClient = true;
-			self.players[i].buildMesh(THREE, self.scene, self.colors[i]);
+            var im = i === self.myPnum;
+			self.players[i].buildMesh(THREE, self.scene, self.colors[i], im);
 
 			//construct ais
 			quat.setFromEuler(new THREE.Vector3(30, -20, 0));
@@ -111,6 +112,7 @@ AICRAFT.ClientEngine.prototype = {
 			self.ais[i].IsClient = true;
 			self.ais[i].buildMesh(THREE, self.scene, self.colors[i]);
 		}})();
+
 
 		// create a camera control
 		//this.cameraControls	= new THREEx.DragPanControls(this.camera);
@@ -246,8 +248,8 @@ AICRAFT.ClientEngine.prototype = {
 		this.delta = this.clock.getDelta();
 
 		var self = this;
-        if (self.players[self.myPnum].hp < 0) {
-            alert("you are dead!");    
+        if ((self.players[self.myPnum].hp < 0) || (self.ais[self.myPnum].hp < 0)) {
+            alert("your tream have lost!");    
             return;
         };
 

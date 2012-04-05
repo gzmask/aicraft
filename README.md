@@ -2,17 +2,18 @@ Tasks:
 
 =========== To-Do:  ==============
 	
-	design fault by having user submitted ai code running in server process. Using seperated node process can save massive security checking and prevents server crash.
-	can anyone explain to me the rough idea of how to combine character animations of walking and headbobing ? chandlerp: gzmask: if you have the two morph targets setup you can animate them separately: material.morphTargetInfluences[0] = .5 // walking chandlerp: material.morphTargetInfluences[1] = .2 // head bobbing chandlerp: animate the influence values between 0 and 1 at whatever pace fits
-	sighting onScanned event can make use of rayCastTest only client side
-	raycast with delay can be used for bullets: http://bulletphysics.org/mediawiki-1.5.8/index.php/Using_RayTest
-	ai event loops need to be terminated once newer version of user code is commited. Probably use class variables
-	code emittor options: gpl.internetconnection.net/vi/ or ssh or GateOne
+    Add health bar using lines/ribbons/etc.
+    Change the theme to have TRON feeling
+    Use WebGL panorama for background
 	Submit first level by Feb 28th at http://www.indiecade.com/submissions 
-	use pointer lock API for FPS control and prevent user from copy/paste
 
 ============== done ===============
 
+	code emittor done with ACE editor
+	ai event loops need to be terminated once newer version of user code is commited. Probably use class variables
+	can anyone explain to me the rough idea of how to combine character animations of walking and headbobing ? chandlerp: gzmask: if you have the two morph targets setup you can animate them separately: material.morphTargetInfluences[0] = .5 // walking chandlerp: material.morphTargetInfluences[1] = .2 // head bobbing chandlerp: animate the influence values between 0 and 1 at whatever pace fits
+	sighting onScanned event can make use of rayCastTest only client side
+	raycast with delay can be used for bullets: http://bulletphysics.org/mediawiki-1.5.8/index.php/Using_RayTest
 	eval of user ai code can not crash the core engines. First insigh is try...catch..., but this may need web workers.
 	implement ai code interface on client side
 	implement code emitter using bullet constraints, such that when uploaidng code, player is freezed and dragged by the A.I.
@@ -39,6 +40,8 @@ Tasks:
 
 ============ backlog ==============
 
+	use pointer lock API for FPS control and prevent user from copy/paste
+	design fault by having user submitted ai code running in server process. Using seperated node process can save massive security checking and prevents server crash.
 	reduce network load for area where player and ai can not see
 	narrow the field of view to be about the same as what AI sees using fogs
 	make THREE.js works in node.js
