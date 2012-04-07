@@ -16,6 +16,7 @@ AICRAFT.Player = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.maxSpeed = 20;
 	this.acceleration = 4;
 	this.connected = false;
+	this.connecting = false;
 	this.keycode = 0;
 	this.codeUploading = false;
 };

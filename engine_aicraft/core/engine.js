@@ -93,10 +93,13 @@ AICRAFT.Engine.prototype = {
 	 */
 	networkInit: function(socket) {
 		var self = this;
+		var connectingPnum = AICRAFT.Engine.getNextAvailablePnum(self.players);
+		if (connectingPnum !== -1)
+			self.players[connectingPnum].connecting = true;
 		//tell client total players
-		socket.emit('totalPlayers', this.totalPlayers);
+		socket.emit('totalPlayers', self.totalPlayers);
 		//tell client connected players
-		socket.emit('connect', AICRAFT.Engine.getNextAvailablePnum(this.players));
+		socket.emit('connect', connectingPnum);
 		socket.on('connected', function(data) {
 			var Pnum = data[0];
 			self.ais[Pnum].name = data[1];
@@ -105,6 +108,7 @@ AICRAFT.Engine.prototype = {
 			};
 			console.log("Conected players:" + Pnum);
 			self.players[Pnum].connected = true;
+			self.players[Pnum].connecting = false;
 			self.aiEngine.initAI(self.ais[Pnum], self.ais[Pnum].name);
 			socket.set("Pnum", Pnum);
 		});
@@ -303,11 +307,10 @@ AICRAFT.Engine.extractPacket = function(packet){
  * @return the available index for the player array, or -1 if nothing available
  */
 AICRAFT.Engine.getNextAvailablePnum = function(players) {
-	if (players === undefined) {
-		return -1;
-	}
+	/*if (players === undefined) {
+		return -1;}*/
 	for (var i = 0; i<players.length; i++) {
-		if (!players[i].connected) {
+		if (!players[i].connected && !players[i].connecting) {
 			return i;
 		}
 	}

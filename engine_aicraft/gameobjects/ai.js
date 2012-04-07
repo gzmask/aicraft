@@ -140,8 +140,8 @@ AICRAFT.Ai.prototype.fireAt = function(x,y,z, fn_cb) {
                 self.objects[ptrInd].phybody.setUserPointer(-1);
                 return;
             };
-            console.log('hit! getUserPointer:'+ ptrInd);
-            console.log('it has hp of:'+self.objects[ptrInd].hp);
+            //console.log('hit! getUserPointer:'+ ptrInd);
+            //console.log('it has hp of:'+self.objects[ptrInd].hp);
         }, 300);
 		setTimeout(function(){
 			self.weaponLock = false;

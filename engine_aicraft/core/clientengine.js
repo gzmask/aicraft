@@ -163,9 +163,6 @@ AICRAFT.ClientEngine.prototype = {
 					init_cb(self.socket);
 					self.players[self.myPnum].connected = true;
 					var ai_name = "aicraft"+self.myPnum.toString();
-					do {
-						prompt("what is the name of your AI?", ai_name);} 
-					while (self.aiNameExist(ai_name) === true );
 					self.ais[self.myPnum].name = ai_name;
 					//finished reading and reported connected
 					self.socket.emit('connected', [self.myPnum, self.ais[self.myPnum].name]);
@@ -174,6 +171,12 @@ AICRAFT.ClientEngine.prototype = {
 					syncKey_cb();
 				} else {
 					alert('game is full');
+					/* observe mode
+					init_cb(self.socket);
+					self.players[0].connected = true;
+					animate_cb();
+					syncPos_cb();
+					*/
 				}
 			});
 		});
