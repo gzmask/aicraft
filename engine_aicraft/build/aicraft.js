@@ -787,7 +787,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
     d.socket.players = AICRAFT.Engine.extractPacket(f);
     d.socket.on("ai", function(f) {
       d.socket.ais = AICRAFT.Engine.extractPacket(f);
-      -1 != d.myPnum ? (b(d.socket), d.players[d.myPnum].connected = !0, d.ais[d.myPnum].name = "aicraft" + d.myPnum.toString(), d.socket.emit("connected", [d.myPnum, d.ais[d.myPnum].name]), a(), c(), e()) : alert("game is full")
+      -1 != d.myPnum ? (b(d.socket), d.players[d.myPnum].connected = !0, d.ais[d.myPnum].name = "aicraft" + d.myPnum.toString(), d.socket.emit("connected", [d.myPnum, d.ais[d.myPnum].name]), a(), c(), e()) : (alert("game is full"), d.myPnum = 0, b(d.socket), d.players[0].connected = !0, a(), c())
     })
   })
 }, syncPos:function() {

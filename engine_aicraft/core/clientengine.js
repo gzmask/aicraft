@@ -171,11 +171,12 @@ AICRAFT.ClientEngine.prototype = {
 					syncKey_cb();
 				} else {
 					alert('game is full');
-					/* observe mode
+					self.myPnum = 0;
 					init_cb(self.socket);
 					self.players[0].connected = true;
 					animate_cb();
 					syncPos_cb();
+					/* observe mode
 					*/
 				}
 			});
