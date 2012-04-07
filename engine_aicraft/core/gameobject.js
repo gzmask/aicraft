@@ -35,6 +35,10 @@ AICRAFT.GameObject = function (x,y,z, qx, qy, qz, qw) {
 	this.IsClient = false;
 	this.dynamicsWorld = undefined;
 	this.IsMoving = false;
+	/*
+	 * pointer to an array of all objects in the game
+	 */
+	this.objects = undefined;
 };
 
 AICRAFT.GameObject.prototype = {

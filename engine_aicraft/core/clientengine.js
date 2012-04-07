@@ -18,6 +18,7 @@ AICRAFT.ClientEngine = function () {
 	this.ground = undefined;
 	this.totalPlayers = undefined;
 	this.socket = undefined;
+	this.observer = false;
 	//number represents my player in player array
 	this.myPnum = undefined;
 	this.players = new Array();
@@ -96,7 +97,8 @@ AICRAFT.ClientEngine.prototype = {
 					socket.players.bindings[i].quaternion[2], 
 					socket.players.bindings[i].quaternion[3]);
 			self.players[i].IsClient = true;
-			self.players[i].buildMesh(THREE, self.scene, self.colors[i]);
+            var im = i === self.myPnum;
+			self.players[i].buildMesh(THREE, self.scene, self.colors[i], im);
 
 			//construct ais
 			quat.setFromEuler(new THREE.Vector3(30, -20, 0));
@@ -111,6 +113,7 @@ AICRAFT.ClientEngine.prototype = {
 			self.ais[i].IsClient = true;
 			self.ais[i].buildMesh(THREE, self.scene, self.colors[i]);
 		}})();
+
 
 		// create a camera control
 		//this.cameraControls	= new THREEx.DragPanControls(this.camera);
@@ -161,9 +164,6 @@ AICRAFT.ClientEngine.prototype = {
 					init_cb(self.socket);
 					self.players[self.myPnum].connected = true;
 					var ai_name = "aicraft"+self.myPnum.toString();
-					do {
-						prompt("what is the name of your AI?", ai_name);} 
-					while (self.aiNameExist(ai_name) === true );
 					self.ais[self.myPnum].name = ai_name;
 					//finished reading and reported connected
 					self.socket.emit('connected', [self.myPnum, self.ais[self.myPnum].name]);
@@ -171,7 +171,13 @@ AICRAFT.ClientEngine.prototype = {
 					syncPos_cb();
 					syncKey_cb();
 				} else {
-					alert('game is full');
+					// observe mode
+					alert('This game is already full, entering observer mode.');
+					self.observer = true;
+					self.myPnum = 0;
+					init_cb(self.socket);
+					animate_cb();
+					syncPos_cb();
 				}
 			});
 		});
@@ -192,7 +198,9 @@ AICRAFT.ClientEngine.prototype = {
 					players[i].quaternion[3],
 					players[i].velocity[0],
 					players[i].velocity[1],
-					players[i].velocity[2]);
+					players[i].velocity[2],
+					players[i].IsMoving[0],
+					players[i].hp[0]);
 			};
 		});
 		self.socket.on('a', function(data) {
@@ -213,7 +221,8 @@ AICRAFT.ClientEngine.prototype = {
 					ais[i].velocity[0],
 					ais[i].velocity[1],
 					ais[i].velocity[2],
-					ais[i].IsMoving[0]);
+					ais[i].IsMoving[0],
+					ais[i].hp[0]);
 			};
 		});
 	},
@@ -243,14 +252,18 @@ AICRAFT.ClientEngine.prototype = {
 		this.delta = this.clock.getDelta();
 
 		var self = this;
+        if ((self.players[self.myPnum].hp < 1) || (self.ais[self.myPnum].hp < 1)) {
+            alert("your tream have lost!");    
+            return;
+        };
 
 		requestAnimationFrame(self.animate.bind(self));
 
 		// update graphics
-		(function(){ for (var i=0; i<self.totalPlayers; i++) {
-			self.players[i].physicAndGraphicUpdate();
-			self.ais[i].physicAndGraphicUpdate(self.delta);
-		}})();
+        (function(){ for (var i=0; i<self.totalPlayers; i++) {
+            self.players[i].physicAndGraphicUpdate(self.delta);
+            self.ais[i].physicAndGraphicUpdate(self.delta);
+        }})();
 
 		// update camera controls
 		self.cameraControls.update();

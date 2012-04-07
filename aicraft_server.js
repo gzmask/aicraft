@@ -34,11 +34,11 @@
 	
 	engine = new AICRAFT.Engine();
 	engine.init(app, Ammo, aiengine);
-	engine.syncPos(io.sockets);//async
-	engine.animate();//async
+	engine.syncPos(io.sockets);//async, game position info sync loop
+	engine.animate();//async, physics loop
 	io.sockets.on('connection', function (socket) {
 		engine.networkInit(socket);//async
-		engine.syncKey(socket, Ammo);//async
+		engine.syncKey(socket, Ammo);//async, user control sync loop
 	});
 
 }).call(this);

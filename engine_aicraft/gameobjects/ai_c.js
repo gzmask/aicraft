@@ -26,7 +26,6 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.name = undefined;
 	this.mesh_w = undefined;
 	this.mesh_t = undefined;
-	this.IsMoving = false;
 };
 
 AICRAFT.Ai.prototype = new AICRAFT.GameObject();
@@ -37,15 +36,15 @@ AICRAFT.Ai.prototype.constructor = AICRAFT.Ai;
 AICRAFT.Ai.prototype.buildMesh = function(THREE, scene, color) {
 	var self = this;
 	
-	//calls super method
-	//AICRAFT.GameObject.prototype.buildMesh.call(this,THREE, scene);
 	self.mesh = AICRAFT.Ai.JSONloader(self,"asset/rat_turn.js", self.mesh_t, scene, color, THREE, false, function(){
 		self.mesh_t = self.mesh;
-		console.log("turn:"+self.mesh_t);
+		//console.log("turn:"+self.mesh_t);
 	});
 	self.mesh = AICRAFT.Ai.JSONloader(self,"asset/rat_walk.js", self.mesh_w, scene, color, THREE, true, function(){
 		self.mesh_w = self.mesh;
-		console.log("walk:"+self.mesh_w);
+		//console.log("walk:"+self.mesh_w);
+        //calls super method
+        AICRAFT.GameObject.prototype.buildMesh.call(self,THREE, scene, color);
 	});
 
 	//build sightMesh ray
@@ -64,6 +63,7 @@ AICRAFT.Ai.prototype.buildMesh = function(THREE, scene, color) {
 	self.sightMesh.quaternion.z = self.quaternion.z;
 	self.sightMesh.quaternion.w = self.quaternion.w;
 	scene.add(self.sightMesh);
+
 };
 
 
@@ -71,17 +71,16 @@ AICRAFT.Ai.prototype.buildMesh = function(THREE, scene, color) {
 AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(delta) {
 	if (this.mesh === undefined) {
 		return;}
+    if (this.hp < 1) {
+        return;}
 	//get deltaPos
 	this.applyAnimation(this.mesh_t, this.mesh_w);
 
-	this.sightMesh.position.x = this.mesh.position.x = this.position.x;
-	this.sightMesh.position.y = this.mesh.position.y = this.position.y;
-	this.sightMesh.position.z = this.mesh.position.z = this.position.z;
+	this.sightMesh.position.x  = this.position.x;
+	this.sightMesh.position.y  = this.position.y;
+	this.sightMesh.position.z  = this.position.z;
 	
-	this.mesh.quaternion.x = this.quaternion.x;
-	this.mesh.quaternion.y = this.quaternion.y;
-	this.mesh.quaternion.z = this.quaternion.z;
-	this.mesh.quaternion.w = this.quaternion.w;
+    AICRAFT.GameObject.prototype.physicAndGraphicUpdate.call(this);
 	this.sightMesh.quaternion.x = this.sight.quaternion.x;
 	this.sightMesh.quaternion.y = this.sight.quaternion.y;
 	this.sightMesh.quaternion.z = this.sight.quaternion.z;
@@ -116,7 +115,7 @@ AICRAFT.Ai.prototype.deltaPos = function(px,x,pz,z){
 /**
  * set position of current ai
  */
-AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,vx,vy,vz,im) {
+AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,vx,vy,vz,im,hp) {
 	x = parseFloat(x);
 	y = parseFloat(y);
 	z = parseFloat(z);
@@ -131,8 +130,7 @@ AICRAFT.Ai.prototype.setPos = function(AmmoIn,x,y,z,qx,qy,qz,qw,sqx,sqy,sqz,sqw,
 	vx = parseFloat(vx);
 	vy = parseFloat(vy);
 	vz = parseFloat(vz);
-	AICRAFT.GameObject.prototype.setPos.call(this,AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz);
-	this.IsMoving = im;
+	AICRAFT.GameObject.prototype.setPos.call(this,AmmoIn,x,y,z,qx,qy,qz,qw,vx,vy,vz,im,hp);
 	this.sight.quaternion.x = sqx;
 	this.sight.quaternion.y = sqy;
 	this.sight.quaternion.z = sqz;

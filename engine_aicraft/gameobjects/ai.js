@@ -30,8 +30,17 @@ AICRAFT.Ai = function (x,y,z,qx,qy,qz,qw, AmmoIn) {
 	this.raycastLock = false;
 	this.weaponLock = false;
 	this.weaponRange = 100;
+	this.weaponForce = 20;
 	this.weaponDelay = 1000;
+    this.weaponDamage = 10;
 	this.name = undefined;
+	/*
+	 * points to the player after init
+	 */
+	this.owner = undefined;
+	/*
+	 * user defined function, not existed at init
+	 */
 	this.onSightFound = undefined;
 };
 
@@ -54,6 +63,8 @@ AICRAFT.Ai.prototype.buildPhysic = function(AmmoIn, dynamicsWorld) {
  */
 AICRAFT.Ai.prototype.physicUpdate = function() {
 	var self = this;
+    if (self.hp < 1) {
+        return;}
 	AICRAFT.GameObject.prototype.physicUpdate.call(self, self.dynamicsWorld);
 	//matches the current sight position
 	var sight_quat = new self.Ammo.btQuaternion(self.sight.quaternion.x,
@@ -90,7 +101,7 @@ AICRAFT.Ai.prototype.raycast = function(delay) {
 			self.raycastLock = true;
 			self.found(cb.get_m_hitPointWorld().getX(),
 					cb.get_m_hitPointWorld().getY(),
-					cb.get_m_hitPointWorld().getZ(), cb.get_m_collisionObject().getIslandTag());
+					cb.get_m_hitPointWorld().getZ(), cb.get_m_collisionObject().getUserPointer());
 			setTimeout(function(){
 				self.raycastLock = false;
 			}, delay);
@@ -119,8 +130,19 @@ AICRAFT.Ai.prototype.fireAt = function(x,y,z, fn_cb) {
 	self.dynamicsWorld.rayTest(start,end,cb);
 	if (cb.hasHit()) {
 		self.weaponLock = true;
+        var ptrInd = cb.get_m_collisionObject().getUserPointer();
 		//insert bullet hit stuff
-		console.log('hit! objectID:'+cb.get_m_collisionObject().getIslandTag());
+        AICRAFT.Ai.charge(self, start, end, function(){
+            self.objects[ptrInd].phybody.activate();
+            self.objects[ptrInd].phybody.applyCentralImpulse(self.feedbackVector(start,end).op_mul(1.5));
+            self.objects[ptrInd].hp-=self.weaponDamage;
+            if (self.objects[ptrInd].hp < 1) {
+                self.objects[ptrInd].phybody.setUserPointer(-1);
+                return;
+            };
+            //console.log('hit! getUserPointer:'+ ptrInd);
+            //console.log('it has hp of:'+self.objects[ptrInd].hp);
+        }, 300);
 		setTimeout(function(){
 			self.weaponLock = false;
 			if (fn_cb !== undefined) {fn_cb();}
@@ -129,11 +151,34 @@ AICRAFT.Ai.prototype.fireAt = function(x,y,z, fn_cb) {
 };
 
 /**
+ * charge function
+ */
+AICRAFT.Ai.charge = function(self, start, end, cb, delay) {
+    self.phybody.activate();
+    self.phybody.applyCentralImpulse(self.feedbackVector(start, end).op_mul(1.1));
+    setTimeout(function(){
+        cb();
+    },delay);
+};
+
+/**
+ * fire force feedback Vector caculator
+ */
+AICRAFT.Ai.prototype.feedbackVector = function(start, end) {
+    var result = end.op_sub(start);
+    result.normalize();
+    result.op_mul(this.weaponForce);
+    result.setY(result.getY()+0.2*this.weaponForce);
+    return result;
+};
+
+/**
  * binds the user found function to this instance
  */
 AICRAFT.Ai.prototype.found = function(x,y,z, tag) {
 	if (tag===-1){return;}
-	if (tag===this.owner.phybody.getIslandTag()) {return;}
+	//if (tag===this.owner.phybody.getIslandTag()) {return;}
+	if (tag===this.owner.phybody.getUserPointer()) {return;}
 	event = new Object();
 	event.position = [x, y, z];
 	event.tag = tag;
