@@ -18,6 +18,7 @@ AICRAFT.ClientEngine = function () {
 	this.ground = undefined;
 	this.totalPlayers = undefined;
 	this.socket = undefined;
+	this.observer = false;
 	//number represents my player in player array
 	this.myPnum = undefined;
 	this.players = new Array();
@@ -170,14 +171,13 @@ AICRAFT.ClientEngine.prototype = {
 					syncPos_cb();
 					syncKey_cb();
 				} else {
-					alert('game is full');
+					// observe mode
+					alert('This game is already full, entering observer mode.');
+					self.observer = true;
 					self.myPnum = 0;
 					init_cb(self.socket);
-					self.players[0].connected = true;
 					animate_cb();
 					syncPos_cb();
-					/* observe mode
-					*/
 				}
 			});
 		});

@@ -717,7 +717,9 @@ AICRAFT.ClientEngine = function() {
   this.keyFPS = 30;
   this.codeEmitter = this.cameraControls = this.camera = this.renderer = this.scene = this.stats = void 0;
   this.clock = new THREE.Clock;
-  this.myPnum = this.socket = this.totalPlayers = this.ground = void 0;
+  this.socket = this.totalPlayers = this.ground = void 0;
+  this.observer = !1;
+  this.myPnum = void 0;
   this.players = [];
   this.ais = [];
   this.lastKeycode = 0;
@@ -787,7 +789,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
     d.socket.players = AICRAFT.Engine.extractPacket(f);
     d.socket.on("ai", function(f) {
       d.socket.ais = AICRAFT.Engine.extractPacket(f);
-      -1 != d.myPnum ? (b(d.socket), d.players[d.myPnum].connected = !0, d.ais[d.myPnum].name = "aicraft" + d.myPnum.toString(), d.socket.emit("connected", [d.myPnum, d.ais[d.myPnum].name]), a(), c(), e()) : (alert("game is full"), d.myPnum = 0, b(d.socket), d.players[0].connected = !0, a(), c())
+      -1 != d.myPnum ? (b(d.socket), d.players[d.myPnum].connected = !0, d.ais[d.myPnum].name = "aicraft" + d.myPnum.toString(), d.socket.emit("connected", [d.myPnum, d.ais[d.myPnum].name]), a(), c(), e()) : (alert("This game is already full, entering observer mode."), d.observer = !0, d.myPnum = 0, b(d.socket), a(), c())
     })
   })
 }, syncPos:function() {
