@@ -253,7 +253,7 @@ AICRAFT.ClientEngine.prototype = {
 
 		var self = this;
         if ((self.players[self.myPnum].hp < 1) || (self.ais[self.myPnum].hp < 1)) {
-            alert("your tream have lost!");    
+            alert("your team have lost!");    
             return;
         };
 
