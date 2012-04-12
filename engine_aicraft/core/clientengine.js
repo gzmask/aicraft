@@ -28,6 +28,7 @@ AICRAFT.ClientEngine = function () {
 	this.colors = [0x7547FF, 0xF2B90F, 0x8B26EB];
 	this.starColors = [ 0xD1E077, 0xE0AD77, 0xBDE077, 0x77A5E0, 0x7A18DB];
 	this.uniforms = undefined;
+    this.attributes = undefined;
 };
 
 //proto methods
@@ -294,7 +295,24 @@ AICRAFT.ClientEngine.prototype = {
 		this.renderer.render( this.scene, this.camera );
 		this.uniforms.amplitude.value = 0.5 * Math.sin( 0.5 * time );
 		THREE.ColorUtils.adjustHSV(this.uniforms.color.value, 0.0005, 0, 0 );
-		
+
+        var nx, ny, nz, value;
+
+        for( var i = 0, il = this.attributes.displacement.value.length; i < il; i ++ ) {
+
+				nx = 0.3 * ( 0.5 - Math.random() );
+				ny = 0.3 * ( 0.5 - Math.random() );
+				nz = 0.3 * ( 0.5 - Math.random() );
+
+				value = this.attributes.displacement.value[ i ];
+
+				value.x += nx;
+				value.y += ny;
+				value.z += nz;
+
+		}
+
+		this.attributes.displacement.needsUpdate = true;
 	}
 };
 
@@ -361,6 +379,7 @@ AICRAFT.ClientEngine.generateBarriers = function(self, scene){
 
 	};
 
+	self.attributes = attributes;
 	self.uniforms = uniforms;
 
 	var shaderMaterial = new THREE.ShaderMaterial( {
@@ -379,40 +398,25 @@ AICRAFT.ClientEngine.generateBarriers = function(self, scene){
 
 	//replace with line Strips
 	var barriersGeo = new THREE.Geometry();
-	barriersGeo.vertices.push(
-		new THREE.Vertex(new THREE.Vector3(200,6,-200)),new THREE.Vertex(new THREE.Vector3(200,6,200)),
-		new THREE.Vertex(new THREE.Vector3(200,6,200)),new THREE.Vertex(new THREE.Vector3(-200,6,200)),
-		new THREE.Vertex(new THREE.Vector3(-200,6,200)),new THREE.Vertex(new THREE.Vector3(-200,6,-200)),
-		new THREE.Vertex(new THREE.Vector3(-200,6,-200)),new THREE.Vertex(new THREE.Vector3(200,6,-200)),
-		new THREE.Vertex(new THREE.Vector3(200,5,-200)),new THREE.Vertex(new THREE.Vector3(200,5,200)),
-		new THREE.Vertex(new THREE.Vector3(200,5,200)),new THREE.Vertex(new THREE.Vector3(-200,5,200)),
-		new THREE.Vertex(new THREE.Vector3(-200,5,200)),new THREE.Vertex(new THREE.Vector3(-200,5,-200)),
-		new THREE.Vertex(new THREE.Vector3(-200,5,-200)),new THREE.Vertex(new THREE.Vector3(200,5,-200)),
-		new THREE.Vertex(new THREE.Vector3(200,4,-200)),new THREE.Vertex(new THREE.Vector3(200,4,200)),
-		new THREE.Vertex(new THREE.Vector3(200,4,200)),new THREE.Vertex(new THREE.Vector3(-200,4,200)),
-		new THREE.Vertex(new THREE.Vector3(-200,4,200)),new THREE.Vertex(new THREE.Vector3(-200,4,-200)),
-		new THREE.Vertex(new THREE.Vector3(-200,4,-200)),new THREE.Vertex(new THREE.Vector3(200,4,-200)),
-		new THREE.Vertex(new THREE.Vector3(200,3,-200)),new THREE.Vertex(new THREE.Vector3(200,3,200)),
-		new THREE.Vertex(new THREE.Vector3(200,3,200)),new THREE.Vertex(new THREE.Vector3(-200,3,200)),
-		new THREE.Vertex(new THREE.Vector3(-200,3,200)),new THREE.Vertex(new THREE.Vector3(-200,3,-200)),
-		new THREE.Vertex(new THREE.Vector3(-200,3,-200)),new THREE.Vertex(new THREE.Vector3(200,3,-200)),
-		new THREE.Vertex(new THREE.Vector3(200,2,-200)),new THREE.Vertex(new THREE.Vector3(200,2,200)),
-		new THREE.Vertex(new THREE.Vector3(200,2,200)),new THREE.Vertex(new THREE.Vector3(-200,2,200)),
-		new THREE.Vertex(new THREE.Vector3(-200,2,200)),new THREE.Vertex(new THREE.Vector3(-200,2,-200)),
-		new THREE.Vertex(new THREE.Vector3(-200,2,-200)),new THREE.Vertex(new THREE.Vector3(200,2,-200)),
-		new THREE.Vertex(new THREE.Vector3(200,1,-200)),new THREE.Vertex(new THREE.Vector3(200,1,200)),
-		new THREE.Vertex(new THREE.Vector3(200,1,200)),new THREE.Vertex(new THREE.Vector3(-200,1,200)),
-		new THREE.Vertex(new THREE.Vector3(-200,1,200)),new THREE.Vertex(new THREE.Vector3(-200,1,-200)),
-		new THREE.Vertex(new THREE.Vector3(-200,1,-200)),new THREE.Vertex(new THREE.Vector3(200,1,-200)),
-		new THREE.Vertex(new THREE.Vector3(200,0,-200)),new THREE.Vertex(new THREE.Vector3(200,0,200)),
-		new THREE.Vertex(new THREE.Vector3(200,0,200)),new THREE.Vertex(new THREE.Vector3(-200,0,200)),
-		new THREE.Vertex(new THREE.Vector3(-200,0,200)),new THREE.Vertex(new THREE.Vector3(-200,0,-200)),
-		new THREE.Vertex(new THREE.Vector3(-200,0,-200)),new THREE.Vertex(new THREE.Vector3(200,0,-200)),
-		new THREE.Vertex(new THREE.Vector3(200,-1,-200)),new THREE.Vertex(new THREE.Vector3(200,-1,200)),
-		new THREE.Vertex(new THREE.Vector3(200,-1,200)),new THREE.Vertex(new THREE.Vector3(-200,-1,200)),
-		new THREE.Vertex(new THREE.Vector3(-200,-1,200)),new THREE.Vertex(new THREE.Vector3(-200,-1,-200)),
-		new THREE.Vertex(new THREE.Vector3(-200,-1,-200)),new THREE.Vertex(new THREE.Vector3(200,-1,-200))
-);	
+
+    function gvb (ar) {
+        for (var i = -2; i < 10; i++) {
+            for (var j = -200; j<=200; j+=10) {
+                ar.push(new THREE.Vertex(new THREE.Vector3(200,i,j)));
+            }
+            for (var j = 200; j>=-200; j-=10) {
+                ar.push(new THREE.Vertex(new THREE.Vector3(j,i,200)));
+            }
+            for (var j = 200; j>=-200; j-=10) {
+                ar.push(new THREE.Vertex(new THREE.Vector3(-200,i,j)));
+            }
+            for (var j = -200; j<=200; j+=10) {
+                ar.push(new THREE.Vertex(new THREE.Vector3(j,i,-200)));
+            }
+        }
+    };
+
+    gvb(barriersGeo.vertices);
 
 	barriersGeo.dynamic = true;
 
@@ -442,9 +446,9 @@ AICRAFT.ClientEngine.generateStars = function(scene, num, color){
 
 			for ( var i = 0; i < num; i ++ ) {
 
-				x = THREE.Math.randFloatSpread( 2000 );
-				y = THREE.Math.randFloatSpread( 2000 );
-				z = THREE.Math.randFloatSpread( 2000 );
+				x = THREE.Math.randFloatSpread( 1000 );
+				y = THREE.Math.randFloatSpread( 1000 );
+				z = THREE.Math.randFloatSpread( 1000 );
 
 				var p = new THREE.Vector3( x, y, z );
 				geo.vertices.push( new THREE.Vertex( p ) );

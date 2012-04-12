@@ -726,7 +726,7 @@ AICRAFT.ClientEngine = function() {
   this.lastKeycode = 0;
   this.colors = [7686143, 15907087, 9119467];
   this.starColors = [13754487, 14724471, 12443767, 7841248, 8001755];
-  this.uniforms = void 0
+  this.attributes = this.uniforms = void 0
 };
 AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:function(b) {
   var a = this;
@@ -833,7 +833,11 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   var b = 0.0010 * Date.now();
   this.renderer.render(this.scene, this.camera);
   this.uniforms.amplitude.value = 0.5 * Math.sin(0.5 * b);
-  THREE.ColorUtils.adjustHSV(this.uniforms.color.value, 5.0E-4, 0, 0)
+  THREE.ColorUtils.adjustHSV(this.uniforms.color.value, 5.0E-4, 0, 0);
+  for(var a, c, e, d = 0, f = this.attributes.displacement.value.length;d < f;d++) {
+    b = 0.3 * (0.5 - Math.random()), a = 0.3 * (0.5 - Math.random()), c = 0.3 * (0.5 - Math.random()), e = this.attributes.displacement.value[d], e.x += b, e.y += a, e.z += c
+  }
+  this.attributes.displacement.needsUpdate = !0
 }};
 AICRAFT.ClientEngine.coordHelper = function(b) {
   var a = new THREE.Geometry;
@@ -848,29 +852,37 @@ AICRAFT.ClientEngine.generateBarriers = function(b, a) {
   var c, e;
   e = {displacement:{type:"v3", value:[]}, customColor:{type:"c", value:[]}};
   c = {amplitude:{type:"f", value:5}, opacity:{type:"f", value:0.3}, color:{type:"c", value:new THREE.Color(16711680)}};
+  b.attributes = e;
   b.uniforms = c;
   c = new THREE.ShaderMaterial({uniforms:c, attributes:e, vertexShader:document.getElementById("vertexshader").textContent, fragmentShader:document.getElementById("fragmentshader").textContent, blending:THREE.AdditiveBlending, depthTest:!1, transparent:!0});
   c.linewidth = 1;
-  var d = new THREE.Geometry;
-  d.vertices.push(new THREE.Vertex(new THREE.Vector3(200, 6, -200)), new THREE.Vertex(new THREE.Vector3(200, 6, 200)), new THREE.Vertex(new THREE.Vector3(200, 6, 200)), new THREE.Vertex(new THREE.Vector3(-200, 6, 200)), new THREE.Vertex(new THREE.Vector3(-200, 6, 200)), new THREE.Vertex(new THREE.Vector3(-200, 6, -200)), new THREE.Vertex(new THREE.Vector3(-200, 6, -200)), new THREE.Vertex(new THREE.Vector3(200, 6, -200)), new THREE.Vertex(new THREE.Vector3(200, 5, -200)), new THREE.Vertex(new THREE.Vector3(200, 
-  5, 200)), new THREE.Vertex(new THREE.Vector3(200, 5, 200)), new THREE.Vertex(new THREE.Vector3(-200, 5, 200)), new THREE.Vertex(new THREE.Vector3(-200, 5, 200)), new THREE.Vertex(new THREE.Vector3(-200, 5, -200)), new THREE.Vertex(new THREE.Vector3(-200, 5, -200)), new THREE.Vertex(new THREE.Vector3(200, 5, -200)), new THREE.Vertex(new THREE.Vector3(200, 4, -200)), new THREE.Vertex(new THREE.Vector3(200, 4, 200)), new THREE.Vertex(new THREE.Vector3(200, 4, 200)), new THREE.Vertex(new THREE.Vector3(-200, 
-  4, 200)), new THREE.Vertex(new THREE.Vector3(-200, 4, 200)), new THREE.Vertex(new THREE.Vector3(-200, 4, -200)), new THREE.Vertex(new THREE.Vector3(-200, 4, -200)), new THREE.Vertex(new THREE.Vector3(200, 4, -200)), new THREE.Vertex(new THREE.Vector3(200, 3, -200)), new THREE.Vertex(new THREE.Vector3(200, 3, 200)), new THREE.Vertex(new THREE.Vector3(200, 3, 200)), new THREE.Vertex(new THREE.Vector3(-200, 3, 200)), new THREE.Vertex(new THREE.Vector3(-200, 3, 200)), new THREE.Vertex(new THREE.Vector3(-200, 
-  3, -200)), new THREE.Vertex(new THREE.Vector3(-200, 3, -200)), new THREE.Vertex(new THREE.Vector3(200, 3, -200)), new THREE.Vertex(new THREE.Vector3(200, 2, -200)), new THREE.Vertex(new THREE.Vector3(200, 2, 200)), new THREE.Vertex(new THREE.Vector3(200, 2, 200)), new THREE.Vertex(new THREE.Vector3(-200, 2, 200)), new THREE.Vertex(new THREE.Vector3(-200, 2, 200)), new THREE.Vertex(new THREE.Vector3(-200, 2, -200)), new THREE.Vertex(new THREE.Vector3(-200, 2, -200)), new THREE.Vertex(new THREE.Vector3(200, 
-  2, -200)), new THREE.Vertex(new THREE.Vector3(200, 1, -200)), new THREE.Vertex(new THREE.Vector3(200, 1, 200)), new THREE.Vertex(new THREE.Vector3(200, 1, 200)), new THREE.Vertex(new THREE.Vector3(-200, 1, 200)), new THREE.Vertex(new THREE.Vector3(-200, 1, 200)), new THREE.Vertex(new THREE.Vector3(-200, 1, -200)), new THREE.Vertex(new THREE.Vector3(-200, 1, -200)), new THREE.Vertex(new THREE.Vector3(200, 1, -200)), new THREE.Vertex(new THREE.Vector3(200, 0, -200)), new THREE.Vertex(new THREE.Vector3(200, 
-  0, 200)), new THREE.Vertex(new THREE.Vector3(200, 0, 200)), new THREE.Vertex(new THREE.Vector3(-200, 0, 200)), new THREE.Vertex(new THREE.Vector3(-200, 0, 200)), new THREE.Vertex(new THREE.Vector3(-200, 0, -200)), new THREE.Vertex(new THREE.Vector3(-200, 0, -200)), new THREE.Vertex(new THREE.Vector3(200, 0, -200)), new THREE.Vertex(new THREE.Vector3(200, -1, -200)), new THREE.Vertex(new THREE.Vector3(200, -1, 200)), new THREE.Vertex(new THREE.Vector3(200, -1, 200)), new THREE.Vertex(new THREE.Vector3(-200, 
-  -1, 200)), new THREE.Vertex(new THREE.Vector3(-200, -1, 200)), new THREE.Vertex(new THREE.Vector3(-200, -1, -200)), new THREE.Vertex(new THREE.Vector3(-200, -1, -200)), new THREE.Vertex(new THREE.Vector3(200, -1, -200)));
+  for(var d = new THREE.Geometry, f = d.vertices, g = -2;10 > g;g++) {
+    for(var h = -200;200 >= h;h += 10) {
+      f.push(new THREE.Vertex(new THREE.Vector3(200, g, h)))
+    }
+    for(h = 200;-200 <= h;h -= 10) {
+      f.push(new THREE.Vertex(new THREE.Vector3(h, g, 200)))
+    }
+    for(h = 200;-200 <= h;h -= 10) {
+      f.push(new THREE.Vertex(new THREE.Vector3(-200, g, h)))
+    }
+    for(h = -200;200 >= h;h += 10) {
+      f.push(new THREE.Vertex(new THREE.Vector3(h, g, -200)))
+    }
+  }
   d.dynamic = !0;
   c = new THREE.Line(d, c, THREE.LineStrip);
-  var d = c.geometry.vertices, f = e.displacement.value;
+  d = c.geometry.vertices;
+  f = e.displacement.value;
   e = e.customColor.value;
-  for(var g = 0;g < d.length;g++) {
+  for(g = 0;g < d.length;g++) {
     f[g] = new THREE.Vector3(0, 0, 0), e[g] = new THREE.Color(16777215), e[g].setHSV(g / d.length, 0.9, 0.9)
   }
   a.add(c)
 };
 AICRAFT.ClientEngine.generateStars = function(b, a, c) {
   for(var e, d, f, g = new THREE.Geometry, h = 0;h < a;h++) {
-    e = THREE.Math.randFloatSpread(2E3), d = THREE.Math.randFloatSpread(2E3), f = THREE.Math.randFloatSpread(2E3), e = new THREE.Vector3(e, d, f), g.vertices.push(new THREE.Vertex(e))
+    e = THREE.Math.randFloatSpread(1E3), d = THREE.Math.randFloatSpread(1E3), f = THREE.Math.randFloatSpread(1E3), e = new THREE.Vector3(e, d, f), g.vertices.push(new THREE.Vertex(e))
   }
   a = new THREE.ParticleSystem(g, new THREE.ParticleBasicMaterial({color:c}));
   b.add(a)
