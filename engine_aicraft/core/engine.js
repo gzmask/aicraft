@@ -185,7 +185,7 @@ AICRAFT.Engine.prototype = {
 		AICRAFT.requestAnimationFrame(function(){self.animate();}, self.animateFPS);
 
 		//wait till game is full
-		//if (AICRAFT.Engine.getNextAvailablePnum(self.players) !== -1) {return;}
+		if (AICRAFT.Engine.getNextAvailablePnum(self.players) !== -1) {return;}
 		
 		//update physics
 		self.dynamicsWorld.stepSimulation(1/self.phyFPS, 10);
