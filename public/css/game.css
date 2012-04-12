@@ -5,3 +5,8 @@ body, html {
   background-color: #f0f0f0;
   overflow: hidden;
 }
+
+.ace_line {
+  color: #fff;
+  background: rgba(0,0,0,0.6);
+};

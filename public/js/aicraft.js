@@ -315,7 +315,6 @@ AICRAFT.CodeEmitter = function(b, a, c, e, d) {
   this.switching = this.IsEnable = !1;
   this.editor = document.createElement("div");
   this.editor.id = "editor";
-  this.editor.style.background = "#999";
   this.editor.style.width = "80%";
   this.editor.style.height = "80%";
   this.editor.style.zIndex = "-3";
@@ -460,11 +459,13 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(b, a, c) {
   AICRAFT.requestAnimationFrame(function() {
     b.animate()
   }, b.animateFPS);
-  -1 === AICRAFT.Engine.getNextAvailablePnum(b.players) && (b.dynamicsWorld.stepSimulation(1 / b.phyFPS, 10), b.players.forEach(function(a) {
+  b.dynamicsWorld.stepSimulation(1 / b.phyFPS, 10);
+  b.players.forEach(function(a) {
     a.physicUpdate()
-  }), b.ais.forEach(function(a) {
+  });
+  b.ais.forEach(function(a) {
     a.physicUpdate()
-  }))
+  })
 }};
 AICRAFT.Engine.encryptedPacket = function(b) {
   var a = [];
@@ -638,7 +639,7 @@ AICRAFT.ClientEngine = function() {
 AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:function(b) {
   var a = this;
   if(Detector.webgl) {
-    this.renderer = new THREE.WebGLRenderer({antialias:!0, preserveDrawingBuffer:!0}), this.renderer.setClearColorHex(12303291, 1)
+    this.renderer = new THREE.WebGLRenderer({antialias:!0, preserveDrawingBuffer:!0}), this.renderer.setClearColorHex(3876615, 1)
   }else {
     return Detector.addGetWebGLMessage(), !0
   }
@@ -720,7 +721,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
 }, animate:function() {
   this.delta = this.clock.getDelta();
   if(1 > this.players[this.myPnum].hp || 1 > this.ais[this.myPnum].hp) {
-    alert("your tream have lost!")
+    alert("your team have lost!")
   }else {
     requestAnimationFrame(this.animate.bind(this));
     for(var b = 0;b < this.totalPlayers;b++) {

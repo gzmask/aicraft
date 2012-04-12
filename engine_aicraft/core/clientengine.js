@@ -40,7 +40,7 @@ AICRAFT.ClientEngine.prototype = {
 				antialias		: true,	// to get smoother output
 				preserveDrawingBuffer	: true	// to allow screenshot
 			});
-			this.renderer.setClearColorHex( 0xBBBBBB, 1 );
+			this.renderer.setClearColorHex( 0x3B2707, 1 );
 		} else {
 			Detector.addGetWebGLMessage();
 			return true;
