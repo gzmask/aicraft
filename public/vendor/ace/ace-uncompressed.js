@@ -15192,8 +15192,8 @@ define('ace/theme/textmate', ['require', 'exports', 'module' , 'pilot/dom'], fun
 \
 .ace-tm .ace_gutter {\
   width: 50px;\
-  background: #e8e8e8;\
-  color: #333;\
+  color: rgb(58, 237, 26);\
+  background: rgba(46,46,158,0.6);\
   overflow : hidden;\
 }\
 \
@@ -15203,7 +15203,7 @@ define('ace/theme/textmate', ['require', 'exports', 'module' , 'pilot/dom'], fun
 }\
 \
 .ace-tm .ace_gutter-layer .ace_gutter-cell {\
-  padding-right: 6px;\
+  padding-right: 1px;\
 }\
 \
 .ace-tm .ace_print_margin {\
@@ -15216,7 +15216,7 @@ define('ace/theme/textmate', ['require', 'exports', 'module' , 'pilot/dom'], fun
 }\
 \
 .ace-tm .ace_cursor {\
-  border-left: 2px solid black;\
+  border-left: 2px solid white;\
 }\
 \
 .ace-tm .ace_cursor.ace_overwrite {\

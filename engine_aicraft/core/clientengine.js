@@ -25,7 +25,7 @@ AICRAFT.ClientEngine = function () {
 	this.ais = new Array();
 	//dirty vars
 	this.lastKeycode = 0;
-	this.colors = [0x7547FF, 0xF2B90F, 0x8B26EB];
+	this.colors = [0x53F016, 0xF0E816, 0x8B26EB, 0x7547FF];
 	this.starColors = [ 0xD1E077, 0xE0AD77, 0xBDE077, 0x77A5E0, 0x7A18DB];
 	this.uniforms = undefined;
     this.attributes = undefined;
@@ -59,6 +59,9 @@ AICRAFT.ClientEngine.prototype = {
 
 		// create a scene
 		this.scene = new THREE.Scene();
+
+        //fog
+        this.scene.fog = new THREE.FogExp2( this.colors[3], 0.003 );
 
 		// put a camera in the scene
 		this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000 );

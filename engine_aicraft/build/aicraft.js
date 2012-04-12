@@ -724,7 +724,7 @@ AICRAFT.ClientEngine = function() {
   this.players = [];
   this.ais = [];
   this.lastKeycode = 0;
-  this.colors = [7686143, 15907087, 9119467];
+  this.colors = [5500950, 15788054, 9119467, 7686143];
   this.starColors = [13754487, 14724471, 12443767, 7841248, 8001755];
   this.attributes = this.uniforms = void 0
 };
@@ -743,6 +743,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   this.stats.domElement.style.bottom = "0px";
   document.body.appendChild(this.stats.domElement);
   this.scene = new THREE.Scene;
+  this.scene.fog = new THREE.FogExp2(this.colors[3], 0.0030);
   this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1E4);
   this.scene.add(this.camera);
   THREEx.WindowResize.bind(this.renderer, this.camera);

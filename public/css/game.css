@@ -7,6 +7,9 @@ body, html {
 }
 
 .ace_line {
-  color: #fff;
-  background: rgba(0,0,0,0.6);
-};
+  color: rgb(58, 237, 26);
+  background: rgba(46,46,158,0.6);
+}
+/*
+ * open ace-uncompress.js and search .ace-tm
+ */
