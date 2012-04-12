@@ -25,7 +25,9 @@ AICRAFT.ClientEngine = function () {
 	this.ais = new Array();
 	//dirty vars
 	this.lastKeycode = 0;
-	this.colors = [0x7547FF, 0xFF1414, 0x66CC00, 0x002EB8, 0x3D7AB8, 0x99CC33];
+	this.colors = [0x7547FF, 0xF2B90F, 0x8B26EB];
+	this.starColors = [ 0xD1E077, 0xE0AD77, 0xBDE077, 0x77A5E0, 0x7A18DB];
+	this.uniforms = undefined;
 };
 
 //proto methods
@@ -40,7 +42,7 @@ AICRAFT.ClientEngine.prototype = {
 				antialias		: true,	// to get smoother output
 				preserveDrawingBuffer	: true	// to allow screenshot
 			});
-			this.renderer.setClearColorHex( 0x3B2707, 1 );
+			this.renderer.setClearColorHex( 0x1A1103, 1 );
 		} else {
 			Detector.addGetWebGLMessage();
 			return true;
@@ -76,13 +78,23 @@ AICRAFT.ClientEngine.prototype = {
 		//construct a ground
 		var groundGeo = new THREE.PlaneGeometry(400, 400, 10, 10);
 		//var groundGeo = new THREE.CubeGeometry(400, 0.1, 400);
-		var groundMat = new THREE.MeshLambertMaterial({color: this.colors[5]});
+		var groundMat = new THREE.MeshLambertMaterial({color: this.colors[2], opacity: 0.3});
 		this.ground = new THREE.Mesh(groundGeo, groundMat);
 		this.ground.rotation.x = -Math.PI/2;
 		this.ground.position.y = -5;
 		this.ground.receiveShadow = true;
 		this.scene.add(this.ground);
+
+		//add barriers
+		AICRAFT.ClientEngine.generateBarriers(self, this.scene);
 		
+		//add stars
+		AICRAFT.ClientEngine.generateStars(this.scene, 3000, this.starColors[0]);
+		AICRAFT.ClientEngine.generateStars(this.scene, 2500, this.starColors[1]);
+		AICRAFT.ClientEngine.generateStars(this.scene, 2000, this.starColors[2]);
+		AICRAFT.ClientEngine.generateStars(this.scene, 1500, this.starColors[3]);
+		AICRAFT.ClientEngine.generateStars(this.scene, 1000, this.starColors[4]);
+		AICRAFT.ClientEngine.generateStars(this.scene, 500, this.starColors[5]);
 
 		var quat = new THREE.Quaternion();
 		(function() { for (var i=0; i<self.totalPlayers; i++) {
@@ -133,7 +145,7 @@ AICRAFT.ClientEngine.prototype = {
 					self.players[self.myPnum]);}, false);
 
 		//construct a coordinate helper
-		AICRAFT.ClientEngine.coordHelper(this.scene);
+		//AICRAFT.ClientEngine.coordHelper(this.scene);
 
 	},
 	
@@ -278,7 +290,11 @@ AICRAFT.ClientEngine.prototype = {
 	// render the scene
 	render: function() {
 		// actually render the scene
+		var time = Date.now() * 0.001;
 		this.renderer.render( this.scene, this.camera );
+		this.uniforms.amplitude.value = 0.5 * Math.sin( 0.5 * time );
+		THREE.ColorUtils.adjustHSV(this.uniforms.color.value, 0.0005, 0, 0 );
+		
 	}
 };
 
@@ -326,6 +342,118 @@ AICRAFT.ClientEngine.coordHelper = function(scene) {
 	scene.add(coord);
 };
 
+AICRAFT.ClientEngine.generateBarriers = function(self, scene){
+
+	var object, uniforms, attributes;
+
+	attributes = {
+
+		displacement: {	type: 'v3', value: [] },
+		customColor: {	type: 'c', value: [] }
+
+	};
+
+	uniforms = {
+
+		amplitude: { type: "f", value: 5.0 },
+		opacity:   { type: "f", value: 0.3 },
+		color:     { type: "c", value: new THREE.Color( 0xff0000 ) }
+
+	};
+
+	self.uniforms = uniforms;
+
+	var shaderMaterial = new THREE.ShaderMaterial( {
+
+		uniforms: 		uniforms,
+		attributes:     attributes,
+		vertexShader:   document.getElementById( 'vertexshader' ).textContent,
+		fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
+		blending: 		THREE.AdditiveBlending,
+		depthTest:		false,
+		transparent:	true
+
+	});
+
+	shaderMaterial.linewidth = 1;
+
+	//replace with line Strips
+	var barriersGeo = new THREE.Geometry();
+	barriersGeo.vertices.push(
+		new THREE.Vertex(new THREE.Vector3(200,6,-200)),new THREE.Vertex(new THREE.Vector3(200,6,200)),
+		new THREE.Vertex(new THREE.Vector3(200,6,200)),new THREE.Vertex(new THREE.Vector3(-200,6,200)),
+		new THREE.Vertex(new THREE.Vector3(-200,6,200)),new THREE.Vertex(new THREE.Vector3(-200,6,-200)),
+		new THREE.Vertex(new THREE.Vector3(-200,6,-200)),new THREE.Vertex(new THREE.Vector3(200,6,-200)),
+		new THREE.Vertex(new THREE.Vector3(200,5,-200)),new THREE.Vertex(new THREE.Vector3(200,5,200)),
+		new THREE.Vertex(new THREE.Vector3(200,5,200)),new THREE.Vertex(new THREE.Vector3(-200,5,200)),
+		new THREE.Vertex(new THREE.Vector3(-200,5,200)),new THREE.Vertex(new THREE.Vector3(-200,5,-200)),
+		new THREE.Vertex(new THREE.Vector3(-200,5,-200)),new THREE.Vertex(new THREE.Vector3(200,5,-200)),
+		new THREE.Vertex(new THREE.Vector3(200,4,-200)),new THREE.Vertex(new THREE.Vector3(200,4,200)),
+		new THREE.Vertex(new THREE.Vector3(200,4,200)),new THREE.Vertex(new THREE.Vector3(-200,4,200)),
+		new THREE.Vertex(new THREE.Vector3(-200,4,200)),new THREE.Vertex(new THREE.Vector3(-200,4,-200)),
+		new THREE.Vertex(new THREE.Vector3(-200,4,-200)),new THREE.Vertex(new THREE.Vector3(200,4,-200)),
+		new THREE.Vertex(new THREE.Vector3(200,3,-200)),new THREE.Vertex(new THREE.Vector3(200,3,200)),
+		new THREE.Vertex(new THREE.Vector3(200,3,200)),new THREE.Vertex(new THREE.Vector3(-200,3,200)),
+		new THREE.Vertex(new THREE.Vector3(-200,3,200)),new THREE.Vertex(new THREE.Vector3(-200,3,-200)),
+		new THREE.Vertex(new THREE.Vector3(-200,3,-200)),new THREE.Vertex(new THREE.Vector3(200,3,-200)),
+		new THREE.Vertex(new THREE.Vector3(200,2,-200)),new THREE.Vertex(new THREE.Vector3(200,2,200)),
+		new THREE.Vertex(new THREE.Vector3(200,2,200)),new THREE.Vertex(new THREE.Vector3(-200,2,200)),
+		new THREE.Vertex(new THREE.Vector3(-200,2,200)),new THREE.Vertex(new THREE.Vector3(-200,2,-200)),
+		new THREE.Vertex(new THREE.Vector3(-200,2,-200)),new THREE.Vertex(new THREE.Vector3(200,2,-200)),
+		new THREE.Vertex(new THREE.Vector3(200,1,-200)),new THREE.Vertex(new THREE.Vector3(200,1,200)),
+		new THREE.Vertex(new THREE.Vector3(200,1,200)),new THREE.Vertex(new THREE.Vector3(-200,1,200)),
+		new THREE.Vertex(new THREE.Vector3(-200,1,200)),new THREE.Vertex(new THREE.Vector3(-200,1,-200)),
+		new THREE.Vertex(new THREE.Vector3(-200,1,-200)),new THREE.Vertex(new THREE.Vector3(200,1,-200)),
+		new THREE.Vertex(new THREE.Vector3(200,0,-200)),new THREE.Vertex(new THREE.Vector3(200,0,200)),
+		new THREE.Vertex(new THREE.Vector3(200,0,200)),new THREE.Vertex(new THREE.Vector3(-200,0,200)),
+		new THREE.Vertex(new THREE.Vector3(-200,0,200)),new THREE.Vertex(new THREE.Vector3(-200,0,-200)),
+		new THREE.Vertex(new THREE.Vector3(-200,0,-200)),new THREE.Vertex(new THREE.Vector3(200,0,-200)),
+		new THREE.Vertex(new THREE.Vector3(200,-1,-200)),new THREE.Vertex(new THREE.Vector3(200,-1,200)),
+		new THREE.Vertex(new THREE.Vector3(200,-1,200)),new THREE.Vertex(new THREE.Vector3(-200,-1,200)),
+		new THREE.Vertex(new THREE.Vector3(-200,-1,200)),new THREE.Vertex(new THREE.Vector3(-200,-1,-200)),
+		new THREE.Vertex(new THREE.Vector3(-200,-1,-200)),new THREE.Vertex(new THREE.Vector3(200,-1,-200))
+);	
+
+	barriersGeo.dynamic = true;
+
+	object = new THREE.Line( barriersGeo, shaderMaterial, THREE.LineStrip );
+
+	var vertices = object.geometry.vertices;
+
+	var displacement = attributes.displacement.value;
+	var color = attributes.customColor.value;
+
+	for( var v = 0; v < vertices.length; v ++ ) {
+
+		displacement[ v ] = new THREE.Vector3( 0, 0, 0 );
+
+		color[ v ] = new THREE.Color( 0xffffff );
+		color[ v ].setHSV( v / vertices.length, 0.9, 0.9 );
+
+	}
+
+
+	scene.add( object );
+
+};
+
+AICRAFT.ClientEngine.generateStars = function(scene, num, color){
+			var x, y, z, geo = new THREE.Geometry();
+
+			for ( var i = 0; i < num; i ++ ) {
+
+				x = THREE.Math.randFloatSpread( 2000 );
+				y = THREE.Math.randFloatSpread( 2000 );
+				z = THREE.Math.randFloatSpread( 2000 );
+
+				var p = new THREE.Vector3( x, y, z );
+				geo.vertices.push( new THREE.Vertex( p ) );
+
+			}
+
+			var particles = new THREE.ParticleSystem( geo, new THREE.ParticleBasicMaterial( { color: color } ) );
+			scene.add( particles );
+};
 
 /*keyboard input checker
  * input: keycode and the key you want to know if it's pressed
