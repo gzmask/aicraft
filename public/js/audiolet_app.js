@@ -134,7 +134,7 @@ window.onload = function() {
 		this.audiolet.scheduler.setTempo(120);
 		this.c2Frequency = 65.4064;
         this.scale = new MajorScale();
-		this.audiolet.scheduler.play([song_pattern], 0.5,
+		this.audiolet.scheduler.play([song_pattern], 0.7,
 		  function(frequency) {
 			  var synth = new Synth(this.audiolet, frequency);
 			  synth.connect(this.audiolet.output);
