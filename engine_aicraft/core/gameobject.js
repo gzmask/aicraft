@@ -30,12 +30,13 @@ AICRAFT.GameObject = function (x,y,z, qx, qy, qz, qw) {
 	this.radius = 5;
 	this.mass = 1;
 	this.friction = 3;
-	this.angularFactor = 0;
+	this.angularFactor = 0.01;
+	this.restitution = 1;
 	this.hp = 100;
 	this.IsClient = false;
 	this.dynamicsWorld = undefined;
 	this.IsMoving = false;
-	/*
+	/**
 	 * pointer to an array of all objects in the game
 	 */
 	this.objects = undefined;
@@ -67,7 +68,9 @@ AICRAFT.GameObject.prototype = {
 		var rbInfo = new Ammo.btRigidBodyConstructionInfo(this.mass, myMotionState, objShape, localInertia);
 		this.phybody = new Ammo.btRigidBody(rbInfo);
 		this.phybody.setFriction(this.friction);
-		this.phybody.setAngularFactor(this.angularFactor);
+		var angularFactor = new Ammo.btVector3(0,this.angularFactor,0);
+		this.phybody.setAngularFactor(angularFactor);
+		this.phybody.setRestitution(this.restitution);
 		this.dynamicsWorld = dynamicsWorld;
 		this.dynamicsWorld.addRigidBody(this.phybody);
 	},

@@ -19,7 +19,8 @@ AICRAFT.GameObject = function(b, a, c, e, d, f, g) {
   this.radius = 5;
   this.mass = 1;
   this.friction = 3;
-  this.angularFactor = 0;
+  this.angularFactor = 0.01;
+  this.restitution = 1;
   this.hp = 100;
   this.IsClient = !1;
   this.dynamicsWorld = void 0;
@@ -38,9 +39,11 @@ AICRAFT.GameObject.prototype = {constructor:AICRAFT.GameObject, buildPhysic:func
   c = new Ammo.btRigidBodyConstructionInfo(this.mass, e, c, f);
   this.phybody = new Ammo.btRigidBody(c);
   this.phybody.setFriction(this.friction);
-  this.phybody.setAngularFactor(this.angularFactor);
+  this.phybody.setAngularFactor(new Ammo.btVector3(0, this.angularFactor, 0));
+  this.phybody.setRestitution(this.restitution);
   this.dynamicsWorld = a;
-  this.dynamicsWorld.addRigidBody(this.phybody)
+  this.dynamicsWorld.addRigidBody(this.phybody);
+  console.log("reinstution" + this.phybody.getRestitution())
 }, setPos:function(b, a, c, e, d, f, g, h, k, i, j) {
   a = parseFloat(a);
   c = parseFloat(c);
@@ -128,27 +131,17 @@ AICRAFT.Ai.prototype.raycast = function(b) {
 };
 AICRAFT.Ai.prototype.fireAt = function(b, a, c, e) {
   if(!0 !== this.weaponLock) {
-    var d = this, f = new d.Ammo.btVector3(d.position.x, d.position.y, d.position.z), g = new d.Ammo.btVector3(b - d.position.x, a - d.position.y, c - d.position.z);
-    g.normalize();
-    g.op_mul(d.weaponRange);
-    g.op_add(f);
-    console.log("fire from" + f.getX() + "," + f.getZ() + " to " + g.getX() + "," + g.getZ());
-    b = new d.Ammo.ClosestRayResultCallback(f, g);
-    d.dynamicsWorld.rayTest(f, g, b);
-    if(b.hasHit()) {
-      d.weaponLock = !0;
-      var h = b.get_m_collisionObject().getUserPointer();
-      AICRAFT.Ai.charge(d, f, g, function() {
-        d.objects[h].phybody.activate();
-        d.objects[h].phybody.applyCentralImpulse(d.feedbackVector(f, g).op_mul(1.5));
-        d.objects[h].hp -= d.weaponDamage;
-        1 > d.objects[h].hp && d.objects[h].phybody.setUserPointer(-1)
-      }, 300);
-      setTimeout(function() {
-        d.weaponLock = !1;
-        void 0 !== e && e()
-      }, d.weaponDelay)
-    }
+    var d = this, f = new d.Ammo.btVector3(d.position.x, d.position.y, d.position.z), b = new d.Ammo.btVector3(b - d.position.x, a - d.position.y, c - d.position.z);
+    b.normalize();
+    b.op_mul(d.weaponRange);
+    b.op_add(f);
+    console.log("fire from" + f.getX() + "," + f.getZ() + " to " + b.getX() + "," + b.getZ());
+    a = new d.Ammo.ClosestRayResultCallback(f, b);
+    d.dynamicsWorld.rayTest(f, b, a);
+    a.hasHit() && (d.weaponLock = !0, a = a.get_m_collisionObject().getUserPointer(), d.objects[a].phybody.activate(), d.objects[a].phybody.applyCentralImpulse(d.feedbackVector(f, b).op_mul(1.5)), d.objects[a].hp -= d.weaponDamage, 1 > d.objects[a].hp ? d.objects[a].phybody.setUserPointer(-1) : setTimeout(function() {
+      d.weaponLock = !1;
+      void 0 !== e && e()
+    }, d.weaponDelay))
   }
 };
 AICRAFT.Ai.charge = function(b, a, c, e, d) {
@@ -549,13 +542,11 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(b, a, c) {
   AICRAFT.requestAnimationFrame(function() {
     b.animate()
   }, b.animateFPS);
-  b.dynamicsWorld.stepSimulation(1 / b.phyFPS, 10);
-  b.players.forEach(function(a) {
+  -1 === AICRAFT.Engine.getNextAvailablePnum(b.players) && (b.dynamicsWorld.stepSimulation(1 / b.phyFPS, 10), b.players.forEach(function(a) {
     a.physicUpdate()
-  });
-  b.ais.forEach(function(a) {
+  }), b.ais.forEach(function(a) {
     a.physicUpdate()
-  })
+  }))
 }};
 AICRAFT.Engine.encryptedPacket = function(b) {
   var a = [];

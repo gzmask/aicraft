@@ -459,13 +459,11 @@ AICRAFT.Engine.prototype = {constructor:AICRAFT.Engine, init:function(b, a, c) {
   AICRAFT.requestAnimationFrame(function() {
     b.animate()
   }, b.animateFPS);
-  b.dynamicsWorld.stepSimulation(1 / b.phyFPS, 10);
-  b.players.forEach(function(a) {
+  -1 === AICRAFT.Engine.getNextAvailablePnum(b.players) && (b.dynamicsWorld.stepSimulation(1 / b.phyFPS, 10), b.players.forEach(function(a) {
     a.physicUpdate()
-  });
-  b.ais.forEach(function(a) {
+  }), b.ais.forEach(function(a) {
     a.physicUpdate()
-  })
+  }))
 }};
 AICRAFT.Engine.encryptedPacket = function(b) {
   var a = [];
