@@ -62,7 +62,7 @@ AICRAFT.Ai.prototype.buildMesh = function(THREE, scene, color) {
 	self.sightMesh.quaternion.y = self.quaternion.y;
 	self.sightMesh.quaternion.z = self.quaternion.z;
 	self.sightMesh.quaternion.w = self.quaternion.w;
-	scene.add(self.sightMesh);
+	//scene.add(self.sightMesh);
 
 };
 

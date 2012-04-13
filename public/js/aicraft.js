@@ -27,7 +27,10 @@ AICRAFT.GameObject = function(b, a, c, d, e, f, g) {
 AICRAFT.GameObject.prototype = {constructor:AICRAFT.GameObject, buildMesh:function(b, a, c, d) {
   var e = b.ImageUtils.loadTexture("asset/battery_b.png"), b = new b.Sprite({map:e, useScreenCoordinates:!1, color:c});
   b.position.set(this.position.x + b.dx, this.position.y + b.dy, this.position.z + b.dz);
-  !0 !== d ? (b.dx = 0, b.dy = 9, b.dz = 0, b.scale.set(0.1, 0.05, 0.1)) : (b.dx = 0, b.dy = 17, b.dz = 0, b.scale.set(0.1, 0.04, 0.1), b.opacity = 0.7);
+  !0 !== d ? (b.dx = 0, b.dy = 9) : (b.dx = 0, b.dy = 17);
+  b.dz = 0;
+  b.scale.set(0.1, 0.02, 0.1);
+  b.opacity = 0.3;
   a.add(b);
   this.sprites.push(b)
 }, setPos:function(b, a, c, d, e, f, g, h, j, i, k, l, m) {
@@ -60,7 +63,7 @@ AICRAFT.GameObject.prototype = {constructor:AICRAFT.GameObject, buildMesh:functi
   this.mesh.quaternion.w = this.quaternion.w;
   var b = this;
   this.sprites.forEach(function(a) {
-    a.scale.x = b.hp / 600;
+    a.scale.x = (b.hp - 10) / 600;
     a.position.set(b.position.x + a.dx, b.position.y + a.dy, b.position.z + a.dz)
   })
 }};
@@ -100,8 +103,7 @@ AICRAFT.Ai.prototype.buildMesh = function(b, a, c) {
   d.sightMesh.quaternion.x = d.quaternion.x;
   d.sightMesh.quaternion.y = d.quaternion.y;
   d.sightMesh.quaternion.z = d.quaternion.z;
-  d.sightMesh.quaternion.w = d.quaternion.w;
-  a.add(d.sightMesh)
+  d.sightMesh.quaternion.w = d.quaternion.w
 };
 AICRAFT.Ai.prototype.physicAndGraphicUpdate = function(b) {
   void 0 === this.mesh || 1 > this.hp || (this.applyAnimation(this.mesh_t, this.mesh_w), this.sightMesh.position.x = this.position.x, this.sightMesh.position.y = this.position.y, this.sightMesh.position.z = this.position.z, AICRAFT.GameObject.prototype.physicAndGraphicUpdate.call(this), this.sightMesh.quaternion.x = this.sight.quaternion.x, this.sightMesh.quaternion.y = this.sight.quaternion.y, this.sightMesh.quaternion.z = this.sight.quaternion.z, this.sightMesh.quaternion.w = this.sight.quaternion.w, 
@@ -208,10 +210,10 @@ AICRAFT.Player.prototype.applyAnimation = function(b, a) {
   !0 === this.IsMoving ? (b.visible = !1, a.visible = !0, this.mesh = a) : (b.visible = !0, a.visible = !1, this.mesh = b)
 };
 AICRAFT.Player.prototype.handleKeyDown = function(b, a) {
-  "W" == String.fromCharCode(b.keyCode) ? a.keycode |= 8 : "A" == String.fromCharCode(b.keyCode) ? a.keycode |= 4 : "S" == String.fromCharCode(b.keyCode) ? a.keycode |= 2 : "D" == String.fromCharCode(b.keyCode) ? a.keycode |= 1 : "E" == String.fromCharCode(b.keyCode) ? a.keycode |= 16 : "Q" == String.fromCharCode(b.keyCode) ? a.keycode |= 32 : 18 == b.keyCode && (a.keycode |= 64)
+  "W" == String.fromCharCode(b.keyCode) ? a.keycode |= 8 : "A" == String.fromCharCode(b.keyCode) ? a.keycode |= 4 : "S" == String.fromCharCode(b.keyCode) ? a.keycode |= 2 : "D" == String.fromCharCode(b.keyCode) ? a.keycode |= 1 : "E" == String.fromCharCode(b.keyCode) ? a.keycode |= 16 : "Q" == String.fromCharCode(b.keyCode) && (a.keycode |= 32)
 };
 AICRAFT.Player.prototype.handleKeyUp = function(b, a) {
-  "W" == String.fromCharCode(b.keyCode) ? a.keycode ^= 8 : "A" == String.fromCharCode(b.keyCode) ? a.keycode ^= 4 : "S" == String.fromCharCode(b.keyCode) ? a.keycode ^= 2 : "D" == String.fromCharCode(b.keyCode) ? a.keycode ^= 1 : "E" == String.fromCharCode(b.keyCode) ? a.keycode ^= 16 : "Q" == String.fromCharCode(b.keyCode) ? a.keycode ^= 32 : 18 == b.keyCode && (a.keycode ^= 64)
+  "W" == String.fromCharCode(b.keyCode) ? a.keycode ^= 8 : "A" == String.fromCharCode(b.keyCode) ? a.keycode ^= 4 : "S" == String.fromCharCode(b.keyCode) ? a.keycode ^= 2 : "D" == String.fromCharCode(b.keyCode) ? a.keycode ^= 1 : "E" == String.fromCharCode(b.keyCode) ? a.keycode ^= 16 : "Q" == String.fromCharCode(b.keyCode) && (a.keycode ^= 32)
 };
 AICRAFT.Player.prototype.updateInput = function(b) {
   AICRAFT.ClientEngine.key(this.keycode, "code") && b.request()
@@ -320,8 +322,6 @@ AICRAFT.CodeEmitter = function(b, a, c, d, e) {
   this.editor.style.zIndex = "-3";
   this.editor.style.position = "absolute";
   this.editor.style.visibility = "hidden";
-  this.editor.style.left = this.cameraControls.viewHalfX;
-  this.editor.style.top = this.cameraControls.viewHalfY;
   e.appendChild(this.editor);
   this.editorAce = ace.edit("editor");
   this.editorAce.setReadOnly(!1);
@@ -330,7 +330,15 @@ AICRAFT.CodeEmitter = function(b, a, c, d, e) {
     a = a.replace(/ai_name_to_replace/g, "AI_" + f.ai.name.toString());
     f.editorAce.focus();
     f.editorAce.getSession().setValue(a)
-  })
+  });
+  this.img = document.createElement("img");
+  document.body.appendChild(this.img);
+  this.img.setAttribute("src", "asset/ce.png");
+  this.img.style.zIndex = "10004";
+  this.img.style.position = "absolute";
+  this.img.style.right = "5px";
+  this.img.style.bottom = "5px";
+  this.img.onclick = this.request.bind(this)
 };
 AICRAFT.CodeEmitter.prototype.constructor = AICRAFT.CodeEmitter;
 AICRAFT.CodeEmitter.prototype.request = function() {
@@ -659,23 +667,17 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   c.position.set(170, 330, -160);
   c.castShadow = !0;
   this.scene.add(c);
-  var c = new THREE.PlaneGeometry(400, 400, 10, 10), d = new THREE.MeshLambertMaterial({color:this.colors[2], opacity:0.3});
-  this.ground = new THREE.Mesh(c, d);
-  this.ground.rotation.x = -Math.PI / 2;
-  this.ground.position.y = -5;
-  this.ground.receiveShadow = !0;
-  this.scene.add(this.ground);
-  AICRAFT.ClientEngine.generateBarriers(a, this.scene);
+  AICRAFT.ClientEngine.generateBarriers(this, this.scene);
   AICRAFT.ClientEngine.generateStars(this.scene, 3E3, this.starColors[0]);
   AICRAFT.ClientEngine.generateStars(this.scene, 2500, this.starColors[1]);
   AICRAFT.ClientEngine.generateStars(this.scene, 2E3, this.starColors[2]);
   AICRAFT.ClientEngine.generateStars(this.scene, 1500, this.starColors[3]);
   AICRAFT.ClientEngine.generateStars(this.scene, 1E3, this.starColors[4]);
   AICRAFT.ClientEngine.generateStars(this.scene, 500, this.starColors[5]);
-  var e = new THREE.Quaternion;
+  var d = new THREE.Quaternion;
   (function() {
     for(var c = 0;c < a.totalPlayers;c++) {
-      e.setFromEuler(new THREE.Vector3(-30, -20, 0)), a.players[c] = new AICRAFT.Player(b.players.bindings[c].position[0], b.players.bindings[c].position[1], b.players.bindings[c].position[2], b.players.bindings[c].quaternion[0], b.players.bindings[c].quaternion[1], b.players.bindings[c].quaternion[2], b.players.bindings[c].quaternion[3]), a.players[c].IsClient = !0, a.players[c].buildMesh(THREE, a.scene, a.colors[c], c === a.myPnum), e.setFromEuler(new THREE.Vector3(30, -20, 0)), a.ais[c] = new AICRAFT.Ai(b.ais.bindings[c].position[0], 
+      d.setFromEuler(new THREE.Vector3(-30, -20, 0)), a.players[c] = new AICRAFT.Player(b.players.bindings[c].position[0], b.players.bindings[c].position[1], b.players.bindings[c].position[2], b.players.bindings[c].quaternion[0], b.players.bindings[c].quaternion[1], b.players.bindings[c].quaternion[2], b.players.bindings[c].quaternion[3]), a.players[c].IsClient = !0, a.players[c].buildMesh(THREE, a.scene, a.colors[c], c === a.myPnum), d.setFromEuler(new THREE.Vector3(30, -20, 0)), a.ais[c] = new AICRAFT.Ai(b.ais.bindings[c].position[0], 
       b.ais.bindings[c].position[1], b.ais.bindings[c].position[2], b.ais.bindings[c].quaternion[0], b.ais.bindings[c].quaternion[1], b.ais.bindings[c].quaternion[2], b.ais.bindings[c].quaternion[3]), a.ais[c].IsClient = !0, a.ais[c].buildMesh(THREE, a.scene, a.colors[c])
     }
   })();
@@ -757,6 +759,14 @@ AICRAFT.ClientEngine.coordHelper = function(b) {
   a.type = THREE.Lines;
   b.add(a)
 };
+AICRAFT.ClientEngine.generateGround = function(b, a) {
+  var c = new THREE.PlaneGeometry(400, 400, 10, 10), d = new THREE.MeshLambertMaterial({color:b.colors[2], opacity:0.3});
+  b.ground = new THREE.Mesh(c, d);
+  b.ground.rotation.x = -Math.PI / 2;
+  b.ground.position.y = -5;
+  b.ground.receiveShadow = !0;
+  a.add(b.ground)
+};
 AICRAFT.ClientEngine.generateBarriers = function(b, a) {
   var c, d;
   d = {displacement:{type:"v3", value:[]}, customColor:{type:"c", value:[]}};
@@ -765,7 +775,7 @@ AICRAFT.ClientEngine.generateBarriers = function(b, a) {
   b.uniforms = c;
   c = new THREE.ShaderMaterial({uniforms:c, attributes:d, vertexShader:document.getElementById("vertexshader").textContent, fragmentShader:document.getElementById("fragmentshader").textContent, blending:THREE.AdditiveBlending, depthTest:!1, transparent:!0});
   c.linewidth = 1;
-  for(var e = new THREE.Geometry, f = e.vertices, g = -2;10 > g;g++) {
+  for(var e = new THREE.Geometry, f = e.vertices, g = 10;-5 <= g;g--) {
     for(var h = -200;200 >= h;h += 10) {
       f.push(new THREE.Vertex(new THREE.Vector3(200, g, h)))
     }
@@ -777,6 +787,14 @@ AICRAFT.ClientEngine.generateBarriers = function(b, a) {
     }
     for(h = -200;200 >= h;h += 10) {
       f.push(new THREE.Vertex(new THREE.Vector3(h, g, -200)))
+    }
+  }
+  for(g = 200;-200 <= g;g -= 10) {
+    for(h = -200;200 >= h;h += 10) {
+      f.push(new THREE.Vertex(new THREE.Vector3(g, -5, h)))
+    }
+    for(h = 200;-200 <= h;h -= 10) {
+      f.push(new THREE.Vertex(new THREE.Vector3(g - 5, -5, h)))
     }
   }
   e.dynamic = !0;

@@ -18,8 +18,8 @@ AICRAFT.CodeEmitter = function(cameraControls, player, ai, socket, domElement) {
 	this.editor.style.zIndex = '-3';
 	this.editor.style.position = 'absolute';
 	this.editor.style.visibility = 'hidden';
-	this.editor.style.left =this.cameraControls.viewHalfX;
-	this.editor.style.top =this.cameraControls.viewHalfY;
+	//this.editor.style.left =this.cameraControls.viewHalfX;
+	//this.editor.style.top =this.cameraControls.viewHalfY;
 	//set up code emitter form
 	domElement.appendChild(this.editor);
 	this.editorAce = ace.edit('editor');
@@ -30,6 +30,17 @@ AICRAFT.CodeEmitter = function(cameraControls, player, ai, socket, domElement) {
 		self.editorAce.focus();
 		self.editorAce.getSession().setValue(data);
 	});
+	//set up code emitter button
+	this.img = document.createElement("img");
+	document.body.appendChild(this.img);
+	this.img.setAttribute("src","asset/ce.png");
+	this.img.style.zIndex = '10004';
+	this.img.style.position = 'absolute';
+	//this.img.style.left = '0px';
+	//this.img.style.top = '0px';
+	this.img.style.right = '5px';
+	this.img.style.bottom = '5px';
+	this.img.onclick = this.request.bind(this);
 };
 
 AICRAFT.CodeEmitter.prototype.constructor = AICRAFT.CodeEmitter;

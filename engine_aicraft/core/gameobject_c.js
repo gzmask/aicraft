@@ -50,13 +50,14 @@ AICRAFT.GameObject.prototype = {
             spriteA.dx = 0;
             spriteA.dy = 9;
             spriteA.dz = 0;
-            spriteA.scale.set(0.1,0.05,0.1);
+            spriteA.scale.set(0.1,0.02,0.1);
+            spriteA.opacity = 0.3;
         } else {
             spriteA.dx = 0;
             spriteA.dy = 17;
             spriteA.dz = 0;
-            spriteA.scale.set(0.1,0.04,0.1);
-            spriteA.opacity = 0.7;
+            spriteA.scale.set(0.1,0.02,0.1);
+            spriteA.opacity = 0.3;
         }
         scene.add(spriteA);
         this.sprites.push(spriteA);
@@ -132,7 +133,7 @@ AICRAFT.GameObject.prototype = {
         var self = this;
         this.sprites.forEach(function(sprite) {
             //sprite.scale.set(0.1*self.hp/100, 0.05, 0.1);
-            sprite.scale.x = self.hp/600;
+            sprite.scale.x = (self.hp-10)/600;
             sprite.position.set(self.position.x+sprite.dx,self.position.y+sprite.dy,self.position.z+sprite.dz);
         });
 	}

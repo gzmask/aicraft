@@ -79,19 +79,13 @@ AICRAFT.ClientEngine.prototype = {
 		light.castShadow = true;
 		this.scene.add(light);
 
-		//construct a ground
-		var groundGeo = new THREE.PlaneGeometry(400, 400, 10, 10);
-		//var groundGeo = new THREE.CubeGeometry(400, 0.1, 400);
-		var groundMat = new THREE.MeshLambertMaterial({color: this.colors[2], opacity: 0.3});
-		this.ground = new THREE.Mesh(groundGeo, groundMat);
-		this.ground.rotation.x = -Math.PI/2;
-		this.ground.position.y = -5;
-		this.ground.receiveShadow = true;
-		this.scene.add(this.ground);
 
 		//add barriers
-		AICRAFT.ClientEngine.generateBarriers(self, this.scene);
+		AICRAFT.ClientEngine.generateBarriers(this, this.scene);
 		
+		//construct a ground
+		//AICRAFT.ClientEngine.generateGround(this, this.scene);
+
 		//add stars
 		AICRAFT.ClientEngine.generateStars(this.scene, 3000, this.starColors[0]);
 		AICRAFT.ClientEngine.generateStars(this.scene, 2500, this.starColors[1]);
@@ -363,6 +357,17 @@ AICRAFT.ClientEngine.coordHelper = function(scene) {
 	scene.add(coord);
 };
 
+AICRAFT.ClientEngine.generateGround = function(self, scene){
+	var groundGeo = new THREE.PlaneGeometry(400, 400, 10, 10);
+	//var groundGeo = new THREE.CubeGeometry(400, 0.1, 400);
+	var groundMat = new THREE.MeshLambertMaterial({color: self.colors[2], opacity: 0.3});
+	self.ground = new THREE.Mesh(groundGeo, groundMat);
+	self.ground.rotation.x = -Math.PI/2;
+	self.ground.position.y = -5;
+	self.ground.receiveShadow = true;
+	scene.add(self.ground);
+};
+
 AICRAFT.ClientEngine.generateBarriers = function(self, scene){
 
 	var object, uniforms, attributes;
@@ -403,7 +408,7 @@ AICRAFT.ClientEngine.generateBarriers = function(self, scene){
 	var barriersGeo = new THREE.Geometry();
 
     function gvb (ar) {
-        for (var i = -2; i < 10; i++) {
+        for (var i = 10; i >= -5; i--) {
             for (var j = -200; j<=200; j+=10) {
                 ar.push(new THREE.Vertex(new THREE.Vector3(200,i,j)));
             }
@@ -417,6 +422,14 @@ AICRAFT.ClientEngine.generateBarriers = function(self, scene){
                 ar.push(new THREE.Vertex(new THREE.Vector3(j,i,-200)));
             }
         }
+		for (var i = 200; i>=-200; i-=10) {
+			for (var j = -200; j<=200; j+=10) {
+				ar.push(new THREE.Vertex(new THREE.Vector3(i,-5,j)));
+			}
+			for (var j = 200; j>=-200; j-=10) {
+				ar.push(new THREE.Vertex(new THREE.Vector3(i-5,-5,j)));
+			}
+		}
     };
 
     gvb(barriersGeo.vertices);
