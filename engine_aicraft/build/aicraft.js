@@ -739,7 +739,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
   this.stats.domElement.style.bottom = "0px";
   document.body.appendChild(this.stats.domElement);
   this.scene = new THREE.Scene;
-  this.scene.fog = new THREE.FogExp2(this.colors[3], 0.0030);
+  this.scene.fog = new THREE.FogExp2(this.colors[3], 0.003);
   this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1E4);
   this.scene.add(this.camera);
   THREEx.WindowResize.bind(this.renderer, this.camera);
@@ -821,7 +821,7 @@ AICRAFT.ClientEngine.prototype = {constructor:AICRAFT.ClientEngine, init:functio
     this.stats.update()
   }
 }, render:function() {
-  var b = 0.0010 * Date.now();
+  var b = 0.001 * Date.now();
   this.renderer.render(this.scene, this.camera);
   this.uniforms.amplitude.value = 0.5 * Math.sin(0.5 * b);
   THREE.ColorUtils.adjustHSV(this.uniforms.color.value, 5.0E-4, 0, 0);

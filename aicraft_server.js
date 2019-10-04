@@ -20,9 +20,9 @@
   });
   app.listen(3003);
   console.log("Express server started on port %s", app.address().port);
-    
-  //game server 
-  io = require('socket.io').listen(app);
+
+  //game server
+  io = require('socket.io').listen( app);
   io.set('log level', 0);
   Ammo = require('./engine_aicraft/vendor/ammo.js').Ammo;
   AICRAFT = require('./engine_aicraft/build/aicraft.js').AICRAFT;

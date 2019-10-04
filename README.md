@@ -1,13 +1,23 @@
-Tasks:
+# Install
 
-=========== To-Do:  ==============
+## building
+
+    docker build -t aicraft .
+
+## runnign
+
+    docker run aicraft
+
+# Tasks
+
+## To-Do
 	
     Add health bar using lines/ribbons/etc.
     Change the theme to have TRON feeling
     Use WebGL panorama for background
 	Submit first level by Feb 28th at http://www.indiecade.com/submissions 
 
-============== done ===============
+## done
 
 	code emittor done with ACE editor
 	ai event loops need to be terminated once newer version of user code is commited. Probably use class variables
@@ -38,7 +48,7 @@ Tasks:
 	Construct a ground, a helper function to display axis
 	Construct a light, shadow and two boxes to represent A.I 
 
-============ backlog ==============
+## backlog
 
 	use pointer lock API for FPS control and prevent user from copy/paste
 	design fault by having user submitted ai code running in server process. Using seperated node process can save massive security checking and prevents server crash.
